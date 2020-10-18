@@ -18,6 +18,29 @@ db.once('open', function() {
 
 const Trade = mongoose.model('Trade', tradeSchema);
 
+const date = () => {
+  const newDate = new Date();
+  const dd = String(today.getDate()).padStart(2, '0');
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const yyyy = today.getFullYear();
+
+  newDate = mm + '/' + dd + '/' + yyyy;
+  return newDate;
+};
+
+
+const remove = (id) => {
+  return new Promise((resolve, reject) => {
+    Trade.remove({ job_id: id }, { justOne: true }, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data);
+      }
+    })
+  });
+}
+
 const save = (trade) => {
   return new Promise((resolve, reject) => {
     const newTrade = {
@@ -30,7 +53,7 @@ const save = (trade) => {
       total_cost: trade.total_cost,
       trade_type: trade.trade_type,
       note: trade.note,
-      created_at: trade.created_at,
+      created_at: date(),
       trade_status: trade.trade_status,
     };
 
@@ -44,29 +67,10 @@ const save = (trade) => {
   });
 }
 
-const delete = (id) => {
-  return new Promise((resolve, reject) => {
-    Trade.remove({ job_id: id }, { justOne: true }, (err, data) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(data);
-      }
-    })
-  });
-}
-
-const convertToNumber = (createdAt) => {
-  return new Date(createdAt).getTime();
-};
-
-module.exports.save = save;
-module.exports.Trade = Trade;
-// export default MongoDBGateway;
 
 module.exports = {
   save: save,
   Trade: Trade,
-  delete: delete,
+  remove: remove,
   MongoDBGateway: MongoDBGateway,
 };
