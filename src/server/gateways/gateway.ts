@@ -4,9 +4,8 @@ export default abstract class Gateway {
   className: string;
   logger: winston.Logger;
 
-  constructor() {
-    /* You should be overriding this. */
-    this.className = "<Gateway$ClassName>";
+  constructor(className: string = "<Gateway$ClassName>") {
+    this.className = className;
 
     const { combine, timestamp, json, prettyPrint, colorize } = winston.format;
 
@@ -19,5 +18,7 @@ export default abstract class Gateway {
   }
 
   /* Return a heartbeat of base URI to logger transport. */
-  public abstract pulse(): void;
+  public pulse(): void {
+    this.logger.verbose(`${this.className} is alive!`);
+  }
 }

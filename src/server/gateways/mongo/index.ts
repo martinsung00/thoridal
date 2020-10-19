@@ -1,3 +1,3 @@
-import MongoDBGateway from "./plugin";
+import MongoGateway from "./plugin";
 
-export default MongoDBGateway;
+export default MongoGateway;

@@ -1,11 +1,11 @@
 import Gateway from "../gateway";
 import mongoose from "mongoose";
 
-export default class MongoDBGateway extends Gateway {
+export default class MongoGateway extends Gateway {
   db: mongoose.Connection;
 
   constructor(dbName: string) {
-    super();
+    super("MongoGateway");
 
     this.className = this.constructor.name;
 
@@ -39,9 +39,5 @@ export default class MongoDBGateway extends Gateway {
       // To-do: You'll need better error handling than that.
       throw err;
     }
-  }
-
-  public pulse(): void {
-    this.logger.verbose("");
   }
 }
