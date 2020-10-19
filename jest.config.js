@@ -18,7 +18,8 @@ module.exports = {
     "**/*.{js,jsx,ts,tsx}",
     "!**/node_modules/**",
     "!**/coverage/**",
-    "!**/jest.config.js",
+    "!**/dist/**",
+    "!**/*.config.js",
   ],
   coverageThreshold: {
     global: {

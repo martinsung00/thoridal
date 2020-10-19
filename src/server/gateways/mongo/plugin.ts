@@ -1,6 +1,5 @@
 import Gateway from "../gateway";
 import mongoose from "mongoose";
-import { Kitten } from "@models";
 
 export default class MongoDBGateway extends Gateway {
   db: mongoose.Connection;
@@ -27,21 +26,15 @@ export default class MongoDBGateway extends Gateway {
     this.db = db;
   }
 
-  public async write(document: { [key: string]: any }) {
+  public async write() {
     try {
       const t0 = performance.now();
 
-      const { name, age } = document;
-
-      await new Kitten({ name, age }).save({
-        validateBeforeSave: true,
-        j: true,
-        timestamps: true,
-      });
+      // To-do: add trade insertion.
 
       const t1 = performance.now();
 
-      this.logger.debug(`${this.className} –– WRITE –– ${t1 - t0} ms.`);
+      this.logger.debug(`${this.className} –– WRITE –– ${t1 - t0} ms.`);
     } catch (err) {
       // To-do: You'll need better error handling than that.
       throw err;
