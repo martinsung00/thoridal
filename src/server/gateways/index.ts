@@ -1,3 +1,4 @@
-import MongoDBGateway from "./gateway";
+import MongoGateway from "./mongo";
+import PostgresGateway from "./postgres";
 
-export { MongoDBGateway };
+export { MongoGateway, PostgresGateway };

@@ -1,3 +1,3 @@
 import PostgresGateway from "./plugin";
 
-export { PostgresGateway };
+export default PostgresGateway;

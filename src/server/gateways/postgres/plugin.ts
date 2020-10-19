@@ -17,7 +17,7 @@ export default class PostgresGateway extends Gateway {
     });
   }
 
-  public async get(id: string): Promise<object> {
+  public async read(id: string): Promise<object> {
     try {
       // To-do: Design an ORM. Do not ship to production with a string query.
       const response = await this.pool.query(
