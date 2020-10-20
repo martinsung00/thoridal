@@ -12,6 +12,7 @@
     "build:types": "tsc --emitDeclarationOnly",
     "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline",
     "bundle": "webpack",
+    "migrate": "node-pg-migrate",
     "prettier": "prettier --write . && npm run type-check",
     "test": "jest",
     "watch": "jest --watchAll"
@@ -41,6 +42,7 @@
     "jest-watch-select-projects": "^2.0.0",
     "jest-watch-suspend": "^1.1.2",
     "jest-watch-typeahead": "^0.6.1",
+    "node-pg-migrate": "^5.8.1",
     "pg": "^8.4.1",
     "prettier": "^2.1.2",
     "react": "^16.13.1",

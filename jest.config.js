@@ -19,6 +19,7 @@ module.exports = {
     "!**/node_modules/**",
     "!**/coverage/**",
     "!**/dist/**",
+    "!**/migrations/**",
     "!**/*.config.js",
   ],
   coverageThreshold: {
