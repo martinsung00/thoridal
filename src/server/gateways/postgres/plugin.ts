@@ -28,7 +28,7 @@ export default class PostgresGateway extends Gateway {
     try {
       const queryText = "SELECT * FROM trades WHERE id = $1";
 
-      const response = await client.query(queryText, [id]);
+      const response: QueryResult = await client.query(queryText, [id]);
 
       await client.query(TRANSACTIONS.COMMIT);
 
