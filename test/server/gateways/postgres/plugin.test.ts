@@ -1,14 +1,12 @@
 import pg from "pg";
 import { Trade } from "../../../../src/server/types";
 import { PostgresGateway } from "./../../../../src/server/gateways";
-import Helpers from "../../../../src/server/gateways/postgres/helper";
 
 describe("Postgres Gateway Tests", function () {
   jest.mock("pg");
 
-  const helpers = new Helpers();
-  const now = helpers.generateDate();
   const db = new PostgresGateway();
+  const now: string = db.generateDate();
   const trade: Trade = {
     id: "abc",
     ticker: "ABC",
