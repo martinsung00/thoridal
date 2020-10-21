@@ -124,8 +124,7 @@ export default class PostgresGateway extends Gateway {
       } = document;
 
       const created_at = helpers.generateDate();
-      const queryText =
-        `INSERT INTO trades VALUES(${id}, ${ticker}, ${company_name}, ${reference_number}, ${unit_price}, ${quantity}, ${total_cost}, ${trade_type}, ${note}, ${created_at}, ${trade_status}) RETURNING id`;
+      const queryText = `INSERT INTO trades VALUES(${id}, ${ticker}, ${company_name}, ${reference_number}, ${unit_price}, ${quantity}, ${total_cost}, ${trade_type}, ${note}, ${created_at}, ${trade_status}) RETURNING id`;
 
       const response: QueryResult = await client.query(queryText, [
         id,
