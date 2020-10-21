@@ -5,6 +5,7 @@ exports.up = pgm => {
       notNull: true,
       type: "varchar(25)",
       unique: true,
+      
     },
     ticker: {
       type: "varchar(10)",

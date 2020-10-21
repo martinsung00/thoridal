@@ -1,5 +1,7 @@
 import Gateway from "./../gateway";
-import { Pool } from "pg";
+import { Pool, PoolClient, QueryResult } from "pg";
+import { Trade } from "./../../types";
+import { TRANSACTIONS } from "./constants";
 
 export default class PostgresGateway extends Gateway {
   pool: Pool;
@@ -11,40 +13,80 @@ export default class PostgresGateway extends Gateway {
     this.pool = new Pool({
       user: "me",
       host: "localhost",
-      database: "api",
+      database: "trades",
       password: "password",
       port: 5432,
     });
   }
 
-  public async read(id: string): Promise<object> {
+  public async read(id: string): Promise<any> {
+    const client: PoolClient = await this.pool.connect();
+
     try {
-      // To-do: Design an ORM. Do not ship to production with a string query.
-      const response = await this.pool.query(
-        `SELECT * FROM ... WHERE id = ${id}`
-      );
-      return response.rows;
+      const queryText = "SELECT * FROM trades WHERE id = $1";
+
+      const response = await client.query(queryText, [id]);
+
+      await client.query(TRANSACTIONS.COMMIT);
+
+      return response;
     } catch (err) {
       // To-do: We should be handling this according to the design.
+      await client.query(TRANSACTIONS.ROLLBACK);
       throw err;
+    } finally {
+      client.release();
     }
   }
 
-  public async write(kitten: {
-    id: string;
-    name: string;
-    age: number;
-  }): Promise<string> {
+  public async write(
+    document: Trade
+  ): Promise<{
+    rows: Array<{ id: string }>;
+  }> {
+    const client: PoolClient = await this.pool.connect();
+
     try {
-      const { id, name, age } = kitten;
-      await this.pool.query(
-        "INSERT INTO TABLE_NAME (id, name, age) VALUES ($1, $2, $3)",
-        [id, name, age]
-      );
-      return id;
+      const {
+        id,
+        ticker,
+        company_name,
+        reference_number,
+        unit_price,
+        quantity,
+        total_cost,
+        trade_type,
+        note,
+        created_at,
+        trade_status,
+      } = document;
+
+      const queryText =
+        "INSERT INTO trades VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id";
+
+      const response: QueryResult = await client.query(queryText, [
+        id,
+        ticker,
+        company_name,
+        reference_number,
+        unit_price,
+        quantity,
+        total_cost,
+        trade_type,
+        note,
+        created_at,
+        trade_status,
+      ]);
+
+      await client.query(TRANSACTIONS.COMMIT);
+
+      return response;
     } catch (err) {
       // To-do: We should be handling this according to the design.
+      await client.query(TRANSACTIONS.ROLLBACK);
       throw err;
+    } finally {
+      client.release();
     }
   }
 }
