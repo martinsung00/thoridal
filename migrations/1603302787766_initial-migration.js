@@ -1,11 +1,14 @@
-exports.up = pgm => {
+/* eslint-disable camelcase */
+
+exports.shorthands = undefined;
+
+exports.up = (pgm) => {
   pgm.createTable("trades", {
     id: {
       primaryKey: true,
       notNull: true,
       type: "varchar(25)",
       unique: true,
-      
     },
     ticker: {
       type: "varchar(10)",
@@ -42,6 +45,6 @@ exports.up = pgm => {
   });
 };
 
-exports.down = pgm => {
+exports.down = (pgm) => {
   pgm.dropTable("trades");
 };

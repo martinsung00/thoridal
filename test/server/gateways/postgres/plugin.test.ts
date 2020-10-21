@@ -4,13 +4,6 @@ import { PostgresGateway } from "./../../../../src/server/gateways";
 
 describe("Postgres Gateway Tests", function () {
   jest.mock("pg");
-  pg.Client.prototype.query = jest.fn().mockResolvedValue({
-    rows: [
-      {
-        id: "abc",
-      },
-    ],
-  });
 
   const now = new Date();
   const db = new PostgresGateway();

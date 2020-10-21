@@ -5,7 +5,7 @@ describe("Sample Test", function () {
     const c = new C();
 
     expect(c.getX()).toEqual(10);
-    
+
     c.setX(20);
     expect(c.getX()).toEqual(20);
   });

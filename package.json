@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "babel-node -x \".ts\" src/server/index.ts",
+    "bootstrap": "npm install && npm run build && npm run bundle && npm run type-check && npm run migrate up && npm run test",
     "type-check": "tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch",
     "build": "npm run build:types && npm run build:js",
@@ -31,6 +32,7 @@
     "@types/jest": "^26.0.14",
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
+    "@types/pg": "^7.14.5",
     "@types/sinon": "^9.0.8",
     "@types/winston": "^2.4.4",
     "babel-loader": "^8.1.0",
@@ -55,7 +57,5 @@
     "webpack-cli": "^4.1.0",
     "winston": "^3.3.3"
   },
-  "devDependencies": {
-    "@types/pg": "^7.14.5"
-  }
+  "devDependencies": {}
 }

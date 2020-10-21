@@ -2,6 +2,7 @@ import Gateway from "./../gateway";
 import { Pool, PoolClient, QueryResult } from "pg";
 import { Trade } from "./../../types";
 import { TRANSACTIONS } from "./constants";
+import VAULT from "./../../../../vault/dev.json";
 
 export default class PostgresGateway extends Gateway {
   pool: Pool;
@@ -9,13 +10,15 @@ export default class PostgresGateway extends Gateway {
   constructor() {
     super("PostgresGateway");
 
-    // To-do: Abstract this away.
+    // To-do: Read these from environment.
+    const { user, host, database, password, port } = VAULT;
+
     this.pool = new Pool({
-      user: "me",
-      host: "localhost",
-      database: "trades",
-      password: "password",
-      port: 5432,
+      user,
+      host,
+      database,
+      password,
+      port,
     });
   }
 
