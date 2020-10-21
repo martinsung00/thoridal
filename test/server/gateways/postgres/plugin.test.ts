@@ -1,15 +1,17 @@
 import pg from "pg";
 import { Trade } from "../../../../src/server/types";
 import { PostgresGateway } from "./../../../../src/server/gateways";
+import Helpers from "../../../../src/server/gateways/postgres/helper";
 
 describe("Postgres Gateway Tests", function () {
   jest.mock("pg");
 
-  const now = new Date();
+  const helpers = new Helpers();
+  const now = helpers.generateDate();
   const db = new PostgresGateway();
   const trade: Trade = {
     id: "abc",
-    ticker: "",
+    ticker: "ABC",
     company_name: "",
     reference_number: "",
     unit_price: 0,
@@ -46,8 +48,8 @@ describe("Postgres Gateway Tests", function () {
       expect(
         pg.Client.prototype.query
       ).toHaveBeenCalledWith(
-        "INSERT INTO trades VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id",
-        ["abc", "", "", "", 0, 0, 0, "long", "", now, true]
+        `INSERT INTO trades VALUES(${trade.id}, ${trade.ticker}, ${trade.company_name}, ${trade.reference_number}, ${trade.unit_price}, ${trade.quantity}, ${trade.total_cost}, ${trade.trade_type}, ${trade.note}, ${trade.created_at}, ${trade.trade_status}) RETURNING id`,
+        ["abc", "ABC", "", "", 0, 0, 0, "long", "", now, true]
       );
     });
   });
@@ -63,6 +65,51 @@ describe("Postgres Gateway Tests", function () {
 
     it("should return a document given an id", async function () {
       const result = await db.read(trade.id);
+      expect(result).toEqual(trade);
+    });
+  });
+
+  describe("Read Action by Ticker", function () {
+    beforeAll(function () {
+      pg.Client.prototype.query = jest.fn().mockResolvedValue(trade);
+    });
+
+    afterAll(function () {
+      jest.resetAllMocks();
+    });
+
+    it("should return a document given a ticker", async function () {
+      const result = await db.readByTicker(trade.ticker);
+      expect(result).toEqual(trade);
+    });
+  });
+
+  describe("Read Action by Company Name", function () {
+    beforeAll(function () {
+      pg.Client.prototype.query = jest.fn().mockResolvedValue(trade);
+    });
+
+    afterAll(function () {
+      jest.resetAllMocks();
+    });
+
+    it("should return a document given a company name", async function () {
+      const result = await db.readByCompany(trade.company_name);
+      expect(result).toEqual(trade);
+    });
+  });
+
+  describe("Read Action by Date", function () {
+    beforeAll(function () {
+      pg.Client.prototype.query = jest.fn().mockResolvedValue(trade);
+    });
+
+    afterAll(function () {
+      jest.resetAllMocks();
+    });
+
+    it("should return a document given a date", async function () {
+      const result = await db.readByDate(trade.created_at);
       expect(result).toEqual(trade);
     });
   });

@@ -3,6 +3,9 @@ import { Pool, PoolClient, QueryResult } from "pg";
 import { Trade } from "./../../types";
 import { TRANSACTIONS } from "./constants";
 import VAULT from "./../../../../vault/dev.json";
+import Helpers from "./helper";
+
+const helpers = new Helpers();
 
 export default class PostgresGateway extends Gateway {
   pool: Pool;
@@ -26,7 +29,7 @@ export default class PostgresGateway extends Gateway {
     const client: PoolClient = await this.pool.connect();
 
     try {
-      const queryText = "SELECT * FROM trades WHERE id = $1";
+      const queryText = `SELECT * FROM trades WHERE id = '${id}'`;
 
       const response: QueryResult = await client.query(queryText, [id]);
 
@@ -35,6 +38,63 @@ export default class PostgresGateway extends Gateway {
       return response;
     } catch (err) {
       // To-do: We should be handling this according to the design.
+      await client.query(TRANSACTIONS.ROLLBACK);
+      throw err;
+    } finally {
+      client.release();
+    }
+  }
+
+  public async readByTicker(ticker: string): Promise<any> {
+    const client: PoolClient = await this.pool.connect();
+
+    try {
+      const queryText = `SELECT * FROM trades WHERE ticker = ${ticker}`;
+
+      const response: QueryResult = await client.query(queryText, [ticker]);
+
+      await client.query(TRANSACTIONS.COMMIT);
+
+      return response;
+    } catch (err) {
+      await client.query(TRANSACTIONS.ROLLBACK);
+      throw err;
+    } finally {
+      client.release();
+    }
+  }
+
+  public async readByCompany(company: string): Promise<any> {
+    const client: PoolClient = await this.pool.connect();
+
+    try {
+      const queryText = `SELECT * FROM trades WHERE company_name = ${company}`;
+
+      const response: QueryResult = await client.query(queryText, [company]);
+
+      await client.query(TRANSACTIONS.COMMIT);
+
+      return response;
+    } catch (err) {
+      await client.query(TRANSACTIONS.ROLLBACK);
+      throw err;
+    } finally {
+      client.release();
+    }
+  }
+
+  public async readByDate(company: string): Promise<any> {
+    const client: PoolClient = await this.pool.connect();
+
+    try {
+      const queryText = `SELECT * FROM trades WHERE company_name = ${company}`;
+
+      const response: QueryResult = await client.query(queryText, [company]);
+
+      await client.query(TRANSACTIONS.COMMIT);
+
+      return response;
+    } catch (err) {
       await client.query(TRANSACTIONS.ROLLBACK);
       throw err;
     } finally {
@@ -60,12 +120,12 @@ export default class PostgresGateway extends Gateway {
         total_cost,
         trade_type,
         note,
-        created_at,
         trade_status,
       } = document;
 
+      const created_at = helpers.generateDate();
       const queryText =
-        "INSERT INTO trades VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id";
+        `INSERT INTO trades VALUES(${id}, ${ticker}, ${company_name}, ${reference_number}, ${unit_price}, ${quantity}, ${total_cost}, ${trade_type}, ${note}, ${created_at}, ${trade_status}) RETURNING id`;
 
       const response: QueryResult = await client.query(queryText, [
         id,

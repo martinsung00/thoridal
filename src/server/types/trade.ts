@@ -8,6 +8,6 @@ export type Trade = {
   total_cost: number;
   trade_type: "long" | "short";
   note: string;
-  created_at: Date;
+  created_at: string;
   trade_status: boolean;
 };
