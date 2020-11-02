@@ -1,12 +1,9 @@
-import { C } from "./../../src/server";
+import Thoridal from "../../src/server/thoridal/plugins";
 
-describe("Sample Test", function () {
-  it("should pass harmlessly", function () {
-    const c = new C();
+describe("Thoridal Plugins", function () {
+  it("should be a class constructor", function () {
+    const th = new Thoridal();
 
-    expect(c.getX()).toEqual(10);
-
-    c.setX(20);
-    expect(c.getX()).toEqual(20);
+    expect(th instanceof Thoridal).toEqual(true);
   });
 });
