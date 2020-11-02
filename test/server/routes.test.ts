@@ -1,6 +1,7 @@
 import request from "supertest";
 import app from "../../src/server/routes";
 import { Trade } from "../../src/server/types";
+import bodyParser from "body-parser";
 
 describe("PUT Endpoint", function () {
   const trade: Trade = {
@@ -17,10 +18,17 @@ describe("PUT Endpoint", function () {
     trade_status: true,
   };
 
+  beforeAll(function () {
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({extended: true}));
+  });
+
   it("should create a new trade when calling PUT", async function (done) {
     request(app)
       .put(`/trade/user/write`)
       .send(trade)
+      .set("Accept", "application/json")
+      .type('json')
       .expect(200)
       .end(function (err) {
         if (err) return done(err);
