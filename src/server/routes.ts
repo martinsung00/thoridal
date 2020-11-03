@@ -1,15 +1,14 @@
-import express from "express";
+import express, { json } from "express";
 import cors from "cors";
 import Thoridal from "./thoridal/index";
 import { Trade } from "./types/index";
-import bodyParser from "body-parser";
 
 const th = new Thoridal();
 
 const app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.urlencoded())
+app.use(json());
 app.use(
   cors({
     origin: "*",
@@ -20,7 +19,9 @@ app.use(express.static(`${__dirname}/../client/dist`));
 
 app.put("/trade/:user/write", function (req, res) {
   const body: Trade = req.body;
-  console.log(req.body);
+
+  //Check if request.body is defined for development purposes.
+  console.log("request body: ", req.body);
 
   th.write(body)
     .then(function () {

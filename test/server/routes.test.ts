@@ -1,11 +1,10 @@
 import request from "supertest";
 import app from "../../src/server/routes";
 import { Trade } from "../../src/server/types";
-import bodyParser from "body-parser";
 
 describe("PUT Endpoint", function () {
   const trade: Trade = {
-    id: "abc",
+    id: "1",
     ticker: "ABC",
     company_name: "Test",
     reference_number: "12345",
@@ -17,11 +16,6 @@ describe("PUT Endpoint", function () {
     created_at: "MM/DD/YYYY",
     trade_status: true,
   };
-
-  beforeAll(function () {
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({extended: true}));
-  });
 
   it("should create a new trade when calling PUT", async function (done) {
     request(app)

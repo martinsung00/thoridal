@@ -46,7 +46,7 @@ describe("Postgres Gateway Tests", function () {
       expect(
         pg.Client.prototype.query
       ).toHaveBeenCalledWith(
-        `INSERT INTO trades VALUES(${trade.id}, ${trade.ticker}, ${trade.company_name}, ${trade.reference_number}, ${trade.unit_price}, ${trade.quantity}, ${trade.total_cost}, ${trade.trade_type}, ${trade.note}, ${trade.created_at}, ${trade.trade_status}) RETURNING id`,
+        `INSERT INTO trades VALUES (${trade.id}, ${trade.ticker}, ${trade.company_name}, ${trade.reference_number}, ${trade.unit_price}, ${trade.quantity}, ${trade.total_cost}, ${trade.trade_type}, ${trade.note}, ${trade.created_at}, ${trade.trade_status}) RETURNING id`,
         ["abc", "ABC", "", "", 0, 0, 0, "long", "", now, true]
       );
     });

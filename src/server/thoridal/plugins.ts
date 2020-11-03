@@ -9,47 +9,62 @@ export default class Thoridal {
     this.db = new PostgresGateway();
   }
 
-  public async write(body: Trade): Promise<any> {
+  public async write(body: Trade): Promise<{}> {
     try {
       const id = await this.db.write(body);
       return id;
     } catch (error) {
+
+      //Console log error for development purposes.
+      console.log(error);
       throw error;
     }
   }
 
-  public async read(id: string): Promise<any> {
+  public async read(id: string): Promise<Trade> {
     try {
       const trade = await this.db.read(id);
       return trade;
     } catch (error) {
+
+      //Console log error for development purposes.
+      console.log(error);
       throw error;
     }
   }
 
-  public async readByTicker(ticker: string): Promise<any> {
+  public async readByTicker(ticker: string): Promise<Trade> {
     try {
       const trade = await this.db.readByTicker(ticker);
       return trade;
     } catch (error) {
+
+      //Console log error for development purposes.
+      console.log(error);
       throw error;
     }
   }
 
-  public async readByCompany(company: string): Promise<any> {
+  public async readByCompany(company: string): Promise<Trade> {
     try {
       const trade = await this.db.readByCompany(company);
       return trade;
     } catch (error) {
+
+      //Console log error for development purposes.
+      console.log(error);
       throw error;
     }
   }
 
-  public async readByDate(date: string): Promise<any> {
+  public async readByDate(date: string): Promise<Trade> {
     try {
       const trade = await this.db.readByDate(date);
       return trade;
     } catch (error) {
+
+      //Console log error for development purposes.
+      console.log(error);
       throw error;
     }
   }
