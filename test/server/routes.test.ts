@@ -13,7 +13,7 @@ describe("PUT Endpoint", function () {
     total_cost: 0,
     trade_type: "long",
     note: "This is a test.",
-    created_at: "MM/DD/YYYY",
+    created_at: "MM-DD-YYYY",
     trade_status: true,
   };
 
@@ -22,8 +22,21 @@ describe("PUT Endpoint", function () {
       .put(`/trade/user/write`)
       .send(trade)
       .set("Accept", "application/json")
-      .type('json')
+      .type("json")
       .expect(200)
+      .end(function (err) {
+        if (err) return done(err);
+        done();
+      });
+  });
+
+  it("should return an empty result the trade id is already in use", async function (done) {
+    request(app)
+      .put("/trade/user/write")
+      .send(trade)
+      .set("Accept", "application/json")
+      .type("json")
+      .expect(500)
       .end(function (err) {
         if (err) return done(err);
         done();
@@ -31,56 +44,116 @@ describe("PUT Endpoint", function () {
   });
 });
 
-describe("GET Endpoints", () => {
-  it("should retrieve trades by search parameter: job ID", function (done) {
-    const jobID = "abc";
+describe("GET Endpoints", function () {
+  describe("GET by id Endpoint", function () {
+    it("should retrieve trades by search parameter: job id", function (done) {
+      const id = "1";
 
-    request(app)
-      .get(`/trade/${jobID}/find`)
-      .expect("Content-type", /json/)
-      .expect(200)
-      .end(function (err) {
-        if (err) return done(err);
-        done();
-      });
+      request(app)
+        .get(`/trade/id/find/${id}`)
+        .expect("Content-type", /json/)
+        .expect(200)
+        .end(function (err) {
+          if (err) return done(err);
+          done();
+        });
+    });
+
+    it("should return an empty result the searched parameter is incorrect", function (done) {
+      const badRequest = -20;
+
+      request(app)
+        .get(`/trade/id/find/${badRequest}`)
+        .expect("Content-type", /json/)
+        .expect(200)
+        .end(function (err) {
+          if (err) return done(err);
+          done();
+        })
+    });
   });
 
-  it("should retrieve trades by search parameter: ticker", async function (done) {
-    const ticker = "ABC";
+  describe("GET by ticker Endpoint", function () {
+    it("should retrieve trades by search parameter: ticker", async function (done) {
+      const ticker = "ABC";
 
-    request(app)
-      .get(`/trade/${ticker}/find`)
-      .expect("Content-type", /json/)
-      .expect(200)
-      .end(function (err) {
-        if (err) return done(err);
-        done();
-      });
+      request(app)
+        .get(`/trade/ticker/find/${ticker}`)
+        .expect("Content-type", /json/)
+        .expect(200)
+        .end(function (err) {
+          if (err) return done(err);
+          done();
+        });
+    });
+
+    it("should return an empty result the searched parameter is incorrect", async function (done) {
+      const badRequest = -20;
+
+      request(app)
+        .get(`/trade/ticker/find/${badRequest}`)
+        .expect("Content-type", /json/)
+        .expect(200)
+        .end(function (err) {
+          if (err) return done(err);
+          done();
+        });
+    });
   });
 
-  it("should retrieve trades by search parameter: company", async function (done) {
-    const company = "Test";
+  describe("GET by company name Endpoint", function () {
+    it("should retrieve trades by search parameter: company", async function (done) {
+      const company = "Test";
 
-    request(app)
-      .get(`/trade/${company}/find`)
-      .expect("Content-type", /json/)
-      .expect(200)
-      .end(function (err) {
-        if (err) return done(err);
-        done();
-      });
+      request(app)
+        .get(`/trade/company/find/${company}`)
+        .expect("Content-type", /json/)
+        .expect(200)
+        .end(function (err) {
+          if (err) return done(err);
+          done();
+        });
+    });
+
+    it("should return an empty result the searched parameter is incorrect", async function (done) {
+      const badRequest = -20;
+
+      request(app)
+        .get(`/trade/company/find/${badRequest}`)
+        .expect("Content-type", /json/)
+        .expect(200)
+        .end(function (err) {
+          if (err) return done(err);
+          done();
+        });
+    });
   });
 
-  it("should retrieve trades by search parameter: date", async function (done) {
-    const date = "MM/DD/YYYY";
+  describe("GET by date Endpoint", function () {
+    it("should retrieve trades by search parameter: date", async function (done) {
+      const date = "MM-DD-YYYY";
 
-    request(app)
-      .get(`/trade/${date}/find`)
-      .expect("Content-type", /json/)
-      .expect(200)
-      .end(function (err) {
-        if (err) return done(err);
-        done();
-      });
+      request(app)
+        .get(`/trade/date/find/${date}`)
+        .expect("Content-type", /json/)
+        .expect(200)
+        .end(function (err) {
+          if (err) return done(err);
+          done();
+        });
+    });
+
+    it("should return an empty result the searched parameter is incorrect", async function (done) {
+      const badRequest = -20;
+
+      request(app)
+        .get(`/trade/date/find/${badRequest}`)
+        .expect("Content-type", "application/json; charset=utf-8")
+        .expect(200)
+        .end(function (err) {
+          if (err) return done(err);
+          done();
+        });
+    });
   });
 });

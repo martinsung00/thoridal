@@ -24,12 +24,11 @@ export default class PostgresGateway extends Gateway {
 
   public async read(id: string): Promise<any> {
     const client: PoolClient = await this.pool.connect();
-    const value = [id];
 
     try {
       const queryText: string = `SELECT * FROM trades WHERE id = $1`;
 
-      const response: QueryResult = await client.query(queryText, value);
+      const response: QueryResult = await client.query(queryText, [id]);
 
       await client.query(TRANSACTIONS.COMMIT);
 
@@ -48,9 +47,8 @@ export default class PostgresGateway extends Gateway {
 
     try {
       const queryText: string = `SELECT * FROM trades WHERE ticker = $1`;
-      const value = [ticker];
 
-      const response: QueryResult = await client.query(queryText, value);
+      const response: QueryResult = await client.query(queryText, [ticker]);
 
       await client.query(TRANSACTIONS.COMMIT);
 
@@ -65,12 +63,11 @@ export default class PostgresGateway extends Gateway {
 
   public async readByCompany(company: string): Promise<any> {
     const client: PoolClient = await this.pool.connect();
-    const value = [company];
 
     try {
       const queryText: string = `SELECT * FROM trades WHERE company_name = $1`;
 
-      const response: QueryResult = await client.query(queryText, value);
+      const response: QueryResult = await client.query(queryText, [company]);
 
       await client.query(TRANSACTIONS.COMMIT);
 
@@ -85,12 +82,11 @@ export default class PostgresGateway extends Gateway {
 
   public async readByDate(date: string): Promise<any> {
     const client: PoolClient = await this.pool.connect();
-    const value = [date];
 
     try {
       const queryText: string = `SELECT * FROM trades WHERE created_at = $1`;
 
-      const response: QueryResult = await client.query(queryText, value);
+      const response: QueryResult = await client.query(queryText, [date]);
 
       await client.query(TRANSACTIONS.COMMIT);
 
@@ -158,7 +154,7 @@ export default class PostgresGateway extends Gateway {
     const dd: String = String(today.getDate()).padStart(2, "0");
     const mm: String = String(today.getMonth() + 1).padStart(2, "0");
     const yyyy: String = String(today.getFullYear());
-    const date: string = `${mm}/${dd}/${yyyy}`;
+    const date: string = `${mm}-${dd}-${yyyy}`;
 
     return date;
   }
