@@ -4,15 +4,12 @@ import port from "../../src/server/port";
 // import enviornment from "../../src/server/enviornment";
 
 describe("App server", function () {
-  const oldPORT = process.env;
   beforeEach(function () {
     jest.resetModules();
-    process.env = { ...oldPORT };
   });
 
   afterEach(function (done) {
     jest.resetAllMocks();
-    process.env = oldPORT;
     done();
   });
 
