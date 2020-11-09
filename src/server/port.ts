@@ -1,4 +1,4 @@
-import environment from './enviornment';
+import environment from "./enviornment";
 
 const port: number = environment == null ? 3000 : parseInt(environment);
 

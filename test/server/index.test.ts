@@ -19,7 +19,7 @@ describe("App server", function () {
   it("should use the enviornment port if a port is provided", async function () {
     jest.mock("../../src/server/index");
     jest.mock("../../src/server/enviornment", function () {
-      process.env.PORT = '5000';
+      process.env.PORT = "5000";
       return process.env.PORT;
     });
 
