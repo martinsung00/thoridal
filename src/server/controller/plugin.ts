@@ -2,7 +2,7 @@ import { PostgresGateway } from "../gateways/index";
 import { Trade } from "../types";
 // import memcached from 'memcached';
 
-export default class Thoridal {
+export default class Controller {
   db: PostgresGateway;
 
   constructor() {
@@ -14,7 +14,6 @@ export default class Thoridal {
       const id = await this.db.write(body);
       return id;
     } catch (error) {
-
       //Console log error for development purposes.
       console.log(error);
       throw error;
@@ -26,7 +25,6 @@ export default class Thoridal {
       const trade = await this.db.read(id);
       return trade;
     } catch (error) {
-
       //Console log error for development purposes.
       console.log(error);
       throw error;
@@ -38,7 +36,6 @@ export default class Thoridal {
       const trade = await this.db.readByTicker(ticker);
       return trade;
     } catch (error) {
-
       //Console log error for development purposes.
       console.log(error);
       throw error;
@@ -50,7 +47,6 @@ export default class Thoridal {
       const trade = await this.db.readByCompany(company);
       return trade;
     } catch (error) {
-
       //Console log error for development purposes.
       console.log(error);
       throw error;
@@ -62,7 +58,6 @@ export default class Thoridal {
       const trade = await this.db.readByDate(date);
       return trade;
     } catch (error) {
-
       //Console log error for development purposes.
       console.log(error);
       throw error;

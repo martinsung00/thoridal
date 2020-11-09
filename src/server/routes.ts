@@ -1,9 +1,9 @@
 import express, { json } from "express";
 import cors from "cors";
-import Thoridal from "./thoridal/index";
+import Controller from "./controller/index";
 import { Trade } from "./types/index";
 
-const th = new Thoridal();
+const controller = new Controller();
 
 const app = express();
 
@@ -20,7 +20,7 @@ app.use(express.static(`${__dirname}/../client/dist`));
 app.put("/trade/:user/write", function (req, res) {
   const body: Trade = req.body;
 
-  th.write(body)
+  controller.write(body)
     .then(function () {
       res.status(200).send("OK");
     })
@@ -32,7 +32,7 @@ app.put("/trade/:user/write", function (req, res) {
 app.get("/trade/id/find/:id", function (req, res) {
   const query = req.params.id;
 
-  th.read(query)
+  controller.read(query)
     .then(function (response) {
       res.status(200).send(response);
     })
@@ -44,7 +44,7 @@ app.get("/trade/id/find/:id", function (req, res) {
 app.get("/trade/ticker/find/:ticker", function (req, res) {
   const query = req.params.ticker;
 
-  th.readByTicker(query)
+  controller.readByTicker(query)
     .then(function (response: {}) {
       res.status(200).send(response);
     })
@@ -56,7 +56,7 @@ app.get("/trade/ticker/find/:ticker", function (req, res) {
 app.get("/trade/company/find/:company", function (req, res) {
   const query = req.params.company;
 
-  th.readByCompany(query)
+  controller.readByCompany(query)
     .then(function (response: {}) {
       res.status(200).send(response);
     })
@@ -68,7 +68,7 @@ app.get("/trade/company/find/:company", function (req, res) {
 app.get("/trade/date/find/:date", function (req, res) {
   const query = req.params.date;
 
-  th.readByDate(query)
+  controller.readByDate(query)
     .then(function (response: object) {
       res.status(200).send(response);
     })

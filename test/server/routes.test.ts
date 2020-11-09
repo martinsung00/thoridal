@@ -1,46 +1,66 @@
 import request from "supertest";
 import app from "../../src/server/routes";
 import { Trade } from "../../src/server/types";
+import { PostgresGateway } from "../../src/server/gateways/index";
 
 describe("PUT Endpoint", function () {
-  const trade: Trade = {
-    id: "1",
-    ticker: "ABC",
-    company_name: "Test",
-    reference_number: "12345",
-    unit_price: 0,
-    quantity: 0,
-    total_cost: 0,
-    trade_type: "long",
-    note: "This is a test.",
-    created_at: "MM-DD-YYYY",
-    trade_status: true,
-  };
+  describe("Write Action", function () {
+    jest.mock("../../src/server/gateways/index");
 
-  it("should create a new trade when calling PUT", async function (done) {
-    request(app)
-      .put(`/trade/user/write`)
-      .send(trade)
-      .set("Accept", "application/json")
-      .type("json")
-      .expect(200)
-      .end(function (err) {
-        if (err) return done(err);
-        done();
-      });
-  });
+    const trade: Trade = {
+      id: "abc",
+      ticker: "ABC",
+      company_name: "Test",
+      reference_number: "12345",
+      unit_price: 0,
+      quantity: 0,
+      total_cost: 0,
+      trade_type: "long",
+      note: "This is a test.",
+      created_at: "MM-DD-YYYY",
+      trade_status: true,
+    };
 
-  it("should return an empty result the trade id is already in use", async function (done) {
-    request(app)
-      .put("/trade/user/write")
-      .send(trade)
-      .set("Accept", "application/json")
-      .type("json")
-      .expect(500)
-      .end(function (err) {
-        if (err) return done(err);
-        done();
+    beforeAll(function () {
+      PostgresGateway.prototype.write = jest.fn().mockResolvedValue({
+        rows: [
+          {
+            id: "abc",
+          },
+        ],
       });
+    });
+
+    afterAll(function () {
+      jest.resetAllMocks();
+    });
+
+    it("should create a new trade when calling PUT", async function (done) {
+      request(app)
+        .put(`/trade/user/write`)
+        .send(trade)
+        .set("Accept", "application/json")
+        .type("json")
+        .expect(200)
+        .end(function (err) {
+          if (err) return done(err);
+          expect(PostgresGateway.prototype.write).toHaveBeenCalledTimes(1);
+          done();
+        });
+    });
+
+    xit("should reject a trade that has a duplicate id", async function (done) {
+      request(app)
+        .put("/trade/user/write")
+        .send(trade)
+        .set("Accept", "application/json")
+        .type("json")
+        .expect(500)
+        .end(function (err) {
+          if (err) return done(err);
+          done();
+        });
+    });
   });
 });
 
@@ -69,7 +89,7 @@ describe("GET Endpoints", function () {
         .end(function (err) {
           if (err) return done(err);
           done();
-        })
+        });
     });
   });
 
