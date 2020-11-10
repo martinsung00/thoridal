@@ -1,23 +1,22 @@
 import pg from "pg";
-import { Trade } from "../../../../src/server/types";
-import { PostgresGateway } from "./../../../../src/server/gateways";
+import { Trade } from "../../../src/server/types";
+import Controller from "./../../../src/server/controller/plugin";
 
-describe("Postgres Gateway Tests", function () {
+describe("Controllers Test", function () {
   jest.mock("pg");
 
-  const db = new PostgresGateway();
-  const now: string = db.generateDate();
+  const controller = new Controller();
   const trade: Trade = {
     id: "abc",
     ticker: "ABC",
-    company_name: "",
+    company_name: "Test",
     reference_number: "",
     unit_price: 0,
     quantity: 0,
     total_cost: 0,
     trade_type: "long",
     note: "",
-    created_at: now,
+    created_at: "10/10/2020",
     trade_status: true,
   };
 
@@ -37,17 +36,15 @@ describe("Postgres Gateway Tests", function () {
     });
 
     it("should write a trade to db and return an id", async function () {
-      const result = await db.write(trade);
-      expect(result.rows).toEqual([
-        {
-          id: "abc",
-        },
-      ]);
+      const result: {
+        [rows: string]: [{ [id: string]: "" }];
+      } = await controller.write(trade);
+      expect(result.rows[0].id).toEqual("abc");
       expect(
         pg.Client.prototype.query
       ).toHaveBeenCalledWith(
         `INSERT INTO trades (id, ticker, company_name, reference_number, unit_price, quantity, total_cost, trade_type, note, created_at, trade_status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id`,
-        ["abc", "ABC", "", "", 0, 0, 0, "long", "", now, true]
+        ["abc", "ABC", "Test", "", 0, 0, 0, "long", "", "10/10/2020", true]
       );
     });
   });
@@ -62,7 +59,7 @@ describe("Postgres Gateway Tests", function () {
     });
 
     it("should return a document given an id", async function () {
-      const result = await db.read(trade.id);
+      const result = await controller.read(trade.id);
       expect(result).toEqual(trade);
       expect(
         pg.Client.prototype.query
@@ -80,7 +77,7 @@ describe("Postgres Gateway Tests", function () {
     });
 
     it("should return a document given a ticker", async function () {
-      const result = await db.readByTicker(trade.ticker);
+      const result = await controller.readByTicker(trade.ticker);
       expect(result).toEqual(trade);
       expect(
         pg.Client.prototype.query
@@ -98,11 +95,11 @@ describe("Postgres Gateway Tests", function () {
     });
 
     it("should return a document given a company name", async function () {
-      const result = await db.readByCompany(trade.company_name);
+      const result = await controller.readByCompany(trade.company_name);
       expect(result).toEqual(trade);
       expect(
         pg.Client.prototype.query
-      ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE company_name = $1`, [""]);
+      ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE company_name = $1`, ["Test"]);
     });
   });
 
@@ -116,11 +113,11 @@ describe("Postgres Gateway Tests", function () {
     });
 
     it("should return a document given a date", async function () {
-      const result = await db.readByDate(trade.created_at);
+      const result = await controller.readByDate(trade.created_at);
       expect(result).toEqual(trade);
       expect(
         pg.Client.prototype.query
-      ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE created_at = $1`, [now]);
+      ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE created_at = $1`, ["10/10/2020"]);
     });
   });
 });
