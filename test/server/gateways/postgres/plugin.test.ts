@@ -102,7 +102,9 @@ describe("Postgres Gateway Tests", function () {
       expect(result).toEqual(trade);
       expect(
         pg.Client.prototype.query
-      ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE company_name = $1`, [""]);
+      ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE company_name = $1`, [
+        "",
+      ]);
     });
   });
 
@@ -120,7 +122,9 @@ describe("Postgres Gateway Tests", function () {
       expect(result).toEqual(trade);
       expect(
         pg.Client.prototype.query
-      ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE created_at = $1`, [now]);
+      ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE created_at = $1`, [
+        now,
+      ]);
     });
   });
 });

@@ -99,7 +99,9 @@ describe("Controllers Test", function () {
       expect(result).toEqual(trade);
       expect(
         pg.Client.prototype.query
-      ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE company_name = $1`, ["Test"]);
+      ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE company_name = $1`, [
+        "Test",
+      ]);
     });
   });
 
@@ -117,7 +119,9 @@ describe("Controllers Test", function () {
       expect(result).toEqual(trade);
       expect(
         pg.Client.prototype.query
-      ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE created_at = $1`, ["10/10/2020"]);
+      ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE created_at = $1`, [
+        "10/10/2020",
+      ]);
     });
   });
 });
