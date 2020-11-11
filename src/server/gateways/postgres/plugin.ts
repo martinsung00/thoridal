@@ -1,7 +1,6 @@
 import Gateway from "./../gateway";
-import { Pool, PoolClient, QueryResult } from "pg";
+import { Pool, PoolClient } from "pg";
 import { Trade } from "./../../types";
-import { TRANSACTIONS } from "./constants";
 import VAULT from "./../../../../vault/dev.json";
 
 export default class PostgresGateway extends Gateway {
@@ -22,20 +21,16 @@ export default class PostgresGateway extends Gateway {
     });
   }
 
-  public async read(id: string): Promise<any> {
+  public async readById(id: string): Promise<any> {
     const client: PoolClient = await this.pool.connect();
 
     try {
       const queryText: string = `SELECT * FROM trades WHERE id = '${id}'`;
 
-      const response: QueryResult = await client.query(queryText, [id]);
-
-      await client.query(TRANSACTIONS.COMMIT);
-
-      return response;
+      return await client.query(queryText, [id]);
     } catch (err) {
       // To-do: We should be handling this according to the design.
-      await client.query(TRANSACTIONS.ROLLBACK);
+      this.logger.verbose({ err });
       throw err;
     } finally {
       client.release();
@@ -48,13 +43,9 @@ export default class PostgresGateway extends Gateway {
     try {
       const queryText: string = `SELECT * FROM trades WHERE ticker = ${ticker}`;
 
-      const response: QueryResult = await client.query(queryText, [ticker]);
-
-      await client.query(TRANSACTIONS.COMMIT);
-
-      return response;
+      return await client.query(queryText, [ticker]);
     } catch (err) {
-      await client.query(TRANSACTIONS.ROLLBACK);
+      this.logger.verbose({ err });
       throw err;
     } finally {
       client.release();
@@ -67,13 +58,9 @@ export default class PostgresGateway extends Gateway {
     try {
       const queryText: string = `SELECT * FROM trades WHERE company_name = ${company}`;
 
-      const response: QueryResult = await client.query(queryText, [company]);
-
-      await client.query(TRANSACTIONS.COMMIT);
-
-      return response;
+      return await client.query(queryText, [company]);
     } catch (err) {
-      await client.query(TRANSACTIONS.ROLLBACK);
+      this.logger.verbose({ err });
       throw err;
     } finally {
       client.release();
@@ -86,13 +73,9 @@ export default class PostgresGateway extends Gateway {
     try {
       const queryText: string = `SELECT * FROM trades WHERE company_name = ${company}`;
 
-      const response: QueryResult = await client.query(queryText, [company]);
-
-      await client.query(TRANSACTIONS.COMMIT);
-
-      return response;
+      return await client.query(queryText, [company]);
     } catch (err) {
-      await client.query(TRANSACTIONS.ROLLBACK);
+      this.logger.verbose({ err });
       throw err;
     } finally {
       client.release();
@@ -122,8 +105,8 @@ export default class PostgresGateway extends Gateway {
       } = document;
 
       const queryText: string = `INSERT INTO trades VALUES(${id}, ${ticker}, ${company_name}, ${reference_number}, ${unit_price}, ${quantity}, ${total_cost}, ${trade_type}, ${note}, ${created_at}, ${trade_status}) RETURNING id`;
-
-      const response: QueryResult = await client.query(queryText, [
+      
+      return await client.query(queryText, [
         id,
         ticker,
         company_name,
@@ -136,26 +119,12 @@ export default class PostgresGateway extends Gateway {
         created_at,
         trade_status,
       ]);
-
-      await client.query(TRANSACTIONS.COMMIT);
-
-      return response;
     } catch (err) {
       // To-do: We should be handling this according to the design.
-      await client.query(TRANSACTIONS.ROLLBACK);
+      this.logger.verbose({ err });
       throw err;
     } finally {
       client.release();
     }
-  }
-
-  public generateDate(): string {
-    const today: Date = new Date();
-    const dd: String = String(today.getDate()).padStart(2, "0");
-    const mm: String = String(today.getMonth() + 1).padStart(2, "0");
-    const yyyy: String = String(today.getFullYear());
-    const date: string = `${mm}/${dd}/${yyyy}`;
-
-    return date;
   }
 }

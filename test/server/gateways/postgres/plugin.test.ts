@@ -1,34 +1,17 @@
 import pg from "pg";
-import { Trade } from "../../../../src/server/types";
 import { PostgresGateway } from "./../../../../src/server/gateways";
+import { TRADE } from "./../../common";
 
 describe("Postgres Gateway Tests", function () {
   jest.mock("pg");
 
   const db = new PostgresGateway();
-  const now: string = db.generateDate();
-  const trade: Trade = {
-    id: "abc",
-    ticker: "ABC",
-    company_name: "",
-    reference_number: "",
-    unit_price: 0,
-    quantity: 0,
-    total_cost: 0,
-    trade_type: "long",
-    note: "",
-    created_at: now,
-    trade_status: true,
-  };
 
   describe("Write Action", function () {
     beforeAll(function () {
+      /* To-do: Convert this into a fake. This will not scale. */
       pg.Client.prototype.query = jest.fn().mockResolvedValue({
-        rows: [
-          {
-            id: "abc",
-          },
-        ],
+        rows: [{ id: TRADE.id }],
       });
     });
 
@@ -37,24 +20,46 @@ describe("Postgres Gateway Tests", function () {
     });
 
     it("should write a trade to db and return an id", async function () {
-      const result = await db.write(trade);
+      const result = await db.write(TRADE);
+
       expect(result.rows).toEqual([
         {
-          id: "abc",
+          id: TRADE.id,
         },
       ]);
       expect(
         pg.Client.prototype.query
       ).toHaveBeenCalledWith(
-        `INSERT INTO trades VALUES(${trade.id}, ${trade.ticker}, ${trade.company_name}, ${trade.reference_number}, ${trade.unit_price}, ${trade.quantity}, ${trade.total_cost}, ${trade.trade_type}, ${trade.note}, ${trade.created_at}, ${trade.trade_status}) RETURNING id`,
-        ["abc", "ABC", "", "", 0, 0, 0, "long", "", now, true]
+        `INSERT INTO trades VALUES(${TRADE.id}, ${TRADE.ticker}, ${TRADE.company_name}, ${TRADE.reference_number}, ${TRADE.unit_price}, ${TRADE.quantity}, ${TRADE.total_cost}, ${TRADE.trade_type}, ${TRADE.note}, ${TRADE.created_at}, ${TRADE.trade_status}) RETURNING id`,
+        [
+          TRADE.id,
+          TRADE.ticker,
+          TRADE.company_name,
+          TRADE.reference_number,
+          -1,
+          -1,
+          -1,
+          TRADE.trade_type,
+          TRADE.note,
+          TRADE.created_at,
+          TRADE.trade_status,
+        ]
       );
+    });
+
+    it("should throw an error if write action fails", async function () {
+      pg.Client.prototype.query = jest.fn().mockImplementation(function () {
+        throw new Error();
+      });
+
+      /* To-do: Spy on the logger invocation. */
+      await expect(db.write(TRADE)).rejects.toThrow(Error);
     });
   });
 
   describe("Read Action", function () {
     beforeAll(function () {
-      pg.Client.prototype.query = jest.fn().mockResolvedValue(trade);
+      pg.Client.prototype.query = jest.fn().mockResolvedValue(TRADE);
     });
 
     afterAll(function () {
@@ -62,14 +67,22 @@ describe("Postgres Gateway Tests", function () {
     });
 
     it("should return a document given an id", async function () {
-      const result = await db.read(trade.id);
-      expect(result).toEqual(trade);
+      const result = await db.readById(TRADE.id);
+      expect(result).toEqual(TRADE);
+    });
+
+    it("should throw an error if reading by id fails", async function () {
+      pg.Client.prototype.query = jest.fn().mockImplementation(function () {
+        throw new Error();
+      });
+
+      await expect(db.readById(TRADE.id)).rejects.toThrow(Error);
     });
   });
 
   describe("Read Action by Ticker", function () {
     beforeAll(function () {
-      pg.Client.prototype.query = jest.fn().mockResolvedValue(trade);
+      pg.Client.prototype.query = jest.fn().mockResolvedValue(TRADE);
     });
 
     afterAll(function () {
@@ -77,14 +90,22 @@ describe("Postgres Gateway Tests", function () {
     });
 
     it("should return a document given a ticker", async function () {
-      const result = await db.readByTicker(trade.ticker);
-      expect(result).toEqual(trade);
+      const result = await db.readByTicker(TRADE.ticker);
+      expect(result).toEqual(TRADE);
+    });
+
+    it("should throw an error if reading by ticker fails", async function () {
+      pg.Client.prototype.query = jest.fn().mockImplementation(function () {
+        throw new Error();
+      });
+
+      await expect(db.readByTicker(TRADE.ticker)).rejects.toThrow(Error);
     });
   });
 
   describe("Read Action by Company Name", function () {
     beforeAll(function () {
-      pg.Client.prototype.query = jest.fn().mockResolvedValue(trade);
+      pg.Client.prototype.query = jest.fn().mockResolvedValue(TRADE);
     });
 
     afterAll(function () {
@@ -92,14 +113,23 @@ describe("Postgres Gateway Tests", function () {
     });
 
     it("should return a document given a company name", async function () {
-      const result = await db.readByCompany(trade.company_name);
-      expect(result).toEqual(trade);
+      const result = await db.readByCompany(TRADE.company_name);
+      expect(result).toEqual(TRADE);
+    });
+
+    it("should throw an error if reading by company name fails", async function () {
+      pg.Client.prototype.query = jest.fn().mockImplementation(function () {
+        throw new Error();
+      });
+
+      /* To-do: Spy on the logger invocation. */
+      await expect(db.readByCompany(TRADE.company_name)).rejects.toThrow(Error);
     });
   });
 
   describe("Read Action by Date", function () {
     beforeAll(function () {
-      pg.Client.prototype.query = jest.fn().mockResolvedValue(trade);
+      pg.Client.prototype.query = jest.fn().mockResolvedValue(TRADE);
     });
 
     afterAll(function () {
@@ -107,8 +137,16 @@ describe("Postgres Gateway Tests", function () {
     });
 
     it("should return a document given a date", async function () {
-      const result = await db.readByDate(trade.created_at);
-      expect(result).toEqual(trade);
+      const result = await db.readByDate(TRADE.created_at);
+      expect(result).toEqual(TRADE);
+    });
+
+    it("should throw an error if write action fails", async function () {
+      pg.Client.prototype.query = jest.fn().mockImplementation(function () {
+        throw new Error();
+      });
+
+      await expect(db.readByDate(TRADE.created_at)).rejects.toThrow(Error);
     });
   });
 });
