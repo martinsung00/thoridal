@@ -14,7 +14,6 @@ export default class Controller {
       const id = await this.db.write(body);
       return id;
     } catch (error) {
-      this.db.pulse();
       throw error;
     }
   }
@@ -24,7 +23,6 @@ export default class Controller {
       const trade = await this.db.read(id);
       return trade;
     } catch (error) {
-      this.db.pulse();
       throw error;
     }
   }
@@ -34,7 +32,6 @@ export default class Controller {
       const trade = await this.db.readByTicker(ticker);
       return trade;
     } catch (error) {
-      this.db.pulse();
       throw error;
     }
   }
@@ -44,7 +41,6 @@ export default class Controller {
       const trade = await this.db.readByCompany(company);
       return trade;
     } catch (error) {
-      this.db.pulse();
       throw error;
     }
   }
@@ -54,7 +50,6 @@ export default class Controller {
       const trade = await this.db.readByDate(date);
       return trade;
     } catch (error) {
-      this.db.pulse();
       throw error;
     }
   }
