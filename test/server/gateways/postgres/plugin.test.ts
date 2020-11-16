@@ -32,6 +32,10 @@ describe("Postgres Gateway Tests", function () {
       });
     });
 
+    afterEach(function (done) {
+      done();
+    });
+
     afterAll(function () {
       jest.resetAllMocks();
     });
@@ -50,11 +54,26 @@ describe("Postgres Gateway Tests", function () {
         ["abc", "ABC", "", "", 0, 0, 0, "long", "", now, true]
       );
     });
+
+    it("should throw an error if the query fails", async function () {
+      try {
+        pg.Client.prototype.query = jest
+          .fn()
+          .mockRejectedValueOnce(new TypeError("Fake Error"));
+        await db.write(trade);
+      } catch (error) {
+        expect(error.message).toBe("Fake Error");
+      }
+    });
   });
 
   describe("Read Action", function () {
     beforeAll(function () {
       pg.Client.prototype.query = jest.fn().mockResolvedValue(trade);
+    });
+
+    afterEach(function (done) {
+      done();
     });
 
     afterAll(function () {
@@ -67,6 +86,17 @@ describe("Postgres Gateway Tests", function () {
       expect(
         pg.Client.prototype.query
       ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE id = $1`, ["abc"]);
+    });
+
+    it("should throw an error if the query fails", async function () {
+      try {
+        pg.Client.prototype.query = jest
+          .fn()
+          .mockRejectedValueOnce(new TypeError("Fake Error"));
+        await db.read(trade.id);
+      } catch (error) {
+        expect(error.message).toBe("Fake Error");
+      }
     });
   });
 
@@ -85,6 +115,17 @@ describe("Postgres Gateway Tests", function () {
       expect(
         pg.Client.prototype.query
       ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE ticker = $1`, ["ABC"]);
+    });
+
+    it("should throw an error if the query fails", async function () {
+      try {
+        pg.Client.prototype.query = jest
+          .fn()
+          .mockRejectedValueOnce(new TypeError("Fake Error"));
+        await db.readByTicker(trade.ticker);
+      } catch (error) {
+        expect(error.message).toBe("Fake Error");
+      }
     });
   });
 
@@ -106,6 +147,17 @@ describe("Postgres Gateway Tests", function () {
         "",
       ]);
     });
+
+    it("should throw an error if the query fails", async function () {
+      try {
+        pg.Client.prototype.query = jest
+          .fn()
+          .mockRejectedValueOnce(new TypeError("Fake Error"));
+        await db.readByCompany(trade.company_name);
+      } catch (error) {
+        expect(error.message).toBe("Fake Error");
+      }
+    });
   });
 
   describe("Read Action by Date", function () {
@@ -125,6 +177,17 @@ describe("Postgres Gateway Tests", function () {
       ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE created_at = $1`, [
         now,
       ]);
+    });
+
+    it("should throw an error if the query fails", async function () {
+      try {
+        pg.Client.prototype.query = jest
+          .fn()
+          .mockRejectedValueOnce(new TypeError("Fake Error"));
+        await db.readByDate(trade.created_at);
+      } catch (error) {
+        expect(error.message).toBe("Fake Error");
+      }
     });
   });
 });

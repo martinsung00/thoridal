@@ -3,6 +3,7 @@ import cors from "cors";
 import Controller from "./controller/index";
 import { Trade } from "./types/index";
 
+const environment: string | undefined = process.env.PORT;
 const controller = new Controller();
 
 const app = express();
@@ -82,4 +83,4 @@ app.get("/trade/date/find/:date", function (req, res) {
     });
 });
 
-export default app;
+export { app, environment };

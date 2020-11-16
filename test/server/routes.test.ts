@@ -1,5 +1,5 @@
 import request from "supertest";
-import app from "../../src/server/routes";
+import { app } from "../../src/server/routes";
 import { Trade } from "../../src/server/types";
 import { PostgresGateway } from "../../src/server/gateways/index";
 
@@ -22,13 +22,7 @@ describe("PUT Endpoint", function () {
     };
 
     beforeAll(function () {
-      PostgresGateway.prototype.write = jest.fn().mockResolvedValue({
-        rows: [
-          {
-            id: "abc",
-          },
-        ],
-      });
+      jest.resetModules();
     });
 
     afterAll(function () {
@@ -36,6 +30,14 @@ describe("PUT Endpoint", function () {
     });
 
     it("should create a new trade when calling PUT", async function (done) {
+      PostgresGateway.prototype.write = jest.fn().mockResolvedValue({
+        rows: [
+          {
+            id: "abc",
+          },
+        ],
+      });
+
       request(app)
         .put(`/trade/user/write`)
         .send(trade)
@@ -49,7 +51,12 @@ describe("PUT Endpoint", function () {
         });
     });
 
-    xit("should reject a trade that has a duplicate id", async function (done) {
+    it("should reject a trade that has a duplicate id", async function (done) {
+      jest.mock("pg");
+      PostgresGateway.prototype.write = jest
+        .fn()
+        .mockRejectedValue(new Error("Fake Error: ID already in use"));
+
       request(app)
         .put("/trade/user/write")
         .send(trade)
@@ -66,6 +73,14 @@ describe("PUT Endpoint", function () {
 
 describe("GET Endpoints", function () {
   describe("GET by id Endpoint", function () {
+    beforeAll(function () {
+      jest.resetModules();
+    });
+
+    afterAll(function () {
+      jest.resetAllMocks();
+    });
+
     it("should retrieve trades by search parameter: job id", function (done) {
       const id = "1";
 
@@ -79,13 +94,15 @@ describe("GET Endpoints", function () {
         });
     });
 
-    it("should return an empty result the searched parameter is incorrect", function (done) {
-      const badRequest = -20;
+    it("should return with a status of 500 Internal Server Error when the database query fails", function (done) {
+      PostgresGateway.prototype.read = jest
+        .fn()
+        .mockRejectedValue(new Error("Fake Error: Incorrect Parameter"));
 
       request(app)
-        .get(`/trade/id/find/${badRequest}`)
+        .get(`/trade/id/find/${"badRequest"}`)
         .expect("Content-type", /json/)
-        .expect(200)
+        .expect(500)
         .end(function (err) {
           if (err) return done(err);
           done();
@@ -94,6 +111,14 @@ describe("GET Endpoints", function () {
   });
 
   describe("GET by ticker Endpoint", function () {
+    beforeAll(function () {
+      jest.resetModules();
+    });
+
+    afterAll(function () {
+      jest.resetAllMocks();
+    });
+
     it("should retrieve trades by search parameter: ticker", async function (done) {
       const ticker = "ABC";
 
@@ -107,13 +132,15 @@ describe("GET Endpoints", function () {
         });
     });
 
-    it("should return an empty result the searched parameter is incorrect", async function (done) {
-      const badRequest = -20;
+    it("should return with a status of 500 Internal Server Error when the database query fails", async function (done) {
+      PostgresGateway.prototype.readByTicker = jest
+        .fn()
+        .mockRejectedValue(new Error("Fake Error: Incorrect Parameter"));
 
       request(app)
-        .get(`/trade/ticker/find/${badRequest}`)
+        .get(`/trade/ticker/find/${"badRequest"}`)
         .expect("Content-type", /json/)
-        .expect(200)
+        .expect(500)
         .end(function (err) {
           if (err) return done(err);
           done();
@@ -122,6 +149,15 @@ describe("GET Endpoints", function () {
   });
 
   describe("GET by company name Endpoint", function () {
+    beforeAll(function () {
+      jest.resetModules();
+      jest.restoreAllMocks();
+    });
+
+    afterAll(function () {
+      jest.resetAllMocks();
+    });
+
     it("should retrieve trades by search parameter: company", async function (done) {
       const company = "Test";
 
@@ -135,13 +171,15 @@ describe("GET Endpoints", function () {
         });
     });
 
-    it("should return an empty result the searched parameter is incorrect", async function (done) {
-      const badRequest = -20;
+    it("should return with a status of 500 Internal Server Error when the database query fails", async function (done) {
+      PostgresGateway.prototype.readByCompany = jest
+        .fn()
+        .mockRejectedValue(new Error("Fake Error: Incorrect Parameter"));
 
       request(app)
-        .get(`/trade/company/find/${badRequest}`)
+        .get(`/trade/company/find/${"badRequest"}`)
         .expect("Content-type", /json/)
-        .expect(200)
+        .expect(500)
         .end(function (err) {
           if (err) return done(err);
           done();
@@ -150,6 +188,14 @@ describe("GET Endpoints", function () {
   });
 
   describe("GET by date Endpoint", function () {
+    beforeAll(function () {
+      jest.resetModules();
+    });
+
+    afterAll(function () {
+      jest.resetAllMocks();
+    });
+
     it("should retrieve trades by search parameter: date", async function (done) {
       const date = "MM-DD-YYYY";
 
@@ -163,13 +209,15 @@ describe("GET Endpoints", function () {
         });
     });
 
-    it("should return an empty result the searched parameter is incorrect", async function (done) {
-      const badRequest = -20;
+    it("should return with a status of 500 Internal Server Error when the database query fail", async function (done) {
+      PostgresGateway.prototype.readByDate = jest
+        .fn()
+        .mockRejectedValue(new Error("Fake Error: Incorrect Parameter"));
 
       request(app)
-        .get(`/trade/date/find/${badRequest}`)
-        .expect("Content-type", "application/json; charset=utf-8")
-        .expect(200)
+        .get(`/trade/date/find/${"badRequest"}`)
+        .expect("Content-type", /json/)
+        .expect(500)
         .end(function (err) {
           if (err) return done(err);
           done();

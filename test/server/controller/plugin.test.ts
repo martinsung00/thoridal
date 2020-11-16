@@ -21,7 +21,7 @@ describe("Controllers Test", function () {
   };
 
   describe("Write Action", function () {
-    beforeAll(function () {
+    beforeEach(function () {
       pg.Client.prototype.query = jest.fn().mockResolvedValue({
         rows: [
           {
@@ -31,7 +31,7 @@ describe("Controllers Test", function () {
       });
     });
 
-    afterAll(function () {
+    afterEach(function () {
       jest.resetAllMocks();
     });
 
@@ -46,6 +46,13 @@ describe("Controllers Test", function () {
         `INSERT INTO trades (id, ticker, company_name, reference_number, unit_price, quantity, total_cost, trade_type, note, created_at, trade_status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id`,
         ["abc", "ABC", "Test", "", 0, 0, 0, "long", "", "10/10/2020", true]
       );
+    });
+
+    it("should throw an error if query is faulty", async function () {
+      pg.Client.prototype.query = jest
+        .fn()
+        .mockRejectedValue(new Error("Test Error"));
+      expect(typeof controller.write(trade)).toEqual("object");
     });
   });
 

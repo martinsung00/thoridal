@@ -36,6 +36,7 @@ export default class PostgresGateway extends Gateway {
     } catch (err) {
       // To-do: We should be handling this according to the design.
       await client.query(TRANSACTIONS.ROLLBACK);
+      this.pulse();
       throw err;
     } finally {
       client.release();
@@ -55,6 +56,7 @@ export default class PostgresGateway extends Gateway {
       return response;
     } catch (err) {
       await client.query(TRANSACTIONS.ROLLBACK);
+      this.pulse();
       throw err;
     } finally {
       client.release();
@@ -74,6 +76,7 @@ export default class PostgresGateway extends Gateway {
       return response;
     } catch (err) {
       await client.query(TRANSACTIONS.ROLLBACK);
+      this.pulse();
       throw err;
     } finally {
       client.release();
@@ -93,6 +96,7 @@ export default class PostgresGateway extends Gateway {
       return response;
     } catch (err) {
       await client.query(TRANSACTIONS.ROLLBACK);
+      this.pulse();
       throw err;
     } finally {
       client.release();
@@ -142,6 +146,7 @@ export default class PostgresGateway extends Gateway {
       return response;
     } catch (err) {
       // To-do: We should be handling this according to the design.
+      this.pulse();
       await client.query(TRANSACTIONS.ROLLBACK);
       throw err;
     } finally {
