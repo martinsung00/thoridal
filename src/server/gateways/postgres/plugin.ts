@@ -36,7 +36,7 @@ export default class PostgresGateway extends Gateway {
     } catch (err) {
       // To-do: We should be handling this according to the design.
       await client.query(TRANSACTIONS.ROLLBACK);
-      this.logger.log('error', 'Id lookup failed');
+      this.logger.log("error", "Id lookup failed");
       throw err;
     } finally {
       client.release();
@@ -56,7 +56,7 @@ export default class PostgresGateway extends Gateway {
       return response;
     } catch (err) {
       await client.query(TRANSACTIONS.ROLLBACK);
-      this.logger.log('error', 'Ticker lookup failed');
+      this.logger.log("error", "Ticker lookup failed");
       throw err;
     } finally {
       client.release();
@@ -76,7 +76,7 @@ export default class PostgresGateway extends Gateway {
       return response;
     } catch (err) {
       await client.query(TRANSACTIONS.ROLLBACK);
-      this.logger.log('error', 'Company lookup failed');
+      this.logger.log("error", "Company lookup failed");
       throw err;
     } finally {
       client.release();
@@ -96,7 +96,7 @@ export default class PostgresGateway extends Gateway {
       return response;
     } catch (err) {
       await client.query(TRANSACTIONS.ROLLBACK);
-      this.logger.log('error', 'Date lookup failed');
+      this.logger.log("error", "Date lookup failed");
     } finally {
       client.release();
     }
@@ -145,7 +145,7 @@ export default class PostgresGateway extends Gateway {
       return response;
     } catch (err) {
       // To-do: We should be handling this according to the design.
-      this.logger.log('error', 'Write Failed');
+      this.logger.log("error", "Write Failed");
       await client.query(TRANSACTIONS.ROLLBACK);
       throw err;
     } finally {
