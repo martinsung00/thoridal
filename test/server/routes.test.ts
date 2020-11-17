@@ -1,7 +1,42 @@
 import request from "supertest";
-import { app } from "../../src/server/routes";
+import { app } from "../../src/server/index";
 import { Trade } from "../../src/server/types";
 import { PostgresGateway } from "../../src/server/gateways/index";
+
+describe("Endpoints Behavior Test", function () {
+  let module: { [port: string]: "" };
+
+  beforeAll(function () {
+    jest.resetAllMocks();
+    jest.resetModules();
+  });
+
+  afterAll(function (done) {
+    jest.resetAllMocks();
+    jest.resetModules();
+    delete process.env.PORT;
+    done();
+  });
+
+  it("should reject falsy routes and return 404 not found", function (done) {
+    request(app)
+      .get("/falsy/route")
+      .expect(404)
+      .expect("Content-type", "text/html; charset=utf-8")
+      .end(function (err) {
+        if (err) return done(err);
+        done();
+      });
+  });
+
+  it("should not use the default 3000 port if a custom port is provided", async function () {
+    process.env.PORT = "5000";
+    jest.isolateModules(function () {
+      module = require("../../src/server/index");
+    });
+    expect(module.port).toEqual(5000);
+  });
+});
 
 describe("PUT Endpoint Tests", function () {
   describe("Write Action", function () {
@@ -29,7 +64,7 @@ describe("PUT Endpoint Tests", function () {
       jest.resetAllMocks();
     });
 
-    it("should create a new trade when calling PUT", async function (done) {
+    it("should create a new trade and return a 200 OK status", async function (done) {
       PostgresGateway.prototype.write = jest.fn().mockResolvedValue({
         rows: [
           {
@@ -81,7 +116,7 @@ describe("GET Endpoints Tests", function () {
       jest.resetAllMocks();
     });
 
-    it("should retrieve trades by search parameter: job id", function (done) {
+    it("should retrieve trades by search parameter: job id, and return a 200 OK status", function (done) {
       const id = "1";
 
       request(app)
@@ -119,7 +154,7 @@ describe("GET Endpoints Tests", function () {
       jest.resetAllMocks();
     });
 
-    it("should retrieve trades by search parameter: ticker", async function (done) {
+    it("should retrieve trades by search parameter: ticker, and return a 200 OK status", async function (done) {
       const ticker = "ABC";
 
       request(app)
@@ -158,7 +193,7 @@ describe("GET Endpoints Tests", function () {
       jest.resetAllMocks();
     });
 
-    it("should retrieve trades by search parameter: company", async function (done) {
+    it("should retrieve trades by search parameter: company, and returns a 200 OK status", async function (done) {
       const company = "Test";
 
       request(app)
@@ -196,7 +231,7 @@ describe("GET Endpoints Tests", function () {
       jest.resetAllMocks();
     });
 
-    it("should retrieve trades by search parameter: date", async function (done) {
+    it("should retrieve trades by search parameter: date, and returns a 200 OK status", async function (done) {
       const date = "MM-DD-YYYY";
 
       request(app)
