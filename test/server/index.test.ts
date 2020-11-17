@@ -70,7 +70,7 @@ describe("App Server Tests", function () {
       done();
     });
 
-    it("should use the enviornment port if a port is provided", async function () {
+    it("should not use the default 3000 port if a custom port is provided", async function () {
       process.env.PORT = "5000";
       jest.isolateModules(function () {
         module = require("../../src/server/index");
