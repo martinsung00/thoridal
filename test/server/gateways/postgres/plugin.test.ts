@@ -54,7 +54,7 @@ describe("Postgres Gateway Tests", function () {
     });
 
     it("should create a log with Winston's logger if an error occurs", async function (done) {
-    /*
+      /*
     Since the error message will always match what is thrown in the stub,
     it is wiser to test if Winston is able to log errors instead.
     */
