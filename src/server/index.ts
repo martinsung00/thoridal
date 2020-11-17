@@ -1,6 +1,6 @@
-import { app, environment } from "./routes";
+import { app, envPort } from "./routes";
 
-const port: number = environment == null ? 3000 : parseInt(environment);
+const port: number = envPort == null ? 3000 : parseInt(envPort);
 
 app.listen(port, function () {
   console.log(`listening on ${port}`);
