@@ -3,7 +3,7 @@ import { app } from "../../src/server/routes";
 import { Trade } from "../../src/server/types";
 import { PostgresGateway } from "../../src/server/gateways/index";
 
-describe("PUT Endpoint", function () {
+describe("PUT Endpoint Tests", function () {
   describe("Write Action", function () {
     jest.mock("../../src/server/gateways/index");
 
@@ -71,7 +71,7 @@ describe("PUT Endpoint", function () {
   });
 });
 
-describe("GET Endpoints", function () {
+describe("GET Endpoints Tests", function () {
   describe("GET by id Endpoint", function () {
     beforeAll(function () {
       jest.resetModules();
@@ -110,7 +110,7 @@ describe("GET Endpoints", function () {
     });
   });
 
-  describe("GET by ticker Endpoint", function () {
+  describe("GET by ticker Endpoint Tests", function () {
     beforeAll(function () {
       jest.resetModules();
     });
@@ -148,7 +148,7 @@ describe("GET Endpoints", function () {
     });
   });
 
-  describe("GET by company name Endpoint", function () {
+  describe("GET by company name Endpoint Tests", function () {
     beforeAll(function () {
       jest.resetModules();
       jest.restoreAllMocks();
@@ -187,7 +187,7 @@ describe("GET Endpoints", function () {
     });
   });
 
-  describe("GET by date Endpoint", function () {
+  describe("GET by date Endpoint Tests", function () {
     beforeAll(function () {
       jest.resetModules();
     });

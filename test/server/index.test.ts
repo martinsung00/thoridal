@@ -1,7 +1,7 @@
 import request from "supertest";
 import { app } from "../../src/server/index";
 
-describe("App server", function () {
+describe("App Server Tests", function () {
   describe("Routes", function () {
     it("should reject falsy routes and return 404 not found", function (done) {
       request(app)
