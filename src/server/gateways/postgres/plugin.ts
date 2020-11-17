@@ -22,7 +22,7 @@ export default class PostgresGateway extends Gateway {
     });
   }
 
-  public async read(id: string): Promise<any> {
+  public async read(id: string): Promise<object> {
     const client: PoolClient = await this.pool.connect();
 
     try {
@@ -48,7 +48,7 @@ export default class PostgresGateway extends Gateway {
     }
   }
 
-  public async readByTicker(ticker: string): Promise<any> {
+  public async readByTicker(ticker: string): Promise<object> {
     const client: PoolClient = await this.pool.connect();
 
     try {
@@ -70,7 +70,7 @@ export default class PostgresGateway extends Gateway {
     }
   }
 
-  public async readByCompany(company: string): Promise<any> {
+  public async readByCompany(company: string): Promise<object> {
     const client: PoolClient = await this.pool.connect();
 
     try {
@@ -92,7 +92,7 @@ export default class PostgresGateway extends Gateway {
     }
   }
 
-  public async readByDate(date: string): Promise<any> {
+  public async readByDate(date: string): Promise<object> {
     const client: PoolClient = await this.pool.connect();
 
     try {

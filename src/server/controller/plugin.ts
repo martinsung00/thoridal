@@ -8,7 +8,11 @@ export default class Controller {
     this.db = new PostgresGateway();
   }
 
-  public async write(body: Trade): Promise<{}> {
+  public async write(
+    body: Trade
+  ): Promise<{
+    rows: Array<{ id: string }>;
+  }> {
     try {
       const id = await this.db.write(body);
       return id;
@@ -17,37 +21,37 @@ export default class Controller {
     }
   }
 
-  public async read(id: string): Promise<Trade> {
+  public async read(id: string): Promise<object> {
     try {
-      const trade = await this.db.read(id);
-      return trade;
+      const response = await this.db.read(id);
+      return response;
     } catch (error) {
       throw error;
     }
   }
 
-  public async readByTicker(ticker: string): Promise<Trade> {
+  public async readByTicker(ticker: string): Promise<object> {
     try {
-      const trade = await this.db.readByTicker(ticker);
-      return trade;
+      const response = await this.db.readByTicker(ticker);
+      return response;
     } catch (error) {
       throw error;
     }
   }
 
-  public async readByCompany(company: string): Promise<Trade> {
+  public async readByCompany(company: string): Promise<object> {
     try {
-      const trade = await this.db.readByCompany(company);
-      return trade;
+      const response = await this.db.readByCompany(company);
+      return response;
     } catch (error) {
       throw error;
     }
   }
 
-  public async readByDate(date: string): Promise<Trade> {
+  public async readByDate(date: string): Promise<object> {
     try {
-      const trade = await this.db.readByDate(date);
-      return trade;
+      const response = await this.db.readByDate(date);
+      return response;
     } catch (error) {
       throw error;
     }

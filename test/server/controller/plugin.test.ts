@@ -37,7 +37,7 @@ describe("Controllers Test", function () {
 
     it("should write a trade to db and return an id", async function () {
       const result: {
-        [rows: string]: [{ [id: string]: "" }];
+        rows: Array<{ id: string }>;
       } = await controller.write(trade);
       expect(result.rows[0].id).toEqual("abc");
       expect(
