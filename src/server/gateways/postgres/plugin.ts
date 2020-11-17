@@ -34,9 +34,14 @@ export default class PostgresGateway extends Gateway {
 
       return response;
     } catch (err) {
-      // To-do: We should be handling this according to the design.
+      /*
+      This format will allow Winston to log the error message as "Error: [error message]".
+      Additionally, Winston will also save the error stack so we can trace the error.
+      */
+      this.logger.log("error", "Error:", err);
+
       await client.query(TRANSACTIONS.ROLLBACK);
-      this.logger.log("error", "Id lookup failed");
+
       throw err;
     } finally {
       client.release();
@@ -55,8 +60,10 @@ export default class PostgresGateway extends Gateway {
 
       return response;
     } catch (err) {
+      this.logger.log("error", "Error:", err);
+
       await client.query(TRANSACTIONS.ROLLBACK);
-      this.logger.log("error", "Ticker lookup failed");
+
       throw err;
     } finally {
       client.release();
@@ -75,8 +82,10 @@ export default class PostgresGateway extends Gateway {
 
       return response;
     } catch (err) {
+      this.logger.log("error", "Error:", err);
+
       await client.query(TRANSACTIONS.ROLLBACK);
-      this.logger.log("error", "Company lookup failed");
+
       throw err;
     } finally {
       client.release();
@@ -95,8 +104,11 @@ export default class PostgresGateway extends Gateway {
 
       return response;
     } catch (err) {
+      this.logger.log("error", "Error:", err);
+
       await client.query(TRANSACTIONS.ROLLBACK);
-      this.logger.log("error", "Date lookup failed");
+
+      throw err;
     } finally {
       client.release();
     }
@@ -144,9 +156,10 @@ export default class PostgresGateway extends Gateway {
 
       return response;
     } catch (err) {
-      // To-do: We should be handling this according to the design.
-      this.logger.log("error", "Write Failed");
+      this.logger.log("error", "Error:", err);
+
       await client.query(TRANSACTIONS.ROLLBACK);
+
       throw err;
     } finally {
       client.release();

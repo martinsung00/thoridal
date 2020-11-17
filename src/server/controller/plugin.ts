@@ -1,6 +1,5 @@
 import { PostgresGateway } from "../gateways/index";
 import { Trade } from "../types";
-// import memcached from 'memcached';
 
 export default class Controller {
   db: PostgresGateway;
