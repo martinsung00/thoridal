@@ -26,7 +26,7 @@ export default class PostgresGateway extends Gateway {
     const client: PoolClient = await this.pool.connect();
 
     try {
-      const queryText: string = `SELECT * FROM trades WHERE id = $1`;
+      const queryText: string = "SELECT * FROM trades WHERE id = $1";
 
       const response: QueryResult = await client.query(queryText, [id]);
 
@@ -52,7 +52,7 @@ export default class PostgresGateway extends Gateway {
     const client: PoolClient = await this.pool.connect();
 
     try {
-      const queryText: string = `SELECT * FROM trades WHERE ticker = $1`;
+      const queryText: string = "SELECT * FROM trades WHERE ticker = $1";
 
       const response: QueryResult = await client.query(queryText, [ticker]);
 
@@ -74,7 +74,7 @@ export default class PostgresGateway extends Gateway {
     const client: PoolClient = await this.pool.connect();
 
     try {
-      const queryText: string = `SELECT * FROM trades WHERE company_name = $1`;
+      const queryText: string = "SELECT * FROM trades WHERE company_name = $1";
 
       const response: QueryResult = await client.query(queryText, [company]);
 
@@ -96,9 +96,31 @@ export default class PostgresGateway extends Gateway {
     const client: PoolClient = await this.pool.connect();
 
     try {
-      const queryText: string = `SELECT * FROM trades WHERE created_at = $1`;
+      const queryText: string = "SELECT * FROM trades WHERE created_at = $1";
 
       const response: QueryResult = await client.query(queryText, [date]);
+
+      await client.query(TRANSACTIONS.COMMIT);
+
+      return response;
+    } catch (err) {
+      this.logger.log("error", "Error:", err);
+
+      await client.query(TRANSACTIONS.ROLLBACK);
+
+      throw err;
+    } finally {
+      client.release();
+    }
+  }
+
+  public async readByRefrenceNumber(refNum: string): Promise<object> {
+    const client: PoolClient = await this.pool.connect();
+
+    try {
+      const queryText: string = "SELECT * FROM trades WHERE reference_number = $1";
+
+      const response: QueryResult = await client.query(queryText, [refNum]);
 
       await client.query(TRANSACTIONS.COMMIT);
 
@@ -136,7 +158,8 @@ export default class PostgresGateway extends Gateway {
         trade_status,
       } = document;
 
-      const queryText: string = `INSERT INTO trades (id, ticker, company_name, reference_number, unit_price, quantity, total_cost, trade_type, note, created_at, trade_status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id`;
+      const queryText: string =
+        "INSERT INTO trades (id, ticker, company_name, reference_number, unit_price, quantity, total_cost, trade_type, note, created_at, trade_status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id";
 
       const response: QueryResult = await client.query(queryText, [
         id,
@@ -151,6 +174,32 @@ export default class PostgresGateway extends Gateway {
         created_at,
         trade_status,
       ]);
+
+      await client.query(TRANSACTIONS.COMMIT);
+
+      return response;
+    } catch (err) {
+      this.logger.log("error", "Error:", err);
+
+      await client.query(TRANSACTIONS.ROLLBACK);
+
+      throw err;
+    } finally {
+      client.release();
+    }
+  }
+
+  public async delete(
+    id: string
+  ): Promise<{
+    rows: Array<{ id: string }>;
+  }> {
+    const client: PoolClient = await this.pool.connect();
+
+    try {
+      const queryText: string = "DELETE FROM trades WHERE id = $1 RETURNING id";
+
+      const response: QueryResult = await client.query(queryText, [id]);
 
       await client.query(TRANSACTIONS.COMMIT);
 

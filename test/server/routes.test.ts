@@ -90,7 +90,7 @@ describe("PUT Endpoint Tests", function () {
       jest.mock("pg");
       PostgresGateway.prototype.write = jest
         .fn()
-        .mockRejectedValue(new Error("Fake Error: ID already in use"));
+        .mockRejectedValue(new Error("Fake Error"));
 
       request(app)
         .put("/trade/user/write")
@@ -132,7 +132,7 @@ describe("GET Endpoints Tests", function () {
     it("should return with a status of 500 Internal Server Error when the database query fails", function (done) {
       PostgresGateway.prototype.read = jest
         .fn()
-        .mockRejectedValue(new Error("Fake Error: Incorrect Parameter"));
+        .mockRejectedValue(new Error("Fake Error"));
 
       request(app)
         .get(`/trade/id/find/${"badRequest"}`)
@@ -170,7 +170,7 @@ describe("GET Endpoints Tests", function () {
     it("should return with a status of 500 Internal Server Error when the database query fails", async function (done) {
       PostgresGateway.prototype.readByTicker = jest
         .fn()
-        .mockRejectedValue(new Error("Fake Error: Incorrect Parameter"));
+        .mockRejectedValue(new Error("Fake Error"));
 
       request(app)
         .get(`/trade/ticker/find/${"badRequest"}`)
@@ -209,7 +209,7 @@ describe("GET Endpoints Tests", function () {
     it("should return with a status of 500 Internal Server Error when the database query fails", async function (done) {
       PostgresGateway.prototype.readByCompany = jest
         .fn()
-        .mockRejectedValue(new Error("Fake Error: Incorrect Parameter"));
+        .mockRejectedValue(new Error("Fake Error"));
 
       request(app)
         .get(`/trade/company/find/${"badRequest"}`)
@@ -247,7 +247,7 @@ describe("GET Endpoints Tests", function () {
     it("should return with a status of 500 Internal Server Error when the database query fail", async function (done) {
       PostgresGateway.prototype.readByDate = jest
         .fn()
-        .mockRejectedValue(new Error("Fake Error: Incorrect Parameter"));
+        .mockRejectedValue(new Error("Fake Error"));
 
       request(app)
         .get(`/trade/date/find/${"badRequest"}`)

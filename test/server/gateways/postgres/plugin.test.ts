@@ -22,6 +22,10 @@ describe("Postgres Gateway Tests", function () {
   };
   const logger = jest.spyOn(db.logger, "log");
 
+  afterAll(function () {
+    jest.resetModules();
+  });
+
   describe("Write Action", function () {
     beforeAll(function () {
       pg.Client.prototype.query = jest.fn().mockResolvedValue({
@@ -37,7 +41,7 @@ describe("Postgres Gateway Tests", function () {
       jest.resetAllMocks();
     });
 
-    it("should write a trade to db and return an id", async function (done) {
+    it("should write a trade to the database and return an id", async function (done) {
       const result = await db.write(trade);
       expect(result.rows).toEqual([
         {
@@ -48,7 +52,19 @@ describe("Postgres Gateway Tests", function () {
         pg.Client.prototype.query
       ).toHaveBeenCalledWith(
         `INSERT INTO trades (id, ticker, company_name, reference_number, unit_price, quantity, total_cost, trade_type, note, created_at, trade_status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id`,
-        ["abc", "ABC", "", "", 0, 0, 0, "long", "", now, true]
+        [
+          trade.id,
+          trade.ticker,
+          trade.company_name,
+          trade.reference_number,
+          trade.unit_price,
+          trade.quantity,
+          trade.total_cost,
+          trade.trade_type,
+          trade.note,
+          trade.created_at,
+          trade.trade_status,
+        ]
       );
       await done();
     });
@@ -81,12 +97,12 @@ describe("Postgres Gateway Tests", function () {
       jest.resetAllMocks();
     });
 
-    it("should return a document given an id", async function (done) {
+    it("should return document(s) with a given id", async function (done) {
       const result = await db.read(trade.id);
       expect(result).toEqual(trade);
       expect(
         pg.Client.prototype.query
-      ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE id = $1`, ["abc"]);
+      ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE id = $1`, [trade.id]);
       await done();
     });
 
@@ -114,12 +130,14 @@ describe("Postgres Gateway Tests", function () {
       jest.resetAllMocks();
     });
 
-    it("should return a document given a ticker", async function (done) {
+    it("should return document(s) with a given ticker", async function (done) {
       const result = await db.readByTicker(trade.ticker);
       expect(result).toEqual(trade);
       expect(
         pg.Client.prototype.query
-      ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE ticker = $1`, ["ABC"]);
+      ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE ticker = $1`, [
+        trade.ticker,
+      ]);
       await done();
     });
 
@@ -147,7 +165,7 @@ describe("Postgres Gateway Tests", function () {
       jest.resetAllMocks();
     });
 
-    it("should return a document given a company name", async function (done) {
+    it("should return document(s) with a given company name", async function (done) {
       const result = await db.readByCompany(trade.company_name);
       expect(result).toEqual(trade);
       expect(
@@ -182,7 +200,7 @@ describe("Postgres Gateway Tests", function () {
       jest.resetAllMocks();
     });
 
-    it("should return a document given a date", async function (done) {
+    it("should return document(s) with a given date", async function (done) {
       const result = await db.readByDate(trade.created_at);
       expect(result).toEqual(trade);
       expect(
@@ -199,6 +217,76 @@ describe("Postgres Gateway Tests", function () {
           .fn()
           .mockRejectedValueOnce(new TypeError("Fake Error"));
         await db.readByDate(trade.created_at);
+      } catch (error) {
+        expect(error.message).toBe("Fake Error");
+        expect(logger).toHaveBeenCalledTimes(1);
+      } finally {
+        done();
+      }
+    });
+  });
+
+  describe("Read Action by Reference Number", function () {
+    beforeAll(function () {
+      pg.Client.prototype.query = jest.fn().mockResolvedValue(trade);
+    });
+
+    afterAll(function () {
+      jest.resetAllMocks();
+    });
+
+    it("should return document(s) with a given reference number", async function (done) {
+      const result = await db.readByRefrenceNumber(trade.reference_number);
+      expect(result).toEqual(trade);
+      expect(
+        pg.Client.prototype.query
+      ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE reference_number = $1`, [
+        trade.reference_number,
+      ]);
+      await done();
+    });
+
+    it("should create a log with Winston's logger if an error occurs", async function (done) {
+      try {
+        pg.Client.prototype.query = jest
+          .fn()
+          .mockRejectedValueOnce(new TypeError("Fake Error"));
+        await db.readByRefrenceNumber(trade.reference_number);
+      } catch (error) {
+        expect(error.message).toBe("Fake Error");
+        expect(logger).toHaveBeenCalledTimes(1);
+      } finally {
+        done();
+      }
+    });
+  });
+
+  describe("Delete Action", function () {
+    beforeAll(function () {
+      pg.Client.prototype.query = jest.fn().mockResolvedValue(trade);
+    });
+
+    afterAll(function () {
+      jest.resetAllMocks();
+    });
+
+    it("should delete a document with the given id", async function (done) {
+      const result = await db.delete(trade.id);
+      expect(result).toEqual(trade);
+      expect(
+        pg.Client.prototype.query
+      ).toHaveBeenCalledWith("DELETE FROM trades WHERE id = $1 RETURNING id", [
+        trade.id,
+      ]);
+      await done();
+    });
+
+    it("should create a log with Winston's logger if an error occurs", async function (done) {
+      try {
+        pg.Client.prototype.query = jest
+          .fn()
+          .mockRejectedValueOnce(new TypeError("Fake Error"));
+        await db.delete(trade.id);
       } catch (error) {
         expect(error.message).toBe("Fake Error");
         expect(logger).toHaveBeenCalledTimes(1);
