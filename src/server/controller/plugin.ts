@@ -16,8 +16,10 @@ export default class Controller {
     try {
       const id = await this.db.write(body);
       return id;
-    } catch (error) {
-      throw error;
+    } catch (err) {
+      this.db.logger.log("error", "Error:", err);
+
+      throw err;
     }
   }
 
@@ -25,8 +27,10 @@ export default class Controller {
     try {
       const response = await this.db.read(id);
       return response;
-    } catch (error) {
-      throw error;
+    } catch (err) {
+      this.db.logger.log("error", "Error:", err);
+
+      throw err;
     }
   }
 
@@ -34,8 +38,10 @@ export default class Controller {
     try {
       const response = await this.db.readByTicker(ticker);
       return response;
-    } catch (error) {
-      throw error;
+    } catch (err) {
+      this.db.logger.log("error", "Error:", err);
+
+      throw err;
     }
   }
 
@@ -43,8 +49,10 @@ export default class Controller {
     try {
       const response = await this.db.readByCompany(company);
       return response;
-    } catch (error) {
-      throw error;
+    } catch (err) {
+      this.db.logger.log("error", "Error:", err);
+
+      throw err;
     }
   }
 
@@ -52,8 +60,10 @@ export default class Controller {
     try {
       const response = await this.db.readByDate(date);
       return response;
-    } catch (error) {
-      throw error;
+    } catch (err) {
+      this.db.logger.log("error", "Error:", err);
+
+      throw err;
     }
   }
 }
