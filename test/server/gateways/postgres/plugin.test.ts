@@ -43,6 +43,7 @@ describe("Postgres Gateway Tests", function () {
 
     it("should write a trade to the database and return an id", async function (done) {
       const result = await db.write(trade);
+
       expect(result.rows).toEqual([
         {
           id: "abc",
@@ -78,11 +79,11 @@ describe("Postgres Gateway Tests", function () {
         pg.Client.prototype.query = jest
           .fn()
           .mockRejectedValueOnce(new TypeError("Fake Error"));
+
         await db.write(trade);
       } catch (error) {
         expect(error.message).toBe("Fake Error");
         expect(logger).toHaveBeenCalledTimes(1);
-      } finally {
         done();
       }
     });
@@ -99,6 +100,7 @@ describe("Postgres Gateway Tests", function () {
 
     it("should return document(s) with a given id", async function (done) {
       const result = await db.read(trade.id);
+
       expect(result).toEqual(trade);
       expect(
         pg.Client.prototype.query
@@ -111,11 +113,11 @@ describe("Postgres Gateway Tests", function () {
         pg.Client.prototype.query = jest
           .fn()
           .mockRejectedValueOnce(new TypeError("Fake Error"));
+
         await db.read(trade.id);
       } catch (error) {
         expect(error.message).toBe("Fake Error");
         expect(logger).toHaveBeenCalledTimes(1);
-      } finally {
         done();
       }
     });
@@ -132,6 +134,7 @@ describe("Postgres Gateway Tests", function () {
 
     it("should return document(s) with a given ticker", async function (done) {
       const result = await db.readByTicker(trade.ticker);
+
       expect(result).toEqual(trade);
       expect(
         pg.Client.prototype.query
@@ -146,11 +149,11 @@ describe("Postgres Gateway Tests", function () {
         pg.Client.prototype.query = jest
           .fn()
           .mockRejectedValueOnce(new TypeError("Fake Error"));
+
         await db.readByTicker(trade.ticker);
       } catch (error) {
         expect(error.message).toBe("Fake Error");
         expect(logger).toHaveBeenCalledTimes(1);
-      } finally {
         done();
       }
     });
@@ -167,6 +170,7 @@ describe("Postgres Gateway Tests", function () {
 
     it("should return document(s) with a given company name", async function (done) {
       const result = await db.readByCompany(trade.company_name);
+
       expect(result).toEqual(trade);
       expect(
         pg.Client.prototype.query
@@ -181,11 +185,11 @@ describe("Postgres Gateway Tests", function () {
         pg.Client.prototype.query = jest
           .fn()
           .mockRejectedValueOnce(new TypeError("Fake Error"));
+
         await db.readByCompany(trade.company_name);
       } catch (error) {
-        expect(error.message).toBe("Fake Error");
         expect(logger).toHaveBeenCalledTimes(1);
-      } finally {
+        expect(error.message).toBe("Fake Error");
         done();
       }
     });
@@ -202,12 +206,14 @@ describe("Postgres Gateway Tests", function () {
 
     it("should return document(s) with a given date", async function (done) {
       const result = await db.readByDate(trade.created_at);
+
       expect(result).toEqual(trade);
       expect(
         pg.Client.prototype.query
       ).toHaveBeenCalledWith("SELECT * FROM trades WHERE created_at = $1", [
         now,
       ]);
+
       await done();
     });
 
@@ -216,11 +222,11 @@ describe("Postgres Gateway Tests", function () {
         pg.Client.prototype.query = jest
           .fn()
           .mockRejectedValueOnce(new TypeError("Fake Error"));
+
         await db.readByDate(trade.created_at);
       } catch (error) {
         expect(error.message).toBe("Fake Error");
         expect(logger).toHaveBeenCalledTimes(1);
-      } finally {
         done();
       }
     });
@@ -236,7 +242,8 @@ describe("Postgres Gateway Tests", function () {
     });
 
     it("should return document(s) with a given reference number", async function (done) {
-      const result = await db.readByRefrenceNumber(trade.reference_number);
+      const result = await db.readByReferenceNumber(trade.reference_number);
+
       expect(result).toEqual(trade);
       expect(
         pg.Client.prototype.query
@@ -252,11 +259,11 @@ describe("Postgres Gateway Tests", function () {
         pg.Client.prototype.query = jest
           .fn()
           .mockRejectedValueOnce(new TypeError("Fake Error"));
-        await db.readByRefrenceNumber(trade.reference_number);
+
+        await db.readByReferenceNumber(trade.reference_number);
       } catch (error) {
         expect(error.message).toBe("Fake Error");
         expect(logger).toHaveBeenCalledTimes(1);
-      } finally {
         done();
       }
     });
@@ -273,6 +280,7 @@ describe("Postgres Gateway Tests", function () {
 
     it("should delete a document with the given id", async function (done) {
       const result = await db.delete(trade.id);
+
       expect(result).toEqual(trade);
       expect(
         pg.Client.prototype.query
@@ -287,11 +295,11 @@ describe("Postgres Gateway Tests", function () {
         pg.Client.prototype.query = jest
           .fn()
           .mockRejectedValueOnce(new TypeError("Fake Error"));
+
         await db.delete(trade.id);
       } catch (error) {
         expect(error.message).toBe("Fake Error");
         expect(logger).toHaveBeenCalledTimes(1);
-      } finally {
         done();
       }
     });

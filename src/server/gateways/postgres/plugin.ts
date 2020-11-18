@@ -114,7 +114,7 @@ export default class PostgresGateway extends Gateway {
     }
   }
 
-  public async readByRefrenceNumber(refNum: string): Promise<object> {
+  public async readByReferenceNumber(refNum: string): Promise<object> {
     const client: PoolClient = await this.pool.connect();
 
     try {

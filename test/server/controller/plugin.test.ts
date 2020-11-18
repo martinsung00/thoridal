@@ -1,16 +1,16 @@
 import { Trade } from "../../../src/server/types";
 import Controller from "./../../../src/server/controller/plugin";
-import PostgresGateway from "../../../src/server/controller/index";
+import { PostgresGateway } from "../../../src/server/gateways/index";
 
 describe("Controllers Test", function () {
-  jest.mock("../../../src/server/controller/index");
+  jest.mock("../../../src/server/gateways/index");
 
   const controller = new Controller();
   const trade: Trade = {
     id: "abc",
     ticker: "ABC",
     company_name: "Test",
-    reference_number: "",
+    reference_number: "12345",
     unit_price: 0,
     quantity: 0,
     total_cost: 0,
@@ -20,6 +20,11 @@ describe("Controllers Test", function () {
     trade_status: true,
   };
   const logger = jest.spyOn(controller.db.logger, "log");
+
+  afterAll(function () {
+    jest.resetModules();
+    jest.resetAllMocks();
+  });
 
   describe("Write Action", function () {
     beforeEach(function () {
@@ -32,15 +37,11 @@ describe("Controllers Test", function () {
       });
     });
 
-    afterEach(function () {
-      jest.resetAllMocks();
-      jest.resetModules();
-    });
-
-    it("should write a trade to db and return an id", async function () {
+    it("should write a trade to db and return an id", async function (done) {
       const result: {
         rows: Array<{ id: string }>;
       } = await controller.write(trade);
+
       expect(result.rows[0].id).toEqual("abc");
       expect(PostgresGateway.prototype.write).toHaveBeenCalledWith({
         company_name: "Test",
@@ -48,26 +49,26 @@ describe("Controllers Test", function () {
         id: "abc",
         note: "",
         quantity: 0,
-        reference_number: "",
+        reference_number: "12345",
         ticker: "ABC",
         total_cost: 0,
         trade_status: true,
         trade_type: "long",
         unit_price: 0,
       });
+      done();
     });
 
     it("should log the error with Winston logger if the query fails", async function (done) {
       try {
         PostgresGateway.prototype.write = jest
           .fn()
-          .mockRejectedValue(new Error("Test Error"));
+          .mockRejectedValue(new Error("Fake Error"));
 
-        await controller.readByDate(trade.created_at);
+        await controller.write(trade);
+        expect(logger).toHaveBeenCalledTimes(1);
       } catch (err) {
         expect(err.message).toEqual("Fake Error");
-        expect(logger).toHaveBeenCalledTimes(1);
-      } finally {
         done();
       }
     });
@@ -78,28 +79,24 @@ describe("Controllers Test", function () {
       PostgresGateway.prototype.read = jest.fn().mockResolvedValue(trade);
     });
 
-    afterAll(function () {
-      jest.resetAllMocks();
-      jest.resetModules();
-    });
-
-    it("should return a document given an id", async function () {
+    it("should return a document given an id", async function (done) {
       const result = await controller.read(trade.id);
+
       expect(result).toEqual(trade);
-      expect(PostgresGateway.prototype.read).toHaveBeenCalledWith("abc");
+      expect(PostgresGateway.prototype.read).toHaveBeenCalledWith(trade.id);
+      done();
     });
 
     it("should log the error with Winston logger if the query fails", async function (done) {
       try {
         PostgresGateway.prototype.read = jest
           .fn()
-          .mockRejectedValue(new Error("Test Error"));
+          .mockRejectedValue(new Error("Fake Error"));
 
-        await controller.readByDate(trade.created_at);
+        await controller.read(trade.id);
+        expect(logger).toHaveBeenCalledTimes(1);
       } catch (err) {
         expect(err.message).toEqual("Fake Error");
-        expect(logger).toHaveBeenCalledTimes(1);
-      } finally {
         done();
       }
     });
@@ -112,30 +109,29 @@ describe("Controllers Test", function () {
         .mockResolvedValue(trade);
     });
 
-    afterAll(function () {
-      jest.resetAllMocks();
-      jest.resetModules();
-    });
-
-    it("should return a document given a ticker", async function () {
+    it("should return a document given a ticker", async function (done) {
       const result = await controller.readByTicker(trade.ticker);
+
       expect(result).toEqual(trade);
       expect(PostgresGateway.prototype.readByTicker).toHaveBeenCalledWith(
-        "ABC"
+        trade.ticker
       );
+
+      done();
     });
 
     it("should log the error with Winston logger if the query fails", async function (done) {
+      const logger = jest.spyOn(controller.db.logger, "log");
+
       try {
         PostgresGateway.prototype.readByTicker = jest
           .fn()
-          .mockRejectedValue(new Error("Test Error"));
+          .mockRejectedValue(new Error("Fake Error"));
 
-        await controller.readByDate(trade.created_at);
+        await controller.readByTicker(trade.ticker);
+        expect(logger).toHaveBeenCalledTimes(1);
       } catch (err) {
         expect(err.message).toEqual("Fake Error");
-        expect(logger).toHaveBeenCalledTimes(1);
-      } finally {
         done();
       }
     });
@@ -148,30 +144,27 @@ describe("Controllers Test", function () {
         .mockResolvedValue(trade);
     });
 
-    afterAll(function () {
-      jest.resetAllMocks();
-      jest.resetModules();
-    });
-
-    it("should return a document given a company name", async function () {
+    it("should return a document given a company name", async function (done) {
       const result = await controller.readByCompany(trade.company_name);
+
       expect(result).toEqual(trade);
       expect(PostgresGateway.prototype.readByCompany).toHaveBeenCalledWith(
-        "Test"
+        trade.company_name
       );
+
+      done();
     });
 
     it("should log the error with Winston logger if the query fails", async function (done) {
       try {
         PostgresGateway.prototype.readByCompany = jest
           .fn()
-          .mockRejectedValue(new Error("Test Error"));
+          .mockRejectedValue(new Error("Fake Error"));
 
-        await controller.readByDate(trade.created_at);
+        await controller.readByCompany(trade.created_at);
+        expect(logger).toHaveBeenCalledTimes(1);
       } catch (err) {
         expect(err.message).toEqual("Fake Error");
-        expect(logger).toHaveBeenCalledTimes(1);
-      } finally {
         done();
       }
     });
@@ -182,30 +175,61 @@ describe("Controllers Test", function () {
       PostgresGateway.prototype.readByDate = jest.fn().mockResolvedValue(trade);
     });
 
-    afterAll(function () {
-      jest.resetAllMocks();
-      jest.resetModules();
-    });
-
-    it("should return a document given a date", async function () {
+    it("should return a document given a date", async function (done) {
       const result = await controller.readByDate(trade.created_at);
+
       expect(result).toEqual(trade);
       expect(PostgresGateway.prototype.readByDate).toHaveBeenCalledWith(
-        "10/10/2020"
+        trade.created_at
       );
+
+      done();
     });
 
     it("should log the error with Winston logger if the query fails", async function (done) {
       try {
         PostgresGateway.prototype.readByDate = jest
           .fn()
-          .mockRejectedValue(new Error("Test Error"));
+          .mockRejectedValue(new Error("Fake Error"));
 
         await controller.readByDate(trade.created_at);
+        expect(logger).toHaveBeenCalledTimes(1);
       } catch (err) {
         expect(err.message).toEqual("Fake Error");
+        done();
+      }
+    });
+  });
+
+  describe("Read Action by Reference Number", function () {
+    beforeAll(function () {
+      PostgresGateway.prototype.readByReferenceNumber = jest
+        .fn()
+        .mockResolvedValue(trade);
+    });
+
+    it("should return a document given a date", async function (done) {
+      const result = await controller.readByReferenceNumber(
+        trade.reference_number
+      );
+      expect(result).toEqual(trade);
+      expect(
+        PostgresGateway.prototype.readByReferenceNumber
+      ).toHaveBeenCalledWith(trade.reference_number);
+
+      done();
+    });
+
+    it("should log the error with Winston logger if the query fails", async function (done) {
+      try {
+        PostgresGateway.prototype.readByReferenceNumber = jest
+          .fn()
+          .mockRejectedValue(new Error("Fake Error"));
+
+        await controller.readByReferenceNumber(trade.reference_number);
         expect(logger).toHaveBeenCalledTimes(1);
-      } finally {
+      } catch (err) {
+        expect(err.message).toEqual("Fake Error");
         done();
       }
     });

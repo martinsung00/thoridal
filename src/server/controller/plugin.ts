@@ -55,6 +55,16 @@ export default class Controller {
       throw err;
     }
   }
+  public async readByReferenceNumber(refNum: string): Promise<object> {
+    try {
+      const response = await this.db.readByReferenceNumber(refNum);
+      return response;
+    } catch (err) {
+      this.db.logger.log("error", "Error:", err);
+
+      throw err;
+    }
+  }
 
   public async readByDate(date: string): Promise<object> {
     try {
@@ -66,4 +76,6 @@ export default class Controller {
       throw err;
     }
   }
+
+
 }
