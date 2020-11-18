@@ -76,6 +76,4 @@ export default class Controller {
       throw err;
     }
   }
-
-
 }
