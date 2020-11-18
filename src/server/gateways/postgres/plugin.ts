@@ -118,7 +118,8 @@ export default class PostgresGateway extends Gateway {
     const client: PoolClient = await this.pool.connect();
 
     try {
-      const queryText: string = "SELECT * FROM trades WHERE reference_number = $1";
+      const queryText: string =
+        "SELECT * FROM trades WHERE reference_number = $1";
 
       const response: QueryResult = await client.query(queryText, [refNum]);
 

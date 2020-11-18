@@ -51,7 +51,7 @@ describe("Postgres Gateway Tests", function () {
       expect(
         pg.Client.prototype.query
       ).toHaveBeenCalledWith(
-        `INSERT INTO trades (id, ticker, company_name, reference_number, unit_price, quantity, total_cost, trade_type, note, created_at, trade_status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id`,
+        "INSERT INTO trades (id, ticker, company_name, reference_number, unit_price, quantity, total_cost, trade_type, note, created_at, trade_status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id",
         [
           trade.id,
           trade.ticker,
@@ -102,7 +102,7 @@ describe("Postgres Gateway Tests", function () {
       expect(result).toEqual(trade);
       expect(
         pg.Client.prototype.query
-      ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE id = $1`, [trade.id]);
+      ).toHaveBeenCalledWith("SELECT * FROM trades WHERE id = $1", [trade.id]);
       await done();
     });
 
@@ -135,7 +135,7 @@ describe("Postgres Gateway Tests", function () {
       expect(result).toEqual(trade);
       expect(
         pg.Client.prototype.query
-      ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE ticker = $1`, [
+      ).toHaveBeenCalledWith("SELECT * FROM trades WHERE ticker = $1", [
         trade.ticker,
       ]);
       await done();
@@ -170,7 +170,7 @@ describe("Postgres Gateway Tests", function () {
       expect(result).toEqual(trade);
       expect(
         pg.Client.prototype.query
-      ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE company_name = $1`, [
+      ).toHaveBeenCalledWith("SELECT * FROM trades WHERE company_name = $1", [
         "",
       ]);
       await done();
@@ -205,7 +205,7 @@ describe("Postgres Gateway Tests", function () {
       expect(result).toEqual(trade);
       expect(
         pg.Client.prototype.query
-      ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE created_at = $1`, [
+      ).toHaveBeenCalledWith("SELECT * FROM trades WHERE created_at = $1", [
         now,
       ]);
       await done();
@@ -240,9 +240,10 @@ describe("Postgres Gateway Tests", function () {
       expect(result).toEqual(trade);
       expect(
         pg.Client.prototype.query
-      ).toHaveBeenCalledWith(`SELECT * FROM trades WHERE reference_number = $1`, [
-        trade.reference_number,
-      ]);
+      ).toHaveBeenCalledWith(
+        "SELECT * FROM trades WHERE reference_number = $1",
+        [trade.reference_number]
+      );
       await done();
     });
 
