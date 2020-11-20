@@ -74,7 +74,7 @@ describe("PUT Endpoint Tests", function () {
       });
 
       request(app)
-        .put(`/trade/user/write`)
+        .put("/trade/user/write")
         .send(trade)
         .set("Accept", "application/json")
         .type("json")
@@ -82,6 +82,21 @@ describe("PUT Endpoint Tests", function () {
         .end(function (err) {
           if (err) return done(err);
           expect(PostgresGateway.prototype.write).toHaveBeenCalledTimes(1);
+          done();
+        });
+    });
+
+    it("should return a status of 400 Bad Request if request body is faulty", function (done) {
+      const faultyBody: object = {};
+
+      request(app)
+        .put("/trade/user/write")
+        .send(faultyBody)
+        .set("Accept", "application/json")
+        .type("json")
+        .expect(400)
+        .end(function (err) {
+          if (err) return done(err);
           done();
         });
     });

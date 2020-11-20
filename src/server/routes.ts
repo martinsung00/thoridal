@@ -21,6 +21,13 @@ app.use(express.static(`${__dirname}/../client/dist`));
 app.put("/trade/:user/write", function (req, res) {
   const body: Trade = req.body;
 
+  if (Object.keys(req.body).length === 0) {
+    res.sendStatus(400);
+    return;
+  }
+
+  body.created_at = controller.generateDate();
+
   controller
     .write(body)
     .then(function () {

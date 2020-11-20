@@ -215,14 +215,4 @@ export default class PostgresGateway extends Gateway {
       client.release();
     }
   }
-
-  public generateDate(): string {
-    const today: Date = new Date();
-    const dd: String = String(today.getDate()).padStart(2, "0");
-    const mm: String = String(today.getMonth() + 1).padStart(2, "0");
-    const yyyy: String = String(today.getFullYear());
-    const date: string = `${mm}-${dd}-${yyyy}`;
-
-    return date;
-  }
 }
