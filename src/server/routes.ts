@@ -31,7 +31,7 @@ app.put("/trade/:user/write", function (req, res) {
     });
 });
 
-app.get("/trade/id/find/:id", function (req, res) {
+app.get("/trade/id/:id/find", function (req, res) {
   const query = req.params.id;
 
   controller
@@ -44,7 +44,7 @@ app.get("/trade/id/find/:id", function (req, res) {
     });
 });
 
-app.get("/trade/ticker/find/:ticker", function (req, res) {
+app.get("/trade/ticker/:ticker/find", function (req, res) {
   const query = req.params.ticker;
 
   controller
@@ -57,7 +57,7 @@ app.get("/trade/ticker/find/:ticker", function (req, res) {
     });
 });
 
-app.get("/trade/company/find/:company", function (req, res) {
+app.get("/trade/company/:company/find", function (req, res) {
   const query = req.params.company;
 
   controller
@@ -70,11 +70,37 @@ app.get("/trade/company/find/:company", function (req, res) {
     });
 });
 
-app.get("/trade/date/find/:date", function (req, res) {
+app.get("/trade/date/:date/find", function (req, res) {
   const query = req.params.date;
 
   controller
     .readByDate(query)
+    .then(function (response: object) {
+      res.status(200).send(response);
+    })
+    .catch(function (err: Error) {
+      res.status(500).send(err);
+    });
+});
+
+app.get("/trade/reference/:reference/find", function (req, res) {
+  const query = req.params.reference;
+
+  controller
+    .readByReferenceNumber(query)
+    .then(function (response: object) {
+      res.status(200).send(response);
+    })
+    .catch(function (err: Error) {
+      res.status(500).send(err);
+    });
+});
+
+app.delete("/trade/id/:id/delete", function (req, res) {
+  const query = req.params.id;
+
+  controller
+    .delete(query)
     .then(function (response: object) {
       res.status(200).send(response);
     })

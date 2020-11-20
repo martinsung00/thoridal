@@ -117,10 +117,10 @@ describe("GET Endpoints Tests", function () {
     });
 
     it("should retrieve trades by search parameter: job id, and return a 200 OK status", function (done) {
-      const id = "1";
+      const id: string = "1";
 
       request(app)
-        .get(`/trade/id/find/${id}`)
+        .get(`/trade/id/${id}/find`)
         .expect("Content-type", /json/)
         .expect(200)
         .end(function (err) {
@@ -135,7 +135,7 @@ describe("GET Endpoints Tests", function () {
         .mockRejectedValue(new Error("Fake Error"));
 
       request(app)
-        .get(`/trade/id/find/${"badRequest"}`)
+        .get(`/trade/id/${"badRequest"}/find`)
         .expect("Content-type", /json/)
         .expect(500)
         .end(function (err) {
@@ -155,10 +155,10 @@ describe("GET Endpoints Tests", function () {
     });
 
     it("should retrieve trades by search parameter: ticker, and return a 200 OK status", async function (done) {
-      const ticker = "ABC";
+      const ticker: string = "ABC";
 
       request(app)
-        .get(`/trade/ticker/find/${ticker}`)
+        .get(`/trade/ticker/${ticker}/find`)
         .expect("Content-type", /json/)
         .expect(200)
         .end(function (err) {
@@ -173,7 +173,7 @@ describe("GET Endpoints Tests", function () {
         .mockRejectedValue(new Error("Fake Error"));
 
       request(app)
-        .get(`/trade/ticker/find/${"badRequest"}`)
+        .get(`/trade/ticker/${"badRequest"}/find`)
         .expect("Content-type", /json/)
         .expect(500)
         .end(function (err) {
@@ -194,10 +194,10 @@ describe("GET Endpoints Tests", function () {
     });
 
     it("should retrieve trades by search parameter: company, and returns a 200 OK status", async function (done) {
-      const company = "Test";
+      const company: string = "Test";
 
       request(app)
-        .get(`/trade/company/find/${company}`)
+        .get(`/trade/company/${company}/find`)
         .expect("Content-type", /json/)
         .expect(200)
         .end(function (err) {
@@ -212,7 +212,7 @@ describe("GET Endpoints Tests", function () {
         .mockRejectedValue(new Error("Fake Error"));
 
       request(app)
-        .get(`/trade/company/find/${"badRequest"}`)
+        .get(`/trade/company/${"badRequest"}/find`)
         .expect("Content-type", /json/)
         .expect(500)
         .end(function (err) {
@@ -232,10 +232,10 @@ describe("GET Endpoints Tests", function () {
     });
 
     it("should retrieve trades by search parameter: date, and returns a 200 OK status", async function (done) {
-      const date = "MM-DD-YYYY";
+      const date: string = "MM-DD-YYYY";
 
       request(app)
-        .get(`/trade/date/find/${date}`)
+        .get(`/trade/date/${date}/find`)
         .expect("Content-type", /json/)
         .expect(200)
         .end(function (err) {
@@ -250,7 +250,7 @@ describe("GET Endpoints Tests", function () {
         .mockRejectedValue(new Error("Fake Error"));
 
       request(app)
-        .get(`/trade/date/find/${"badRequest"}`)
+        .get(`/trade/date/${"badRequest"}/find`)
         .expect("Content-type", /json/)
         .expect(500)
         .end(function (err) {
@@ -258,5 +258,84 @@ describe("GET Endpoints Tests", function () {
           done();
         });
     });
+  });
+
+  describe("GET by reference number Endpoint Tests", function () {
+    beforeAll(function () {
+      jest.resetModules();
+    });
+
+    afterAll(function () {
+      jest.resetAllMocks();
+    });
+
+    it("should retrieve trades by search parameter: date, and returns a 200 OK status", async function (done) {
+      const reference: string = "Hello World";
+
+      request(app)
+        .get(`/trade/reference/${reference}/find`)
+        .expect("Content-type", /json/)
+        .expect(200)
+        .end(function (err) {
+          if (err) return done(err);
+          done();
+        });
+    });
+
+    it("should return with a status of 500 Internal Server Error when the database query fail", async function (done) {
+      PostgresGateway.prototype.readByReferenceNumber = jest
+        .fn()
+        .mockRejectedValue(new Error("Fake Error"));
+
+      request(app)
+        .get(`/trade/reference/${"Bad Request"}/find`)
+        .expect("Content-type", /json/)
+        .expect(500)
+        .end(function (err) {
+          if (err) return done(err);
+          done();
+        });
+    });
+  });
+});
+
+describe("Delete Endpoints", function () {
+  afterEach(function () {
+    jest.resetAllMocks();
+  });
+
+  it("should delete a trade and return a status of 200 OK", function (done) {
+    PostgresGateway.prototype.delete = jest.fn().mockResolvedValue({
+      rows: [
+        {
+          id: "abc",
+        },
+      ],
+    });
+
+    request(app)
+      .delete(`/trade/id/${1}/delete`)
+      .expect(200)
+      .expect("Content-type", /json/)
+      .end(function (err) {
+        if (err) return done(err);
+        expect(PostgresGateway.prototype.delete).toHaveBeenCalledTimes(1);
+        done();
+      });
+  });
+
+  it("should return with a status of 500 Internal Server Error when the database query fail", async function (done) {
+    PostgresGateway.prototype.delete = jest
+      .fn()
+      .mockRejectedValue(new Error("Fake Error"));
+
+    request(app)
+      .delete(`/trade/id/${1}/delete`)
+      .expect("Content-type", /json/)
+      .expect(500)
+      .end(function (err) {
+        if (err) return done(err);
+        done();
+      });
   });
 });
