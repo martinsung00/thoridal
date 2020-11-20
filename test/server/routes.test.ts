@@ -1,7 +1,7 @@
-import request from "supertest";
 import { app } from "../../src/server/index";
 import { Trade } from "../../src/server/types";
 import { PostgresGateway } from "../../src/server/gateways/index";
+import supertest from "supertest";
 
 describe("Endpoints Behavior Test", function () {
   let module: { [port: string]: "" };
@@ -19,7 +19,7 @@ describe("Endpoints Behavior Test", function () {
   });
 
   it("should reject falsy routes and return 404 not found", function (done) {
-    request(app)
+    supertest(app)
       .get("/falsy/route")
       .expect(404)
       .expect("Content-type", "text/html; charset=utf-8")
@@ -73,7 +73,7 @@ describe("PUT Endpoint Tests", function () {
         ],
       });
 
-      request(app)
+      supertest(app)
         .put("/trade/user/write")
         .send(trade)
         .set("Accept", "application/json")
@@ -86,10 +86,10 @@ describe("PUT Endpoint Tests", function () {
         });
     });
 
-    it("should return a status of 400 Bad Request if request body is faulty", function (done) {
+    it("should return a status of 400 Bad supertest if supertest body is faulty", function (done) {
       const faultyBody: object = {};
 
-      request(app)
+      supertest(app)
         .put("/trade/user/write")
         .send(faultyBody)
         .set("Accept", "application/json")
@@ -107,7 +107,7 @@ describe("PUT Endpoint Tests", function () {
         .fn()
         .mockRejectedValue(new Error("Fake Error"));
 
-      request(app)
+      supertest(app)
         .put("/trade/user/write")
         .send(trade)
         .set("Accept", "application/json")
@@ -134,7 +134,7 @@ describe("GET Endpoints Tests", function () {
     it("should retrieve trades by search parameter: job id, and return a 200 OK status", function (done) {
       const id: string = "1";
 
-      request(app)
+      supertest(app)
         .get(`/trade/id/${id}/find`)
         .expect("Content-type", /json/)
         .expect(200)
@@ -149,8 +149,8 @@ describe("GET Endpoints Tests", function () {
         .fn()
         .mockRejectedValue(new Error("Fake Error"));
 
-      request(app)
-        .get(`/trade/id/${"badRequest"}/find`)
+      supertest(app)
+        .get(`/trade/id/${"badsupertest"}/find`)
         .expect("Content-type", /json/)
         .expect(500)
         .end(function (err) {
@@ -172,7 +172,7 @@ describe("GET Endpoints Tests", function () {
     it("should retrieve trades by search parameter: ticker, and return a 200 OK status", async function (done) {
       const ticker: string = "ABC";
 
-      request(app)
+      supertest(app)
         .get(`/trade/ticker/${ticker}/find`)
         .expect("Content-type", /json/)
         .expect(200)
@@ -187,8 +187,8 @@ describe("GET Endpoints Tests", function () {
         .fn()
         .mockRejectedValue(new Error("Fake Error"));
 
-      request(app)
-        .get(`/trade/ticker/${"badRequest"}/find`)
+      supertest(app)
+        .get(`/trade/ticker/${"badsupertest"}/find`)
         .expect("Content-type", /json/)
         .expect(500)
         .end(function (err) {
@@ -211,7 +211,7 @@ describe("GET Endpoints Tests", function () {
     it("should retrieve trades by search parameter: company, and returns a 200 OK status", async function (done) {
       const company: string = "Test";
 
-      request(app)
+      supertest(app)
         .get(`/trade/company/${company}/find`)
         .expect("Content-type", /json/)
         .expect(200)
@@ -226,8 +226,8 @@ describe("GET Endpoints Tests", function () {
         .fn()
         .mockRejectedValue(new Error("Fake Error"));
 
-      request(app)
-        .get(`/trade/company/${"badRequest"}/find`)
+      supertest(app)
+        .get(`/trade/company/${"badsupertest"}/find`)
         .expect("Content-type", /json/)
         .expect(500)
         .end(function (err) {
@@ -249,7 +249,7 @@ describe("GET Endpoints Tests", function () {
     it("should retrieve trades by search parameter: date, and returns a 200 OK status", async function (done) {
       const date: string = "MM-DD-YYYY";
 
-      request(app)
+      supertest(app)
         .get(`/trade/date/${date}/find`)
         .expect("Content-type", /json/)
         .expect(200)
@@ -264,8 +264,8 @@ describe("GET Endpoints Tests", function () {
         .fn()
         .mockRejectedValue(new Error("Fake Error"));
 
-      request(app)
-        .get(`/trade/date/${"badRequest"}/find`)
+      supertest(app)
+        .get(`/trade/date/${"badsupertest"}/find`)
         .expect("Content-type", /json/)
         .expect(500)
         .end(function (err) {
@@ -287,7 +287,7 @@ describe("GET Endpoints Tests", function () {
     it("should retrieve trades by search parameter: date, and returns a 200 OK status", async function (done) {
       const reference: string = "Hello World";
 
-      request(app)
+      supertest(app)
         .get(`/trade/reference/${reference}/find`)
         .expect("Content-type", /json/)
         .expect(200)
@@ -302,8 +302,8 @@ describe("GET Endpoints Tests", function () {
         .fn()
         .mockRejectedValue(new Error("Fake Error"));
 
-      request(app)
-        .get(`/trade/reference/${"Bad Request"}/find`)
+      supertest(app)
+        .get(`/trade/reference/${"Bad supertest"}/find`)
         .expect("Content-type", /json/)
         .expect(500)
         .end(function (err) {
@@ -328,7 +328,7 @@ describe("Delete Endpoints", function () {
       ],
     });
 
-    request(app)
+    supertest(app)
       .delete(`/trade/id/${1}/delete`)
       .expect(200)
       .expect("Content-type", /json/)
@@ -344,7 +344,7 @@ describe("Delete Endpoints", function () {
       .fn()
       .mockRejectedValue(new Error("Fake Error"));
 
-    request(app)
+    supertest(app)
       .delete(`/trade/id/${1}/delete`)
       .expect("Content-type", /json/)
       .expect(500)
