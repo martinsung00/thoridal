@@ -23,6 +23,21 @@ export default class Controller {
     }
   }
 
+  public async delete(
+    id: string
+  ): Promise<{
+    rows: Array<{ id: string }>;
+  }> {
+    try {
+      const response = await this.db.delete(id);
+      return response;
+    } catch (err) {
+      this.db.logger.log("error", "Error:", err);
+
+      throw err;
+    }
+  }
+
   public async read(id: string): Promise<object> {
     try {
       const response = await this.db.read(id);
