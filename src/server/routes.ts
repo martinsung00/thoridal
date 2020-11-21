@@ -23,7 +23,7 @@ app.use(express.static(`${__dirname}/../client/dist`));
 
 app.put("/trade/:user/write", async function (req, res) {
   const body: Trade = req.body;
-  let precedence: true | false | null = false;
+  let precedence: boolean = false;
 
   if (!req.body.id) {
     res.sendStatus(400);
@@ -31,24 +31,28 @@ app.put("/trade/:user/write", async function (req, res) {
   }
 
   try {
-    const result = await controller.read(body.id);
+    const result: {
+      rows: Trade[];
+    } = await controller.read(body.id);
 
-    result.rows.length > 0 ? precedence = true : false;
+    result.rows.length > 0 ? (precedence = true) : (precedence = false);
   } catch (err) {
     gateway.logger.log("error", "Error:", err);
 
-    precedence = null;
+    // Escape early if read fails
+    res.sendStatus(500);
+    return;
   }
 
-  if (precedence === null) {
-    res.sendStatus(500);
-
-    return;
-  } else if (!!precedence) {
+  if (!!precedence) {
     body.created_at = controller.generateDate();
 
     try {
-      const result = await controller.update(body);
+      const result: {
+        rows: {
+          id: string;
+        }[];
+      } = await controller.update(body);
 
       res.status(200).send(result);
       return;
@@ -61,7 +65,11 @@ app.put("/trade/:user/write", async function (req, res) {
     body.created_at = controller.generateDate();
 
     try {
-      const result = await controller.write(body);
+      const result: {
+        rows: {
+          id: string;
+        }[];
+      } = await controller.write(body);
 
       res.status(200).send(result);
       return;
@@ -74,10 +82,12 @@ app.put("/trade/:user/write", async function (req, res) {
 });
 
 app.get("/trade/id/:id/find", async function (req, res) {
-  const query = req.params.id;
+  const query: string = req.params.id;
 
   try {
-    const result = await controller.read(query);
+    const result: {
+      rows: Trade[];
+    } = await controller.read(query);
 
     res.status(200).send(result);
   } catch (err) {
@@ -88,10 +98,12 @@ app.get("/trade/id/:id/find", async function (req, res) {
 });
 
 app.get("/trade/ticker/:ticker/find", async function (req, res) {
-  const query = req.params.ticker;
+  const query: string = req.params.ticker;
 
   try {
-    const result = await controller.readByTicker(query);
+    const result: {
+      rows: Trade[];
+    } = await controller.readByTicker(query);
 
     res.status(200).send(result);
   } catch (err) {
@@ -102,10 +114,12 @@ app.get("/trade/ticker/:ticker/find", async function (req, res) {
 });
 
 app.get("/trade/company/:company/find", async function (req, res) {
-  const query = req.params.company;
+  const query: string = req.params.company;
 
   try {
-    const result = await controller.readByCompany(query);
+    const result: {
+      rows: Trade[];
+    } = await controller.readByCompany(query);
 
     res.status(200).send(result);
   } catch (err) {
@@ -116,10 +130,12 @@ app.get("/trade/company/:company/find", async function (req, res) {
 });
 
 app.get("/trade/date/:date/find", async function (req, res) {
-  const query = req.params.date;
+  const query: string = req.params.date;
 
   try {
-    const result = await controller.readByDate(query);
+    const result: {
+      rows: Trade[];
+    } = await controller.readByDate(query);
 
     res.status(200).send(result);
   } catch (err) {
@@ -130,10 +146,12 @@ app.get("/trade/date/:date/find", async function (req, res) {
 });
 
 app.get("/trade/reference/:reference/find", async function (req, res) {
-  const query = req.params.reference;
+  const query: string = req.params.reference;
 
   try {
-    const result = await controller.readByReferenceNumber(query);
+    const result: {
+      rows: Trade[];
+    } = await controller.readByReferenceNumber(query);
 
     res.status(200).send(result);
   } catch (err) {
@@ -144,10 +162,14 @@ app.get("/trade/reference/:reference/find", async function (req, res) {
 });
 
 app.delete("/trade/id/:id/delete", async function (req, res) {
-  const query = req.params.id;
+  const query: string = req.params.id;
 
   try {
-    const result = await controller.delete(query);
+    const result: {
+      rows: {
+        id: string;
+      }[];
+    } = await controller.delete(query);
 
     res.status(200).send(result);
   } catch (err) {
