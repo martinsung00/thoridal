@@ -67,6 +67,7 @@ describe("Controllers Test", function () {
 
         await controller.write(trade);
         expect(logger).toHaveBeenCalledTimes(1);
+        expect(logger).toHaveBeenCalledWith("Fake Error");
       } catch (err) {
         expect(err.message).toEqual("Fake Error");
         done();
@@ -103,6 +104,7 @@ describe("Controllers Test", function () {
 
         await controller.delete(trade.id);
         expect(logger).toHaveBeenCalledTimes(1);
+        expect(logger).toHaveBeenCalledWith("Fake Error");
       } catch (err) {
         expect(err.message).toEqual("Fake Error");
         done();
@@ -131,6 +133,7 @@ describe("Controllers Test", function () {
 
         await controller.read(trade.id);
         expect(logger).toHaveBeenCalledTimes(1);
+        expect(logger).toHaveBeenCalledWith("Fake Error");
       } catch (err) {
         expect(err.message).toEqual("Fake Error");
         done();
@@ -166,6 +169,7 @@ describe("Controllers Test", function () {
 
         await controller.readByTicker(trade.ticker);
         expect(logger).toHaveBeenCalledTimes(1);
+        expect(logger).toHaveBeenCalledWith("Fake Error");
       } catch (err) {
         expect(err.message).toEqual("Fake Error");
         done();
@@ -199,6 +203,7 @@ describe("Controllers Test", function () {
 
         await controller.readByCompany(trade.created_at);
         expect(logger).toHaveBeenCalledTimes(1);
+        expect(logger).toHaveBeenCalledWith("Fake Error");
       } catch (err) {
         expect(err.message).toEqual("Fake Error");
         done();
@@ -230,6 +235,7 @@ describe("Controllers Test", function () {
 
         await controller.readByDate(trade.created_at);
         expect(logger).toHaveBeenCalledTimes(1);
+        expect(logger).toHaveBeenCalledWith("Fake Error");
       } catch (err) {
         expect(err.message).toEqual("Fake Error");
         done();
@@ -264,6 +270,7 @@ describe("Controllers Test", function () {
 
         await controller.readByReferenceNumber(trade.reference_number);
         expect(logger).toHaveBeenCalledTimes(1);
+        expect(logger).toHaveBeenCalledWith("Fake Error");
       } catch (err) {
         expect(err.message).toEqual("Fake Error");
         done();
