@@ -1,4 +1,4 @@
-import express, { json } from "express";
+import express, { json, urlencoded } from "express";
 import cors from "cors";
 import Controller from "./controller/index";
 import { Trade } from "./types/index";
@@ -8,7 +8,7 @@ const controller = new Controller();
 
 const app = express();
 
-app.use(express.urlencoded());
+app.use(urlencoded());
 app.use(json());
 app.use(
   cors({

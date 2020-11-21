@@ -38,7 +38,11 @@ export default class Controller {
     }
   }
 
-  public async read(id: string): Promise<object> {
+  public async read(
+    id: string
+  ): Promise<{
+    rows: Array<Trade>;
+  }> {
     try {
       const response = await this.db.read(id);
       return response;
@@ -49,7 +53,11 @@ export default class Controller {
     }
   }
 
-  public async readByTicker(ticker: string): Promise<object> {
+  public async readByTicker(
+    ticker: string
+  ): Promise<{
+    rows: Array<Trade>;
+  }> {
     try {
       const response = await this.db.readByTicker(ticker);
       return response;
@@ -60,7 +68,11 @@ export default class Controller {
     }
   }
 
-  public async readByCompany(company: string): Promise<object> {
+  public async readByCompany(
+    company: string
+  ): Promise<{
+    rows: Array<Trade>;
+  }> {
     try {
       const response = await this.db.readByCompany(company);
       return response;
@@ -70,7 +82,11 @@ export default class Controller {
       throw err;
     }
   }
-  public async readByReferenceNumber(refNum: string): Promise<object> {
+  public async readByReferenceNumber(
+    refNum: string
+  ): Promise<{
+    rows: Array<Trade>;
+  }> {
     try {
       const response = await this.db.readByReferenceNumber(refNum);
       return response;
@@ -81,7 +97,11 @@ export default class Controller {
     }
   }
 
-  public async readByDate(date: string): Promise<object> {
+  public async readByDate(
+    date: string
+  ): Promise<{
+    rows: Array<Trade>;
+  }> {
     try {
       const response = await this.db.readByDate(date);
       return response;
