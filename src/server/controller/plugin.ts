@@ -23,6 +23,21 @@ export default class Controller {
     }
   }
 
+  public async update(
+    body: Trade
+  ): Promise<{
+    rows: Array<{ id: string }>;
+  }> {
+    try {
+      const id = await this.db.update(body);
+      return id;
+    } catch (err) {
+      this.db.logger.log("error", "Error:", err);
+
+      throw err;
+    }
+  }
+
   public async delete(
     id: string
   ): Promise<{

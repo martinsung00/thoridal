@@ -75,6 +75,44 @@ describe("Controllers Test", function () {
     });
   });
 
+  describe("Update Action", function () {
+    beforeEach(function () {
+      PostgresGateway.prototype.update = jest.fn().mockResolvedValue({
+        rows: [
+          {
+            id: "abc",
+          },
+        ],
+      });
+    });
+
+    it("should write a trade to db and return an id", async function (done) {
+      const result: {
+        rows: Array<{ id: string }>;
+      } = await controller.update(trade);
+
+      expect(result.rows[0].id).toEqual("abc");
+      expect(PostgresGateway.prototype.update).toHaveBeenCalledWith(trade);
+      done();
+    });
+
+    it("should log the error with Winston logger if the query fails", async function (done) {
+      try {
+        PostgresGateway.prototype.update = jest
+          .fn()
+          .mockRejectedValue(new Error("Fake Error"));
+
+        await controller.update(trade);
+        expect(logger).toHaveBeenCalledTimes(1);
+        expect(logger).toHaveBeenCalledWith("Fake Error");
+      } catch (err) {
+        expect(err.message).toEqual("Fake Error");
+        done();
+      }
+    });
+  });
+
+
   describe("Delete Action", function () {
     beforeEach(function () {
       PostgresGateway.prototype.delete = jest.fn().mockResolvedValue({

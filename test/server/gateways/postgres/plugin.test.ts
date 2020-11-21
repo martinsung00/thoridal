@@ -91,6 +91,70 @@ describe("Postgres Gateway Tests", function () {
     });
   });
 
+  describe("Update Action", function () {
+    beforeAll(function () {
+      pg.Client.prototype.query = jest.fn().mockResolvedValue({
+        rows: [
+          {
+            id: "abc",
+          },
+        ],
+      });
+    });
+
+    afterAll(function () {
+      jest.resetAllMocks();
+    });
+
+    it("should write a trade to the database and return an id", async function (done) {
+      const result = await db.update(trade);
+
+      expect(result.rows).toEqual([
+        {
+          id: "abc",
+        },
+      ]);
+      expect(
+        pg.Client.prototype.query
+      ).toHaveBeenCalledWith(
+        "UPDATE trades SET ticker = $1, company_name = $2, reference_number = $3, unit_price = $4, quantity = $5, total_cost = $6, trade_type = $7, note = $8, created_at = $9, trade_status = $10 WHERE id = $11 RETURNING id",
+        [
+          trade.ticker,
+          trade.company_name,
+          trade.reference_number,
+          trade.unit_price,
+          trade.quantity,
+          trade.total_cost,
+          trade.trade_type,
+          trade.note,
+          trade.created_at,
+          trade.trade_status,
+          trade.id,
+        ]
+      );
+      await done();
+    });
+
+    it("should create a log with Winston's logger if an error occurs", async function (done) {
+      /*
+    Since the error message will always match what is thrown in the stub,
+    it is wiser to test if Winston is able to log errors instead.
+    */
+      try {
+        pg.Client.prototype.query = jest
+          .fn()
+          .mockRejectedValueOnce(new TypeError("Fake Error"));
+
+        await db.update(trade);
+      } catch (error) {
+        expect(error.message).toBe("Fake Error");
+        expect(logger).toHaveBeenCalledTimes(1);
+        done();
+      }
+    });
+  });
+
+
   describe("Read Action", function () {
     beforeAll(function () {
       pg.Client.prototype.query = jest.fn().mockResolvedValue(trade);

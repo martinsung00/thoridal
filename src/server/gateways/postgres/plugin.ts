@@ -157,16 +157,30 @@ export default class PostgresGateway extends Gateway {
     }
   }
 
-  public async write(
+  public async update(
     document: Trade
   ): Promise<{
     rows: Array<{ id: string }>;
   }> {
-    const client: PoolClient = await this.pool.connect();
+    const client = await this.pool.connect();
+    const {
+      id,
+      ticker,
+      company_name,
+      reference_number,
+      unit_price,
+      quantity,
+      total_cost,
+      trade_type,
+      note,
+      created_at,
+      trade_status,
+    } = document;
 
     try {
-      const {
-        id,
+      const queryText: string =
+        "UPDATE trades SET ticker = $1, company_name = $2, reference_number = $3, unit_price = $4, quantity = $5, total_cost = $6, trade_type = $7, note = $8, created_at = $9, trade_status = $10 WHERE id = $11 RETURNING id";
+      const response: QueryResult = await client.query(queryText, [
         ticker,
         company_name,
         reference_number,
@@ -177,11 +191,46 @@ export default class PostgresGateway extends Gateway {
         note,
         created_at,
         trade_status,
-      } = document;
+        id,
+      ]);
 
+      await client.query(TRANSACTIONS.COMMIT);
+
+      return response;
+    } catch (err) {
+      this.logger.log("error", "Error:", err);
+
+      await client.query(TRANSACTIONS.ROLLBACK);
+
+      throw err;
+    } finally {
+      client.release();
+    }
+  }
+
+  public async write(
+    document: Trade
+  ): Promise<{
+    rows: Array<{ id: string }>;
+  }> {
+    const client: PoolClient = await this.pool.connect();
+    const {
+      id,
+      ticker,
+      company_name,
+      reference_number,
+      unit_price,
+      quantity,
+      total_cost,
+      trade_type,
+      note,
+      created_at,
+      trade_status,
+    } = document;
+
+    try {
       const queryText: string =
         "INSERT INTO trades (id, ticker, company_name, reference_number, unit_price, quantity, total_cost, trade_type, note, created_at, trade_status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id";
-
       const response: QueryResult = await client.query(queryText, [
         id,
         ticker,

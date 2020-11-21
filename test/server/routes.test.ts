@@ -2,6 +2,7 @@ import { app } from "../../src/server/index";
 import { Trade } from "../../src/server/types";
 import { PostgresGateway } from "../../src/server/gateways/index";
 import supertest from "supertest";
+import Controller from "../../src/server/controller/index";
 
 describe("Endpoints Behavior Test", function () {
   let module: { [port: string]: "" };
@@ -39,6 +40,8 @@ describe("Endpoints Behavior Test", function () {
 });
 
 describe("PUT Endpoint Tests", function () {
+  const controller = new Controller();
+
   describe("Write Action", function () {
     jest.mock("../../src/server/gateways/index");
 
@@ -52,19 +55,37 @@ describe("PUT Endpoint Tests", function () {
       total_cost: 0,
       trade_type: "long",
       note: "This is a test.",
-      created_at: "MM-DD-YYYY",
+      created_at: controller.generateDate(),
       trade_status: true,
     };
 
-    beforeAll(function () {
+    const updateTrade: Trade = {
+      id: "abc",
+      ticker: "DEF",
+      company_name: "Update Test",
+      reference_number: "67890",
+      unit_price: 0,
+      quantity: 0,
+      total_cost: 0,
+      trade_type: "short",
+      note: "This is an updated test.",
+      created_at: controller.generateDate(),
+      trade_status: true,
+    };
+
+    beforeEach(function () {
       jest.resetModules();
     });
 
-    afterAll(function () {
+    afterEach(function () {
       jest.resetAllMocks();
     });
 
-    it("should create a new trade and return a 200 OK status", async function (done) {
+    it("should create a new trade if ID is not in use and return a 200 OK status", async function (done) {
+      PostgresGateway.prototype.read = jest.fn().mockResolvedValue({
+        rows: [],
+      });
+
       PostgresGateway.prototype.write = jest.fn().mockResolvedValue({
         rows: [
           {
@@ -81,7 +102,41 @@ describe("PUT Endpoint Tests", function () {
         .expect(200)
         .end(function (err) {
           if (err) return done(err);
+          expect(PostgresGateway.prototype.read).toHaveBeenCalledTimes(1);
+          expect(PostgresGateway.prototype.read).toHaveBeenCalledWith(trade.id);
           expect(PostgresGateway.prototype.write).toHaveBeenCalledTimes(1);
+          expect(PostgresGateway.prototype.write).toHaveBeenCalledWith(trade);
+          done();
+        });
+    });
+
+    it("should update an existing trade if ID is in use and return a 200 OK status", async function (done) {
+      PostgresGateway.prototype.read = jest.fn().mockResolvedValue({
+        rows: [{}, {}],
+      });
+
+      PostgresGateway.prototype.update = jest.fn().mockResolvedValue({
+        rows: [
+          {
+            id: "abc",
+          },
+        ],
+      });
+
+      supertest(app)
+        .put("/trade/user/write")
+        .send(updateTrade)
+        .set("Accept", "application/json")
+        .type("json")
+        .expect(200)
+        .end(function (err) {
+          if (err) return done(err);
+          expect(PostgresGateway.prototype.read).toHaveBeenCalledTimes(1);
+          expect(PostgresGateway.prototype.read).toHaveBeenCalledWith(trade.id);
+          expect(PostgresGateway.prototype.update).toHaveBeenCalledTimes(1);
+          expect(PostgresGateway.prototype.update).toHaveBeenCalledWith(
+            updateTrade
+          );
           done();
         });
     });
@@ -101,9 +156,50 @@ describe("PUT Endpoint Tests", function () {
         });
     });
 
-    it("should reject a trade that has a duplicate id", async function (done) {
-      jest.mock("pg");
+    it("should return a 500 Internal Server Error if the read method fails", async function (done) {
+      PostgresGateway.prototype.read = jest
+        .fn()
+        .mockRejectedValueOnce(new Error("Fake Error"));
+
+      supertest(app)
+        .put("/trade/user/write")
+        .send(trade)
+        .set("Accept", "application/json")
+        .type("json")
+        .expect(500)
+        .end(function (err) {
+          if (err) return done(err);
+          done();
+        });
+    });
+
+    it("should return a 500 Internal Server Error if the write method fails", async function (done) {
+      PostgresGateway.prototype.read = jest.fn().mockResolvedValue({
+        rows: [],
+      });
+
       PostgresGateway.prototype.write = jest
+        .fn()
+        .mockRejectedValue(new Error("Fake Error"));
+
+      supertest(app)
+        .put("/trade/user/write")
+        .send(trade)
+        .set("Accept", "application/json")
+        .type("json")
+        .expect(500)
+        .end(function (err) {
+          if (err) return done(err);
+          done();
+        });
+    });
+
+    it("should return a 500 Internal Server Error if the update method fails", async function (done) {
+      PostgresGateway.prototype.read = jest.fn().mockResolvedValue({
+        rows: [{}, {}],
+      });
+
+      PostgresGateway.prototype.update = jest
         .fn()
         .mockRejectedValue(new Error("Fake Error"));
 
@@ -122,36 +218,57 @@ describe("PUT Endpoint Tests", function () {
 });
 
 describe("GET Endpoints Tests", function () {
+  const controller = new Controller();
+  const trade: Trade = {
+    id: "abc",
+    ticker: "ABC",
+    company_name: "Test",
+    reference_number: "12345",
+    unit_price: 0,
+    quantity: 0,
+    total_cost: 0,
+    trade_type: "long",
+    note: "This is a test.",
+    created_at: controller.generateDate(),
+    trade_status: true,
+  };
+
+  afterEach(function () {
+    jest.resetAllMocks();
+    jest.resetModules();
+  });
+
   describe("GET by id Endpoint", function () {
-    beforeAll(function () {
+    beforeEach(function () {
       jest.resetModules();
+      PostgresGateway.prototype.read = jest.fn().mockResolvedValue(trade);
     });
 
-    afterAll(function () {
+    afterEach(function () {
       jest.resetAllMocks();
     });
 
-    it("should retrieve trades by search parameter: job id, and return a 200 OK status", function (done) {
-      const id: string = "1";
+    it("should retrieve trades by search parameter: ticker, and return a 200 OK status", async function (done) {
+      const id: string = "abc";
 
       supertest(app)
         .get(`/trade/id/${id}/find`)
-        .expect("Content-type", /json/)
         .expect(200)
+        .expect("Content-type", /json/)
         .end(function (err) {
           if (err) return done(err);
           done();
         });
     });
 
-    it("should return with a status of 500 Internal Server Error when the database query fails", function (done) {
+    it("should return with a status of 500 Internal Server Error when the database query fails", async function (done) {
       PostgresGateway.prototype.read = jest
         .fn()
         .mockRejectedValue(new Error("Fake Error"));
 
       supertest(app)
         .get(`/trade/id/${"badsupertest"}/find`)
-        .expect("Content-type", /json/)
+        .expect("Content-type", "text/plain; charset=utf-8")
         .expect(500)
         .end(function (err) {
           if (err) return done(err);
@@ -163,6 +280,9 @@ describe("GET Endpoints Tests", function () {
   describe("GET by ticker Endpoint Tests", function () {
     beforeAll(function () {
       jest.resetModules();
+      PostgresGateway.prototype.readByTicker = jest
+        .fn()
+        .mockResolvedValue(trade);
     });
 
     afterAll(function () {
@@ -189,7 +309,7 @@ describe("GET Endpoints Tests", function () {
 
       supertest(app)
         .get(`/trade/ticker/${"badsupertest"}/find`)
-        .expect("Content-type", /json/)
+        .expect("Content-type", "text/plain; charset=utf-8")
         .expect(500)
         .end(function (err) {
           if (err) return done(err);
@@ -201,7 +321,9 @@ describe("GET Endpoints Tests", function () {
   describe("GET by company name Endpoint Tests", function () {
     beforeAll(function () {
       jest.resetModules();
-      jest.restoreAllMocks();
+      PostgresGateway.prototype.readByCompany = jest
+        .fn()
+        .mockResolvedValue(trade);
     });
 
     afterAll(function () {
@@ -228,7 +350,7 @@ describe("GET Endpoints Tests", function () {
 
       supertest(app)
         .get(`/trade/company/${"badsupertest"}/find`)
-        .expect("Content-type", /json/)
+        .expect("Content-type", "text/plain; charset=utf-8")
         .expect(500)
         .end(function (err) {
           if (err) return done(err);
@@ -240,6 +362,7 @@ describe("GET Endpoints Tests", function () {
   describe("GET by date Endpoint Tests", function () {
     beforeAll(function () {
       jest.resetModules();
+      PostgresGateway.prototype.readByDate = jest.fn().mockResolvedValue(trade);
     });
 
     afterAll(function () {
@@ -266,7 +389,7 @@ describe("GET Endpoints Tests", function () {
 
       supertest(app)
         .get(`/trade/date/${"badsupertest"}/find`)
-        .expect("Content-type", /json/)
+        .expect("Content-type", "text/plain; charset=utf-8")
         .expect(500)
         .end(function (err) {
           if (err) return done(err);
@@ -278,6 +401,9 @@ describe("GET Endpoints Tests", function () {
   describe("GET by reference number Endpoint Tests", function () {
     beforeAll(function () {
       jest.resetModules();
+      PostgresGateway.prototype.readByReferenceNumber = jest
+        .fn()
+        .mockResolvedValue(trade);
     });
 
     afterAll(function () {
@@ -304,7 +430,7 @@ describe("GET Endpoints Tests", function () {
 
       supertest(app)
         .get(`/trade/reference/${"Bad supertest"}/find`)
-        .expect("Content-type", /json/)
+        .expect("Content-type", "text/plain; charset=utf-8")
         .expect(500)
         .end(function (err) {
           if (err) return done(err);
@@ -315,7 +441,7 @@ describe("GET Endpoints Tests", function () {
 });
 
 describe("Delete Endpoints", function () {
-  afterEach(function () {
+  afterAll(function () {
     jest.resetAllMocks();
   });
 
@@ -346,7 +472,7 @@ describe("Delete Endpoints", function () {
 
     supertest(app)
       .delete(`/trade/id/${1}/delete`)
-      .expect("Content-type", /json/)
+      .expect("Content-type", "text/plain; charset=utf-8")
       .expect(500)
       .end(function (err) {
         if (err) return done(err);
