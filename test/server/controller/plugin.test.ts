@@ -112,7 +112,6 @@ describe("Controllers Test", function () {
     });
   });
 
-
   describe("Delete Action", function () {
     beforeEach(function () {
       PostgresGateway.prototype.delete = jest.fn().mockResolvedValue({

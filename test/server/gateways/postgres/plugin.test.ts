@@ -154,7 +154,6 @@ describe("Postgres Gateway Tests", function () {
     });
   });
 
-
   describe("Read Action", function () {
     beforeAll(function () {
       pg.Client.prototype.query = jest.fn().mockResolvedValue(trade);
