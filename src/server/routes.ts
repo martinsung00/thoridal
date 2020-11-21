@@ -23,26 +23,28 @@ app.use(express.static(`${__dirname}/../client/dist`));
 
 app.put("/trade/:user/write", async function (req, res) {
   const body: Trade = req.body;
+  let precedence: true | false | null = false;
 
   if (!req.body.id) {
     res.sendStatus(400);
     return;
   }
 
-  const precedence = await controller.read(body.id).catch(function (err) {
+  try {
+    const result = await controller.read(body.id);
+
+    result.rows.length > 0 ? precedence = true : false;
+  } catch (err) {
     gateway.logger.log("error", "Error:", err);
-    return err;
-  });
 
-  if (!precedence.rows) {
-    // If controller.read fails, precedence will not have the rows property.
+    precedence = null;
+  }
 
+  if (precedence === null) {
     res.sendStatus(500);
-    return;
-  } else if (precedence.rows.length > 0) {
-    // If precedence.rows has a length of 0, the id does not exist.
-    // Created at must be generated in this scope, or else we can't detect if the req.body is missing (bad input).
 
+    return;
+  } else if (!!precedence) {
     body.created_at = controller.generateDate();
 
     try {
