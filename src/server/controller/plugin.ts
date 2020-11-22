@@ -1,10 +1,13 @@
+import Gateway from "../gateways/gateway";
 import { PostgresGateway } from "../gateways/index";
 import { Trade } from "../types";
 
-export default class Controller {
+export default class Controller extends Gateway {
   db: PostgresGateway;
 
   constructor() {
+    super("Controller");
+
     this.db = new PostgresGateway();
   }
 
@@ -17,7 +20,7 @@ export default class Controller {
       const id = await this.db.write(body);
       return id;
     } catch (err) {
-      this.db.logger.log("error", "Error:", err);
+      this.logger.log("error", "Error:", err);
 
       throw err;
     }
@@ -32,7 +35,7 @@ export default class Controller {
       const id = await this.db.update(body);
       return id;
     } catch (err) {
-      this.db.logger.log("error", "Error:", err);
+      this.logger.log("error", "Error:", err);
 
       throw err;
     }
@@ -47,7 +50,7 @@ export default class Controller {
       const response = await this.db.delete(id);
       return response;
     } catch (err) {
-      this.db.logger.log("error", "Error:", err);
+      this.logger.log("error", "Error:", err);
 
       throw err;
     }
@@ -62,7 +65,7 @@ export default class Controller {
       const response = await this.db.read(id);
       return response;
     } catch (err) {
-      this.db.logger.log("error", "Error:", err);
+      this.logger.log("error", "Error:", err);
 
       throw err;
     }
@@ -77,7 +80,7 @@ export default class Controller {
       const response = await this.db.readByTicker(ticker);
       return response;
     } catch (err) {
-      this.db.logger.log("error", "Error:", err);
+      this.logger.log("error", "Error:", err);
 
       throw err;
     }
@@ -92,7 +95,7 @@ export default class Controller {
       const response = await this.db.readByCompany(company);
       return response;
     } catch (err) {
-      this.db.logger.log("error", "Error:", err);
+      this.logger.log("error", "Error:", err);
 
       throw err;
     }
@@ -106,7 +109,7 @@ export default class Controller {
       const response = await this.db.readByReferenceNumber(refNum);
       return response;
     } catch (err) {
-      this.db.logger.log("error", "Error:", err);
+      this.logger.log("error", "Error:", err);
 
       throw err;
     }
@@ -121,7 +124,7 @@ export default class Controller {
       const response = await this.db.readByDate(date);
       return response;
     } catch (err) {
-      this.db.logger.log("error", "Error:", err);
+      this.logger.log("error", "Error:", err);
 
       throw err;
     }
