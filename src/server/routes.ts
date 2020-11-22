@@ -26,7 +26,7 @@ app.put("/trade/:user/write", async function (req, res) {
   let precedence: boolean = false;
 
   if (!req.body.id) {
-    res.sendStatus(400);
+    res.status(400).send("Bad Request");
     return;
   }
 
@@ -40,7 +40,7 @@ app.put("/trade/:user/write", async function (req, res) {
     gateway.logger.log("error", "Error:", err);
 
     // Escape early if read fails
-    res.sendStatus(500);
+    res.status(500).send("Internal Server Error");
     return;
   }
 
@@ -58,7 +58,7 @@ app.put("/trade/:user/write", async function (req, res) {
       return;
     } catch (err) {
       gateway.logger.log("error", "Error:", err);
-      res.sendStatus(500);
+      res.status(500).send("Internal Server Error");
       return err;
     }
   } else {
@@ -75,7 +75,7 @@ app.put("/trade/:user/write", async function (req, res) {
       return;
     } catch (err) {
       gateway.logger.log("error", "Error:", err);
-      res.sendStatus(500);
+      res.status(500).send("Internal Server Error");
       return err;
     }
   }
@@ -92,7 +92,7 @@ app.get("/trade/id/:id/find", async function (req, res) {
     res.status(200).send(result);
   } catch (err) {
     gateway.logger.log("error", "Error:", err);
-    res.sendStatus(500);
+    res.status(500).send("Internal Server Error");
     return err;
   }
 });
@@ -108,7 +108,7 @@ app.get("/trade/ticker/:ticker/find", async function (req, res) {
     res.status(200).send(result);
   } catch (err) {
     gateway.logger.log("error", "Error:", err);
-    res.sendStatus(500);
+    res.status(500).send("Internal Server Error");
     return err;
   }
 });
@@ -124,7 +124,7 @@ app.get("/trade/company/:company/find", async function (req, res) {
     res.status(200).send(result);
   } catch (err) {
     gateway.logger.log("error", "Error:", err);
-    res.sendStatus(500);
+    res.status(500).send("Internal Server Error");
     return err;
   }
 });
@@ -140,7 +140,7 @@ app.get("/trade/date/:date/find", async function (req, res) {
     res.status(200).send(result);
   } catch (err) {
     gateway.logger.log("error", "Error:", err);
-    res.sendStatus(500);
+    res.status(500).send("Internal Server Error");
     return err;
   }
 });
@@ -156,7 +156,7 @@ app.get("/trade/reference/:reference/find", async function (req, res) {
     res.status(200).send(result);
   } catch (err) {
     gateway.logger.log("error", "Error:", err);
-    res.sendStatus(500);
+    res.status(500).send("Internal Server Error");
     return err;
   }
 });
@@ -174,7 +174,7 @@ app.delete("/trade/id/:id/delete", async function (req, res) {
     res.status(200).send(result);
   } catch (err) {
     gateway.logger.log("error", "Error:", err);
-    res.sendStatus(500);
+    res.status(500).send("Internal Server Error");
     return err;
   }
 });

@@ -268,7 +268,7 @@ describe("GET Endpoints Tests", function () {
 
       supertest(app)
         .get(`/trade/id/${"badsupertest"}/find`)
-        .expect("Content-type", "text/plain; charset=utf-8")
+        .expect("Content-type", "text/html; charset=utf-8")
         .expect(500)
         .end(function (err) {
           if (err) return done(err);
@@ -309,7 +309,7 @@ describe("GET Endpoints Tests", function () {
 
       supertest(app)
         .get(`/trade/ticker/${"badsupertest"}/find`)
-        .expect("Content-type", "text/plain; charset=utf-8")
+        .expect("Content-type", "text/html; charset=utf-8")
         .expect(500)
         .end(function (err) {
           if (err) return done(err);
@@ -350,7 +350,7 @@ describe("GET Endpoints Tests", function () {
 
       supertest(app)
         .get(`/trade/company/${"badsupertest"}/find`)
-        .expect("Content-type", "text/plain; charset=utf-8")
+        .expect("Content-type", "text/html; charset=utf-8")
         .expect(500)
         .end(function (err) {
           if (err) return done(err);
@@ -389,7 +389,7 @@ describe("GET Endpoints Tests", function () {
 
       supertest(app)
         .get(`/trade/date/${"badsupertest"}/find`)
-        .expect("Content-type", "text/plain; charset=utf-8")
+        .expect("Content-type", "text/html; charset=utf-8")
         .expect(500)
         .end(function (err) {
           if (err) return done(err);
@@ -430,7 +430,7 @@ describe("GET Endpoints Tests", function () {
 
       supertest(app)
         .get(`/trade/reference/${"Bad supertest"}/find`)
-        .expect("Content-type", "text/plain; charset=utf-8")
+        .expect("Content-type", "text/html; charset=utf-8")
         .expect(500)
         .end(function (err) {
           if (err) return done(err);
@@ -472,7 +472,7 @@ describe("Delete Endpoints", function () {
 
     supertest(app)
       .delete(`/trade/id/${1}/delete`)
-      .expect("Content-type", "text/plain; charset=utf-8")
+      .expect("Content-type", "text/html; charset=utf-8")
       .expect(500)
       .end(function (err) {
         if (err) return done(err);
