@@ -2,7 +2,7 @@ const path = require("path");
 
 module.exports = {
   // Change to your "entry-point".
-  entry: "./src/server/index",
+  entry: "./src/client/index",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "app.bundle.js",
@@ -17,6 +17,27 @@ module.exports = {
         test: /\.(ts|js)x?$/,
         exclude: /node_modules/,
         loader: "babel-loader",
+      },
+      {
+        test: /\.(sa|sc|c)ss$/,
+        use: [
+          "style-loader",
+          {
+            loader: "typings-for-css-modules-loader",
+            options: {
+              modules: true,
+              importLoaders: 1,
+              localIdentName: "[name]__[local]___[hash:base64:5]",
+              namedExport: true,
+              camelCase: true,
+              exportOnlyLocals: true,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.svg$/,
+        use: ["@svgr/webpack", "svg-url-loader"],
       },
     ],
   },

@@ -7,10 +7,15 @@ module.exports = {
   transform: {
     "^.+\\.jsx?$": "babel-jest",
     "^.+\\.tsx?$": "ts-jest",
+    ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$":
+      "jest-transform-stub",
+    "^.+\\.svg$": "jest-svg-transformer",
   },
   roots: ["<rootDir>"],
   moduleNameMapper: {
     "@models": "<rootDir>/server/src/models/index",
+    "^.+.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$":
+      "jest-transform-stub",
   },
   testEnvironment: "node",
   collectCoverage: true,

@@ -1,0 +1,87 @@
+.head {
+  width: 100%;
+  margin-bottom: 5%;
+  top: 0;
+  left: 0;
+  height: 7%;
+  position: absolute;
+  background-color: rgb(219, 219, 219);
+  color: black;
+  transition: top 0.3s;
+}
+
+.title {
+  position: relative;
+  float: left;
+  font-family: Helvetica;
+  font-weight: bold;
+  font-size: 17px;
+  margin-left: 4%;
+  margin-top: 1%;
+}
+
+.mainLogo {
+  position: relative;
+  float: left;
+  margin-top: 0.8%;
+  margin-left: 2%;
+  height: 25px;
+  width: 25px;
+}
+
+.searchIcon {
+  position: relative;
+  float: left;
+  margin-top: -0.5%;
+  margin-left: 2%;
+  padding-right: 0%;
+  height: 30px;
+  width: 30px;
+}
+
+.searchbar {
+  float: right;
+  position: relative;
+  margin-left: 90%;
+  margin-right: 5%;
+  margin-top: -2.15%;
+  background-color: rgba(255, 255, 255, 0.952);
+  border-radius: 2.5em;
+  width: 16.5em;
+  height: 1.8em;
+}
+
+.search {
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.952);
+  margin-top: 2%;
+  margin-left: 6.8%;
+  border: none;
+  height: 1.3em;
+  width: 5.5em;
+  font-family: Helvetica;
+  font-size: 16px;
+  outline: none;
+}
+
+.searchType {
+  position: relative;
+  float: right;
+  background-color: rgba(255, 255, 255, 0.952);
+  margin-top: -8.5%;
+  margin-right: 21%;
+  padding-left: 3%;
+  padding-right: -1%;
+  border-left: 0.7px solid darkgray;
+  width: 2.5em;
+  font-family: Helvetica;
+  font-size: 15px;
+  outline: none;
+}
+
+.sortBy {
+  border: none;
+  font-size: 14.5px;
+  font-weight: bold;
+  color: rgb(116, 116, 116);
+}

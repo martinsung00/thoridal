@@ -2,16 +2,17 @@ import express, { json, urlencoded } from "express";
 import cors from "cors";
 import Controller from "./controller/index";
 import { Trade } from "./types/index";
-import Gateway from "./gateways/gateway";
+import WinstonLogger from "./winston";
+import path from "path";
 
+class ThinLogger extends WinstonLogger {}
+const serverLog = new ThinLogger();
 const envPort: string | undefined = process.env.PORT;
 const controller = new Controller();
-class ThinGateway extends Gateway {}
-const gateway = new ThinGateway();
 
 const app = express();
 
-app.use(urlencoded());
+app.use(urlencoded({ extended: true }));
 app.use(json());
 app.use(
   cors({
@@ -19,7 +20,7 @@ app.use(
   })
 );
 
-app.use(express.static(`${__dirname}/../client/dist`));
+app.use("/", express.static(path.resolve(__dirname, "../../dist")));
 
 app.put("/trade/:user/write", async function (req, res) {
   const body: Trade = req.body;
@@ -37,11 +38,11 @@ app.put("/trade/:user/write", async function (req, res) {
 
     result.rows.length > 0 ? (precedence = true) : (precedence = false);
   } catch (err) {
-    gateway.logger.log("error", "Error:", err);
+    serverLog.logger.log("error", "Error:", err);
 
     // Escape early if read fails
     res.status(500).send("Internal Server Error");
-    return;
+    return err;
   }
 
   if (!!precedence) {
@@ -57,7 +58,7 @@ app.put("/trade/:user/write", async function (req, res) {
       res.status(200).send(result);
       return;
     } catch (err) {
-      gateway.logger.log("error", "Error:", err);
+      serverLog.logger.log("error", "Error:", err);
       res.status(500).send("Internal Server Error");
       return err;
     }
@@ -74,7 +75,7 @@ app.put("/trade/:user/write", async function (req, res) {
       res.status(200).send(result);
       return;
     } catch (err) {
-      gateway.logger.log("error", "Error:", err);
+      serverLog.logger.log("error", "Error:", err);
       res.status(500).send("Internal Server Error");
       return err;
     }
@@ -91,7 +92,7 @@ app.get("/trade/id/:id/find", async function (req, res) {
 
     res.status(200).send(result);
   } catch (err) {
-    gateway.logger.log("error", "Error:", err);
+    serverLog.logger.log("error", "Error:", err);
     res.status(500).send("Internal Server Error");
     return err;
   }
@@ -107,7 +108,7 @@ app.get("/trade/ticker/:ticker/find", async function (req, res) {
 
     res.status(200).send(result);
   } catch (err) {
-    gateway.logger.log("error", "Error:", err);
+    serverLog.logger.log("error", "Error:", err);
     res.status(500).send("Internal Server Error");
     return err;
   }
@@ -123,7 +124,7 @@ app.get("/trade/company/:company/find", async function (req, res) {
 
     res.status(200).send(result);
   } catch (err) {
-    gateway.logger.log("error", "Error:", err);
+    serverLog.logger.log("error", "Error:", err);
     res.status(500).send("Internal Server Error");
     return err;
   }
@@ -139,7 +140,7 @@ app.get("/trade/date/:date/find", async function (req, res) {
 
     res.status(200).send(result);
   } catch (err) {
-    gateway.logger.log("error", "Error:", err);
+    serverLog.logger.log("error", "Error:", err);
     res.status(500).send("Internal Server Error");
     return err;
   }
@@ -155,7 +156,7 @@ app.get("/trade/reference/:reference/find", async function (req, res) {
 
     res.status(200).send(result);
   } catch (err) {
-    gateway.logger.log("error", "Error:", err);
+    serverLog.logger.log("error", "Error:", err);
     res.status(500).send("Internal Server Error");
     return err;
   }
@@ -173,7 +174,7 @@ app.delete("/trade/id/:id/delete", async function (req, res) {
 
     res.status(200).send(result);
   } catch (err) {
-    gateway.logger.log("error", "Error:", err);
+    serverLog.logger.log("error", "Error:", err);
     res.status(500).send("Internal Server Error");
     return err;
   }
