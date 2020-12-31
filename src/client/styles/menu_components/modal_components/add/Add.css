@@ -1,0 +1,399 @@
+.root {
+  position: absolute;
+  top: 0;
+  overflow: scroll;
+}
+
+.spacing {
+  padding-bottom: 1.5em;
+}
+
+.form {
+  width: 100%;
+  position: absolute;
+  margin-top: 4%;
+  margin-left: 26%;
+  font-family: Helvetica, Arial, sans-serif;
+  text-align: left;
+}
+
+.label {
+  position: relative;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  padding-bottom: 5%;
+}
+
+.inputBoxID {
+  position: relative;
+  width: 10em;
+  outline: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1.5px solid rgb(0, 0, 0);
+  font-size: 18px;
+  margin-left: 20%;
+}
+
+.inputBoxCompany {
+  position: relative;
+  width: 10em;
+  outline: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1.5px solid rgb(0, 0, 0);
+  font-size: 18px;
+  margin-left: 6.1%;
+  background-color: none;
+}
+
+.inputBoxTicker {
+  position: relative;
+  width: 10em;
+  outline: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1.5px solid rgb(0, 0, 0);
+  font-size: 18px;
+  margin-left: 16.25%;
+  background-color: none;
+}
+
+.inputBoxRef {
+  position: relative;
+  width: 10em;
+  outline: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1.5px solid rgb(0, 0, 0);
+  font-size: 18px;
+  margin-left: 3.42%;
+}
+
+.inputBoxUnitPrice {
+  position: relative;
+  width: 10em;
+  outline: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1.5px solid rgb(0, 0, 0);
+  font-size: 18px;
+  margin-left: 12.57%;
+}
+
+.inputBoxQuantity {
+  position: relative;
+  width: 10em;
+  outline: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1.5px solid rgb(0, 0, 0);
+  font-size: 18px;
+  margin-left: 14%;
+}
+
+.inputBoxTotal {
+  position: relative;
+  width: 10em;
+  outline: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1.5px solid rgb(0, 0, 0);
+  font-size: 18px;
+  margin-left: 12.4%;
+}
+
+.inputBoxNote {
+  position: relative;
+  margin-top: -5%;
+  width: 10em;
+  outline: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  font-size: 18px;
+  margin-left: 17.4%;
+  word-wrap: break-word;
+}
+
+.selectBoxType {
+  position: relative;
+  outline: none;
+  border: none;
+  font-size: 18px;
+  font-family: Helvetica, Arial, sans-serif;
+  margin-left: 10.5%;
+  cursor: pointer;
+}
+
+.selectBoxStatus {
+  position: relative;
+  outline: none;
+  border: none;
+  font-size: 18px;
+  font-family: Helvetica, Arial, sans-serif;
+  margin-left: 9%;
+  cursor: pointer;
+}
+
+.selectBoxAction {
+  position: relative;
+  outline: none;
+  border: none;
+  font-size: 18px;
+  font-family: Helvetica, Arial, sans-serif;
+  margin-left: 9.3%;
+  cursor: pointer;
+}
+
+.submit {
+  position: relative;
+  height: 2em;
+  width: 6em;
+  background-color: black;
+  border-radius: 3px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  color: white;
+  margin-top: 2.5%;
+  margin-left: 25%;
+  text-align: center;
+}
+
+.submit:hover {
+  position: relative;
+  height: 2em;
+  width: 6em;
+  background-color: darkgray;
+  border-radius: 3px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  color: black;
+  margin-top: 2.5%;
+  margin-left: 25%;
+  text-align: center;
+  transition: ease-out 0.15s;
+}
+
+.cancel {
+  position: relative;
+  float: left;
+  height: 1.85em;
+  width: 6em;
+  background-color: rgb(255, 255, 255);
+  border: 1.3px solid black;
+  border-radius: 3px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  color: black;
+  margin-top: -4.95%;
+  margin-left: 2%;
+  text-align: center;
+}
+
+.cancel:hover {
+  position: relative;
+  float: left;
+  height: 1.85em;
+  width: 6em;
+  background-color: darkgray;
+  border-radius: 3px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  color: black;
+  margin-top: -4.95%;
+  margin-left: 2%;
+  text-align: center;
+  transition: ease-out 0.15s;
+}
+
+.cancelText {
+  position: relative;
+  margin-top: 6.3%;
+  right: -0.5%;
+}
+
+.errorState {
+  position: relative;
+  font-size: 30px;
+  font-family: Helvetica, Arial, sans-serif;
+  color: black;
+  top: 5em;
+  left: 15%;
+}
+
+.errorButton {
+  position: relative;
+  top: 5em;
+  left: 10em;
+  height: 1.85em;
+  width: 6em;
+  background-color: black;
+  color: rgb(255, 255, 255);
+  font-size: 20px;
+  text-align: center;
+  border-radius: 3px;
+  border: 1.3px solid darkgray;
+  cursor: pointer;
+}
+
+.errorButton:hover {
+  position: relative;
+  top: 5em;
+  left: 10em;
+  height: 1.85em;
+  width: 6em;
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  text-align: center;
+  border-radius: 3px;
+  border: 1.3px solid black;
+  cursor: pointer;
+  transition: ease-out 0.15s;
+}
+
+.errorButtonTag {
+  position: relative;
+  margin-top: 0.4em;
+}
+
+.confirmState {
+  position: relative;
+  font-size: 30px;
+  font-family: Helvetica, Arial, sans-serif;
+  color: black;
+  top: 5em;
+  left: 27%;
+}
+
+.undoButton {
+  position: relative;
+  float: left;
+  top: 5em;
+  left: 0.5em;
+  height: 1.85em;
+  width: 6em;
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  text-align: center;
+  border-radius: 3px;
+  border: 1.3px solid rgb(0, 0, 0);
+  cursor: pointer;
+}
+
+.undoButton:hover {
+  position: relative;
+  float: left;
+  top: 5em;
+  left: 0.5em;
+  height: 1.85em;
+  width: 6em;
+  background-color: darkgray;
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  text-align: center;
+  border-radius: 3px;
+  border: 1.3px solid black;
+  cursor: pointer;
+  transition: ease-out 0.15s;
+}
+
+.undoButtonTag {
+  position: relative;
+  margin-top: 0.4em;
+}
+
+.okButton {
+  position: relative;
+  float: right;
+  top: 5em;
+  right: 21em;
+  height: 1.85em;
+  width: 6em;
+  background-color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+  font-size: 20px;
+  text-align: center;
+  border-radius: 3px;
+  border: 1.3px solid rgb(68, 68, 68);
+  cursor: pointer;
+}
+
+.okButton:hover {
+  position: relative;
+  float: right;
+  top: 5em;
+  right: 21em;
+  height: 1.85em;
+  width: 6em;
+  background-color: darkgray;
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  text-align: center;
+  border-radius: 3px;
+  border: 1.3px solid black;
+  cursor: pointer;
+  transition: ease-out 0.15s;
+}
+
+.okButtonTag {
+  position: relative;
+  margin-top: 0.4em;
+}
+
+.undoConfirm {
+  position: relative;
+  float: left;
+  top: 5em;
+  left: 6.9em;
+  height: 1.85em;
+  width: 5em;
+  background-color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+  font-size: 20px;
+  text-align: center;
+  border-radius: 3px;
+  border: 1.3px solid rgb(0, 0, 0);
+  cursor: pointer;
+}
+
+.undoConfirm:hover {
+  position: relative;
+  float: left;
+  top: 5em;
+  left: 6.9em;
+  height: 1.85em;
+  width: 5em;
+  background-color: darkgray;
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  text-align: center;
+  border-radius: 3px;
+  border: 1.3px solid black;
+  cursor: pointer;
+  transition: ease-out 0.15s;
+}
+
+.undoConfirmTag {
+  position: relative;
+  margin-top: 0.4em;
+}
+
+.undoConfirmState {
+  position: relative;
+  font-size: 30px;
+  font-family: Helvetica, Arial, sans-serif;
+  color: black;
+  top: 5em;
+  left: 25.6%;
+}

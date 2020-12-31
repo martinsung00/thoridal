@@ -22,6 +22,59 @@ export default class PostgresGateway extends Gateway {
     });
   }
 
+  public async readAll(): Promise<{
+    rows: Array<Trade>;
+  }> {
+    const client: PoolClient = await this.pool.connect();
+
+    try {
+      const queryText: string = "SELECT * FROM trades";
+
+      const response: QueryResult = await client.query(queryText);
+
+      await client.query(TRANSACTIONS.COMMIT);
+
+      return response;
+    } catch (err) {
+      /*
+      This format will allow Winston to log the error message as "Error: [error message]".
+      Additionally, Winston will also save the error stack so we can trace the error.
+      */
+      this.logger.log("error", "Error:", err);
+
+      await client.query(TRANSACTIONS.ROLLBACK);
+
+      throw err;
+    } finally {
+      client.release();
+    }
+  }
+
+  public async readFive(): Promise<{
+    rows: Array<Trade>;
+  }> {
+    const client: PoolClient = await this.pool.connect();
+
+    try {
+      const queryText: string =
+        "SELECT * FROM trades WHERE created_at > now() - INTERVAL '1 week'";
+
+      const response: QueryResult = await client.query(queryText);
+
+      await client.query(TRANSACTIONS.COMMIT);
+
+      return response;
+    } catch (err) {
+      this.logger.log("error", "Error:", err);
+
+      await client.query(TRANSACTIONS.ROLLBACK);
+
+      throw err;
+    } finally {
+      client.release();
+    }
+  }
+
   public async read(
     id: string
   ): Promise<{
@@ -38,10 +91,6 @@ export default class PostgresGateway extends Gateway {
 
       return response;
     } catch (err) {
-      /*
-      This format will allow Winston to log the error message as "Error: [error message]".
-      Additionally, Winston will also save the error stack so we can trace the error.
-      */
       this.logger.log("error", "Error:", err);
 
       await client.query(TRANSACTIONS.ROLLBACK);
@@ -105,7 +154,7 @@ export default class PostgresGateway extends Gateway {
   }
 
   public async readByDate(
-    date: string
+    date: Date
   ): Promise<{
     rows: Array<Trade>;
   }> {
@@ -175,11 +224,12 @@ export default class PostgresGateway extends Gateway {
       note,
       created_at,
       trade_status,
+      trade_action,
     } = document;
 
     try {
       const queryText: string =
-        "UPDATE trades SET ticker = $1, company_name = $2, reference_number = $3, unit_price = $4, quantity = $5, total_cost = $6, trade_type = $7, note = $8, created_at = $9, trade_status = $10 WHERE id = $11 RETURNING id";
+        "UPDATE trades SET ticker = $1, company_name = $2, reference_number = $3, unit_price = $4, quantity = $5, total_cost = $6, trade_type = $7, note = $8, created_at = $9, trade_status = $10, trade_action = $11, id = $12 WHERE id = $12 RETURNING id";
       const response: QueryResult = await client.query(queryText, [
         ticker,
         company_name,
@@ -191,6 +241,7 @@ export default class PostgresGateway extends Gateway {
         note,
         created_at,
         trade_status,
+        trade_action,
         id,
       ]);
 
@@ -226,11 +277,12 @@ export default class PostgresGateway extends Gateway {
       note,
       created_at,
       trade_status,
+      trade_action,
     } = document;
 
     try {
       const queryText: string =
-        "INSERT INTO trades (id, ticker, company_name, reference_number, unit_price, quantity, total_cost, trade_type, note, created_at, trade_status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id";
+        "INSERT INTO trades (id, ticker, company_name, reference_number, unit_price, quantity, total_cost, trade_type, note, created_at, trade_status, trade_action) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING id";
       const response: QueryResult = await client.query(queryText, [
         id,
         ticker,
@@ -243,6 +295,7 @@ export default class PostgresGateway extends Gateway {
         note,
         created_at,
         trade_status,
+        trade_action,
       ]);
 
       await client.query(TRANSACTIONS.COMMIT);

@@ -1,4 +1,4 @@
-// Assists in building webpack with CSS modules & SVG (as ReactComponent)
+// Assists in building webpack with CSS modules & SVG (as React Components)
 
 declare module "*.css" {
   interface IClassNames {

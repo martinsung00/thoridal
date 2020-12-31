@@ -2,6 +2,7 @@ const path = require("path");
 
 module.exports = {
   // Change to your "entry-point".
+  devtool: "",
   entry: "./src/client/index",
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -9,6 +10,10 @@ module.exports = {
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".json"],
+  },
+  node: {
+    net: "empty",
+    child_process: "empty",
   },
   module: {
     rules: [

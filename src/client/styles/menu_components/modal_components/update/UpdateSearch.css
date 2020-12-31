@@ -1,0 +1,67 @@
+.root {
+  position: relative;
+  font-size: 30px;
+  font-family: Helvetica, Arial, sans-serif;
+  color: black;
+  top: 5em;
+  left: 0;
+  text-align: center;
+}
+
+.searchBar {
+  position: relative;
+  width: 15em;
+  height: 1em;
+  font-size: 22px;
+  font-family: Helvetica, Arial, sans-serif;
+  top: 3em;
+  right: 14%;
+  border: 3px solid gray;
+  border-radius: 3px;
+}
+
+.searchButton {
+  position: relative;
+  top: 5em;
+  left: 15.7em;
+  height: 1.85em;
+  width: 6em;
+  background-color: black;
+  color: rgb(255, 255, 255);
+  font-size: 20px;
+  text-align: center;
+  border-radius: 3px;
+  border: 1.3px solid darkgray;
+  cursor: pointer;
+}
+
+.searchButton:hover {
+  position: relative;
+  top: 5em;
+  left: 15.7em;
+  height: 1.85em;
+  width: 6em;
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  text-align: center;
+  border-radius: 3px;
+  border: 1.3px solid black;
+  cursor: pointer;
+  transition: ease-out 0.15s;
+}
+
+.searchButtonTag {
+  position: relative;
+  margin-top: 0.4em;
+}
+
+.searchBy {
+  position: relative;
+  margin-top: 5%;
+  left: 20.5%;
+  font-size: 25px;
+  font-family: Helvetica, Arial, sans-serif;
+  border: none;
+  outline: none;
+}

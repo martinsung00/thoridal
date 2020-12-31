@@ -1,0 +1,230 @@
+.root {
+  height: 30.4em;
+  width: 20%;
+  position: relative;
+  float: right;
+  right: 10.25%;
+  top: 0;
+  margin-bottom: 5%;
+  border: 5px solid rgb(133, 133, 133);
+  border-radius: 3.5px;
+  cursor: pointer;
+  transition: 0.5s ease-out;
+}
+
+.root:hover {
+  height: 30.4em;
+  width: 20%;
+  position: relative;
+  float: right;
+  right: 10.25%;
+  top: 0;
+  margin-bottom: 5%;
+  border: 5px solid rgb(48, 48, 48);
+  border-radius: 3.5px;
+  cursor: pointer;
+}
+
+.description {
+  position: relative;
+  margin-top: 20%;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 30px;
+  text-align: center;
+  color: rgb(133, 133, 133);
+  transition: 0.5s ease-out;
+}
+
+.root:hover .description {
+  position: relative;
+  margin-top: 20%;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 30px;
+  text-align: center;
+  color: rgb(48, 48, 48);
+}
+
+.arrow {
+  cursor: pointer;
+  height: 120px;
+  left: 33%;
+  position: absolute;
+  top: 38%;
+  transform: rotate(-90deg);
+  transition: transform 0.1s;
+  width: 80px;
+}
+
+.arrowTop {
+  background-color: rgb(133, 133, 133);
+  height: 10px;
+  left: -5px;
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  transform: rotate(45deg);
+  transform-origin: bottom right;
+}
+
+.arrowBottom {
+  background-color: rgb(133, 133, 133);
+  height: 10px;
+  left: -5px;
+  position: absolute;
+  top: 47%;
+  width: 100%;
+  transform: rotate(-45deg);
+  transform-origin: top right;
+}
+
+.arrowBottom:after {
+  background-color: rgb(0, 185, 9);
+  content: "";
+  height: 100%;
+  position: absolute;
+  top: 0;
+  transition: 0.15s;
+  left: 0;
+  right: 100%;
+  transition-delay: 0.15s;
+}
+
+.arrowTop:after {
+  background-color: rgb(0, 185, 9);
+  content: "";
+  height: 100%;
+  position: absolute;
+  top: 0;
+  transition: 0.15s;
+  left: 100%;
+  right: 0;
+  transition-delay: 0.15s;
+}
+
+.arrow:after {
+  left: 0;
+  right: 100%;
+  transition-delay: 0.15s;
+}
+
+.root:hover .arrowTop:after {
+  left: 0;
+  transition-delay: 0.15s;
+}
+
+.root:hover .arrowBottom:after {
+  right: 0;
+  transition-delay: 0s;
+}
+
+.arrow:active {
+  transform: rotate(-90deg) scale(0.9);
+}
+
+/* Second Arrow */
+
+.arrowTwo {
+  cursor: pointer;
+  height: 120px;
+  left: 33%;
+  position: absolute;
+  top: 47%;
+  transform: rotate(-90deg);
+  transition: transform 0.1s;
+  width: 80px;
+}
+
+.arrowTwo:active {
+  transform: rotate(-90deg) scale(0.9);
+}
+
+/* Third Arrow */
+
+.arrowThree {
+  cursor: pointer;
+  height: 120px;
+  left: 33%;
+  position: absolute;
+  top: 56%;
+  transform: rotate(-90deg);
+  transition: transform 0.1s;
+  width: 80px;
+}
+
+.arrowThree:active {
+  transform: rotate(-90deg) scale(0.9);
+}
+
+/* Modal Content */
+
+.mymodal {
+  position: fixed;
+  width: 60%;
+  height: 90%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #ccc;
+  background: #fff;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
+  transition: opacity 1s ease-in;
+}
+
+.myoverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  outline: none;
+  transition: opacity 1s ease-in;
+}
+
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 500ms ease-in;
+  outline: none;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+  transition: opacity 1s ease-in;
+  outline: none;
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+  transition: opacity 500ms ease-in;
+  outline: none;
+}
+
+.closeModal {
+  float: right;
+  padding: none;
+  padding-top: 2.2%;
+  margin-right: 11px;
+  margin-top: -5px;
+  font-family: Helvetica, sans-serif;
+  color: darkgray;
+  cursor: pointer;
+  outline: none;
+  transition: opacity 500ms ease-in;
+}
+
+.closeModal:hover {
+  float: right;
+  padding: none;
+  padding-top: 2.2%;
+  margin-right: 11px;
+  margin-top: -5px;
+  font-family: Helvetica, sans-serif;
+  color: black;
+  cursor: pointer;
+  outline: none;
+  transition: opacity 500ms ease-in;
+}

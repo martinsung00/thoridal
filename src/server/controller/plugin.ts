@@ -56,6 +56,32 @@ export default class Controller extends Gateway {
     }
   }
 
+  public async readAll(): Promise<{
+    rows: Array<Trade>;
+  }> {
+    try {
+      const response = await this.db.readAll();
+      return response;
+    } catch (err) {
+      this.logger.log("error", "Error:", err);
+
+      throw err;
+    }
+  }
+
+  public async readFive(): Promise<{
+    rows: Array<Trade>;
+  }> {
+    try {
+      const response = await this.db.readFive();
+      return response;
+    } catch (err) {
+      this.logger.log("error", "Error:", err);
+
+      throw err;
+    }
+  }
+
   public async read(
     id: string
   ): Promise<{
@@ -116,7 +142,7 @@ export default class Controller extends Gateway {
   }
 
   public async readByDate(
-    date: string
+    date: Date
   ): Promise<{
     rows: Array<Trade>;
   }> {
@@ -128,15 +154,5 @@ export default class Controller extends Gateway {
 
       throw err;
     }
-  }
-
-  public generateDate(): string {
-    const today: Date = new Date();
-    const dd: String = String(today.getDate()).padStart(2, "0");
-    const mm: String = String(today.getMonth() + 1).padStart(2, "0");
-    const yyyy: String = String(today.getFullYear());
-    const date: string = `${mm}-${dd}-${yyyy}`;
-
-    return date;
   }
 }

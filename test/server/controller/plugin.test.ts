@@ -16,8 +16,9 @@ describe("Controllers Test", function () {
     total_cost: 0,
     trade_type: "long",
     note: "",
-    created_at: "10/10/2020",
+    created_at: new Date(),
     trade_status: true,
+    trade_action: "bought",
   };
   const logger = jest.spyOn(controller.db.logger, "log");
 
@@ -43,19 +44,7 @@ describe("Controllers Test", function () {
       } = await controller.write(trade);
 
       expect(result.rows[0].id).toEqual("abc");
-      expect(PostgresGateway.prototype.write).toHaveBeenCalledWith({
-        company_name: "Test",
-        created_at: "10/10/2020",
-        id: "abc",
-        note: "",
-        quantity: 0,
-        reference_number: "12345",
-        ticker: "ABC",
-        total_cost: 0,
-        trade_status: true,
-        trade_type: "long",
-        unit_price: 0,
-      });
+      expect(PostgresGateway.prototype.write).toHaveBeenCalledWith(trade);
       done();
     });
 
@@ -141,6 +130,62 @@ describe("Controllers Test", function () {
 
         await controller.delete(trade.id);
         expect(logger).toHaveBeenCalledTimes(1);
+        expect(logger).toHaveBeenCalledWith("Fake Error");
+      } catch (err) {
+        expect(err.message).toEqual("Fake Error");
+        done();
+      }
+    });
+  });
+
+  describe("Read All Action", function () {
+    beforeAll(function () {
+      PostgresGateway.prototype.readAll = jest.fn().mockResolvedValue(trade);
+    });
+
+    it("should return a document given an id", async function (done) {
+      const result = await controller.readAll();
+
+      expect(result).toEqual(trade);
+      done();
+    });
+
+    it("should log the error with Winston logger if the query fails", async function (done) {
+      try {
+        PostgresGateway.prototype.readAll = jest
+          .fn()
+          .mockRejectedValue(new Error("Fake Error"));
+
+        await controller.readAll();
+        expect(logger).toHaveBeenCalled();
+        expect(logger).toHaveBeenCalledWith("Fake Error");
+      } catch (err) {
+        expect(err.message).toEqual("Fake Error");
+        done();
+      }
+    });
+  });
+
+  describe("Read First Five Action", function () {
+    beforeAll(function () {
+      PostgresGateway.prototype.readFive = jest.fn().mockResolvedValue(trade);
+    });
+
+    it("should return a document given an id", async function (done) {
+      const result = await controller.readFive();
+
+      expect(result).toEqual(trade);
+      done();
+    });
+
+    it("should log the error with Winston logger if the query fails", async function (done) {
+      try {
+        PostgresGateway.prototype.readFive = jest
+          .fn()
+          .mockRejectedValue(new Error("Fake Error"));
+
+        await controller.readFive();
+        expect(logger).toHaveBeenCalled();
         expect(logger).toHaveBeenCalledWith("Fake Error");
       } catch (err) {
         expect(err.message).toEqual("Fake Error");
@@ -238,7 +283,7 @@ describe("Controllers Test", function () {
           .fn()
           .mockRejectedValue(new Error("Fake Error"));
 
-        await controller.readByCompany(trade.created_at);
+        await controller.readByCompany(trade.company_name);
         expect(logger).toHaveBeenCalledTimes(1);
         expect(logger).toHaveBeenCalledWith("Fake Error");
       } catch (err) {

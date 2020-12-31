@@ -46,8 +46,6 @@ app.put("/trade/:user/write", async function (req, res) {
   }
 
   if (!!precedence) {
-    body.created_at = controller.generateDate();
-
     try {
       const result: {
         rows: {
@@ -63,9 +61,9 @@ app.put("/trade/:user/write", async function (req, res) {
       return err;
     }
   } else {
-    body.created_at = controller.generateDate();
-
     try {
+      body.created_at = new Date();
+
       const result: {
         rows: {
           id: string;
@@ -79,6 +77,31 @@ app.put("/trade/:user/write", async function (req, res) {
       res.status(500).send("Internal Server Error");
       return err;
     }
+  }
+});
+
+// Req does not get used, hence _req
+app.get("/trade/all/find", async function (_req, res) {
+  try {
+    const result = await controller.readAll();
+
+    res.status(200).send(result);
+  } catch (err) {
+    serverLog.logger.log("error", "Error:", err);
+    res.status(500).send("Internal Server Error");
+    return err;
+  }
+});
+
+app.get("/trade/recent/find", async function (_req, res) {
+  try {
+    const result = await controller.readFive();
+
+    res.status(200).send(result);
+  } catch (err) {
+    serverLog.logger.log("error", "Error:", err);
+    res.status(500).send("Internal Server Error");
+    return err;
   }
 });
 
@@ -131,7 +154,13 @@ app.get("/trade/company/:company/find", async function (req, res) {
 });
 
 app.get("/trade/date/:date/find", async function (req, res) {
-  const query: string = req.params.date;
+  10-10-2020
+  const date: string = req.params.date;
+  const month = Number(date.substring(0, 2));
+  const day = Number(date.substring(3, 5));
+  const year = Number(date.substring(6, 10));
+
+  const query = new Date(month, day, year)
 
   try {
     const result: {

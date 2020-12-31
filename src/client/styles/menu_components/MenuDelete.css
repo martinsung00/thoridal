@@ -1,0 +1,165 @@
+.root {
+  height: 30.4em;
+  width: 20%;
+  position: relative;
+  float: right;
+  right: 6.5%;
+  top: 0;
+  margin-bottom: 5%;
+  border: 5px solid rgb(133, 133, 133);
+  border-radius: 3.5px;
+  cursor: pointer;
+  transition: 0.5s ease-out;
+}
+
+.root:hover {
+  height: 30.4em;
+  width: 20%;
+  position: relative;
+  float: right;
+  right: 6.5%;
+  top: 0;
+  margin-bottom: 5%;
+  border: 5px solid rgb(48, 48, 48);
+  border-radius: 3.5px;
+  cursor: pointer;
+}
+
+.description {
+  position: relative;
+  margin-top: 20%;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 30px;
+  text-align: center;
+  color: rgb(133, 133, 133);
+  transition: 0.5s ease-out;
+}
+
+.root:hover .description {
+  position: relative;
+  margin-top: 20%;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 30px;
+  text-align: center;
+  color: rgb(48, 48, 48);
+}
+
+.deleteLogo {
+  height: 11em;
+  width: 11em;
+  position: relative;
+  margin-top: 42%;
+  margin-left: 9%;
+  border: 11px solid rgb(133, 133, 133);
+  border-radius: 100%;
+  display: block;
+  transition: 0.5s ease-out;
+}
+
+.root:hover .deleteLogo {
+  height: 11em;
+  width: 11em;
+  position: relative;
+  margin-top: 42%;
+  margin-left: 9%;
+  border: 11px solid rgb(48, 48, 48);
+  border-radius: 100%;
+  display: block;
+}
+
+.decoration {
+  height: 30%;
+  width: 30%;
+  position: relative;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 210px;
+  margin-top: -99.5%;
+  margin-left: 24.65%;
+  color: rgb(133, 133, 133);
+  transition: 0.5s ease-out;
+}
+
+.root:hover .decoration {
+  height: 30%;
+  width: 30%;
+  position: relative;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 210x;
+  margin-top: -99.5%;
+  margin-left: 24.5%;
+  color: rgb(255, 0, 0);
+}
+
+/* Modal Control */
+
+.mymodal {
+  position: fixed;
+  width: 60%;
+  height: 90%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #ccc;
+  background: #fff;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
+  transition: opacity 1s ease-in;
+}
+
+.myoverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  outline: none;
+  transition: opacity 1s ease-in;
+}
+
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 500ms ease-in;
+  outline: none;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+  transition: opacity 1s ease-in;
+  outline: none;
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+  transition: opacity 500ms ease-in;
+  outline: none;
+}
+
+.closeModal {
+  float: right;
+  padding: none;
+  padding-top: 2.2%;
+  margin-right: 11px;
+  margin-top: -5px;
+  font-family: Helvetica, sans-serif;
+  color: darkgray;
+  cursor: pointer;
+  outline: none;
+  transition: opacity 500ms ease-in;
+}
+
+.closeModal:hover {
+  float: right;
+  padding: none;
+  padding-top: 2.2%;
+  margin-right: 11px;
+  margin-top: -5px;
+  font-family: Helvetica, sans-serif;
+  color: black;
+  cursor: pointer;
+  outline: none;
+  transition: opacity 500ms ease-in;
+}

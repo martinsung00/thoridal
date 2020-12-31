@@ -17,7 +17,7 @@ module.exports = {
     "^.+.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$":
       "jest-transform-stub",
   },
-  testEnvironment: "node",
+  testEnvironment: "jsdom",
   collectCoverage: true,
   collectCoverageFrom: [
     "**/*.{js,jsx,ts,tsx}",
@@ -28,6 +28,9 @@ module.exports = {
     "!**/migrations/**",
     "!**/vault/**",
     "!**/*.config.js",
+    "!**/index.tsx",
+    "!**/*.d.ts",
+    "!**/*.css.d.ts",
   ],
   coverageThreshold: {
     global: {

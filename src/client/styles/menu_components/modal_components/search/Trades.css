@@ -1,0 +1,201 @@
+.container {
+  position: absolute;
+  width: 100em;
+  left: 5em;
+  margin-top: -2em;
+  overflow: scroll;
+}
+
+.root {
+  position: relative;
+  margin-top: 15em;
+  margin-left: 20em;
+}
+
+.errorState {
+  position: relative;
+  top: 30%;
+  right: 4.65em;
+  text-align: center;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 40px;
+}
+
+.errorText {
+  position: relative;
+  text-align: center;
+  margin-right: 12em;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 30px;
+}
+
+.trade {
+  position: relative;
+  width: 72.15em;
+  height: 14em;
+  right: 16.1em;
+  padding-top: 2em;
+  border-bottom: 1.4px solid rgb(70, 70, 70);
+}
+
+.content {
+  position: relative;
+  font-family: Helvetica, Arial, sans-serif;
+  left: 0;
+  padding-top: 0.1em;
+}
+
+.info {
+  position: relative;
+  width: 7em;
+  float: left;
+}
+
+.note {
+  position: relative;
+  width: 50em;
+  font-size: 17px;
+  float: right;
+}
+
+.item {
+  position: relative;
+  width: 10em;
+  float: right;
+  left: 10em;
+  top: -1.2em;
+  color: rgb(121, 121, 121);
+  font-size: 17px;
+  padding-bottom: 0.1em;
+  padding-left: 0.05em;
+}
+
+.comment {
+  position: relative;
+  font-size: 17px;
+  padding-bottom: 0.2em;
+}
+
+.additionalInfo {
+  position: relative;
+  margin-top: 0.1em;
+  font-size: 13px;
+  color: rgb(107, 107, 107);
+}
+
+.details {
+  position: relative;
+  float: left;
+  padding-right: 1em;
+}
+
+.cost {
+  position: relative;
+  padding-top: 0.4em;
+}
+
+.next {
+  position: relative;
+  float: right;
+  right: 22em;
+  padding-top: 1.4em;
+  padding-bottom: 1em;
+  cursor: pointer;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.nextGray {
+  position: relative;
+  float: right;
+  right: 22em;
+  padding-top: 1.4em;
+  padding-bottom: 1em;
+  cursor: pointer;
+  color: darkgray;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.next:hover {
+  position: relative;
+  float: right;
+  right: 22em;
+  padding-top: 1.4em;
+  padding-bottom: 1em;
+  cursor: pointer;
+  color: darkgray;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.prev {
+  position: relative;
+  float: left;
+  left: 2em;
+  padding-top: 1.4em;
+  padding-bottom: 1em;
+  cursor: pointer;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.prevGray {
+  position: relative;
+  float: left;
+  left: 2em;
+  padding-top: 1.4em;
+  padding-bottom: 1em;
+  cursor: pointer;
+  color: darkgray;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.prev:hover {
+  position: relative;
+  float: left;
+  left: 2em;
+  padding-top: 1.4em;
+  padding-bottom: 1em;
+  cursor: pointer;
+  color: darkgray;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.controls {
+  position: relative;
+  padding-top: 1.4em;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.controlUpdate {
+  position: relative;
+  float: left;
+  color: black;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.controlUpdate:hover {
+  position: relative;
+  float: left;
+  color: rgb(8, 231, 0);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.controlDelete {
+  position: relative;
+  right: 36em;
+  font-size: 22.2px;
+  float: right;
+  top: -0.13em;
+  color: black;
+  cursor: pointer;
+}
+
+.controlDelete:hover {
+  position: relative;
+  right: 36em;
+  font-size: 22.2px;
+  float: right;
+  top: -0.13em;
+  color: rgb(219, 0, 0);
+  cursor: pointer;
+}

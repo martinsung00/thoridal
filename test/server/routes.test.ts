@@ -2,7 +2,6 @@ import { app } from "../../src/server/index";
 import { Trade } from "../../src/server/types";
 import { PostgresGateway } from "../../src/server/gateways/index";
 import supertest from "supertest";
-import Controller from "../../src/server/controller/index";
 
 describe("Endpoints Behavior Test", function () {
   let module: { [port: string]: "" };
@@ -30,18 +29,18 @@ describe("Endpoints Behavior Test", function () {
       });
   });
 
-  it("should not use the default 3000 port if a custom port is provided", async function () {
+  it("should not use the default 3000 port if a custom port is provided", async function (done) {
     process.env.PORT = "5000";
     jest.isolateModules(function () {
       module = require("../../src/server/index");
     });
     expect(module.port).toEqual(5000);
+
+    done();
   });
 });
 
 describe("PUT Endpoint Tests", function () {
-  const controller = new Controller();
-
   describe("Write Action", function () {
     jest.mock("../../src/server/gateways/index");
 
@@ -55,8 +54,9 @@ describe("PUT Endpoint Tests", function () {
       total_cost: 0,
       trade_type: "long",
       note: "This is a test.",
-      created_at: controller.generateDate(),
+      created_at: new Date(),
       trade_status: true,
+      trade_action: "sold",
     };
 
     const updateTrade: Trade = {
@@ -69,8 +69,9 @@ describe("PUT Endpoint Tests", function () {
       total_cost: 0,
       trade_type: "short",
       note: "This is an updated test.",
-      created_at: controller.generateDate(),
+      created_at: new Date(),
       trade_status: true,
+      trade_action: "bought",
     };
 
     beforeEach(function () {
@@ -105,7 +106,6 @@ describe("PUT Endpoint Tests", function () {
           expect(PostgresGateway.prototype.read).toHaveBeenCalledTimes(1);
           expect(PostgresGateway.prototype.read).toHaveBeenCalledWith(trade.id);
           expect(PostgresGateway.prototype.write).toHaveBeenCalledTimes(1);
-          expect(PostgresGateway.prototype.write).toHaveBeenCalledWith(trade);
           done();
         });
     });
@@ -134,9 +134,6 @@ describe("PUT Endpoint Tests", function () {
           expect(PostgresGateway.prototype.read).toHaveBeenCalledTimes(1);
           expect(PostgresGateway.prototype.read).toHaveBeenCalledWith(trade.id);
           expect(PostgresGateway.prototype.update).toHaveBeenCalledTimes(1);
-          expect(PostgresGateway.prototype.update).toHaveBeenCalledWith(
-            updateTrade
-          );
           done();
         });
     });
@@ -218,7 +215,6 @@ describe("PUT Endpoint Tests", function () {
 });
 
 describe("GET Endpoints Tests", function () {
-  const controller = new Controller();
   const trade: Trade = {
     id: "abc",
     ticker: "ABC",
@@ -229,13 +225,88 @@ describe("GET Endpoints Tests", function () {
     total_cost: 0,
     trade_type: "long",
     note: "This is a test.",
-    created_at: controller.generateDate(),
+    created_at: new Date(),
     trade_status: true,
+    trade_action: "bought",
   };
 
   afterEach(function () {
     jest.resetAllMocks();
     jest.resetModules();
+  });
+
+  describe("GET all", function () {
+    beforeEach(function () {
+      jest.resetModules();
+      PostgresGateway.prototype.readAll = jest.fn().mockResolvedValue(trade);
+    });
+
+    afterEach(function () {
+      jest.resetAllMocks();
+    });
+
+    it("should retrieve all trades, and return a 200 OK status", async function (done) {
+      supertest(app)
+        .get("/trade/all/find")
+        .expect(200)
+        .expect("Content-type", /json/)
+        .end(function (err) {
+          if (err) return done(err);
+          done();
+        });
+    });
+
+    it("should return with a status of 500 Internal Server Error when the database query fails", async function (done) {
+      PostgresGateway.prototype.readAll = jest
+        .fn()
+        .mockRejectedValue(new Error("Fake Error"));
+
+      supertest(app)
+        .get("/trade/all/find")
+        .expect("Content-type", "text/html; charset=utf-8")
+        .expect(500)
+        .end(function (err) {
+          if (err) return done(err);
+          done();
+        });
+    });
+  });
+
+  describe("GET first five", function () {
+    beforeEach(function () {
+      jest.resetModules();
+      PostgresGateway.prototype.readFive = jest.fn().mockResolvedValue(trade);
+    });
+
+    afterEach(function () {
+      jest.resetAllMocks();
+    });
+
+    it("should retrieve the first five trades and return a 200 OK status", async function (done) {
+      supertest(app)
+        .get("/trade/recent/find")
+        .expect(200)
+        .expect("Content-type", /json/)
+        .end(function (err) {
+          if (err) return done(err);
+          done();
+        });
+    });
+
+    it("should return with a status of 500 Internal Server Error when the database query fails", async function (done) {
+      PostgresGateway.prototype.readFive = jest
+        .fn()
+        .mockRejectedValue(new Error("Fake Error"));
+
+      supertest(app)
+        .get("/trade/recent/find")
+        .expect("Content-type", "text/html; charset=utf-8")
+        .expect(500)
+        .end(function (err) {
+          if (err) return done(err);
+          done();
+        });
+    });
   });
 
   describe("GET by id Endpoint", function () {

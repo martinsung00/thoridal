@@ -1,14 +1,12 @@
 import pg from "pg";
 import { Trade } from "../../../../src/server/types";
 import { PostgresGateway } from "./../../../../src/server/gateways";
-import Controller from "../../../../src/server/controller/index";
 
 describe("Postgres Gateway Tests", function () {
   jest.mock("pg");
 
-  const controller = new Controller();
+  const date = new Date()
   const db = new PostgresGateway();
-  const now: string = controller.generateDate();
   const trade: Trade = {
     id: "abc",
     ticker: "ABC",
@@ -19,8 +17,9 @@ describe("Postgres Gateway Tests", function () {
     total_cost: 0,
     trade_type: "long",
     note: "",
-    created_at: now,
+    created_at: date,
     trade_status: true,
+    trade_action: "bought",
   };
   const logger = jest.spyOn(db.logger, "log");
 
@@ -54,7 +53,7 @@ describe("Postgres Gateway Tests", function () {
       expect(
         pg.Client.prototype.query
       ).toHaveBeenCalledWith(
-        "INSERT INTO trades (id, ticker, company_name, reference_number, unit_price, quantity, total_cost, trade_type, note, created_at, trade_status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id",
+        "INSERT INTO trades (id, ticker, company_name, reference_number, unit_price, quantity, total_cost, trade_type, note, created_at, trade_status, trade_action) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING id",
         [
           trade.id,
           trade.ticker,
@@ -67,6 +66,7 @@ describe("Postgres Gateway Tests", function () {
           trade.note,
           trade.created_at,
           trade.trade_status,
+          trade.trade_action,
         ]
       );
       await done();
@@ -117,7 +117,7 @@ describe("Postgres Gateway Tests", function () {
       expect(
         pg.Client.prototype.query
       ).toHaveBeenCalledWith(
-        "UPDATE trades SET ticker = $1, company_name = $2, reference_number = $3, unit_price = $4, quantity = $5, total_cost = $6, trade_type = $7, note = $8, created_at = $9, trade_status = $10 WHERE id = $11 RETURNING id",
+        "UPDATE trades SET ticker = $1, company_name = $2, reference_number = $3, unit_price = $4, quantity = $5, total_cost = $6, trade_type = $7, note = $8, created_at = $9, trade_status = $10, trade_action = $11, id = $12 WHERE id = $12 RETURNING id",
         [
           trade.ticker,
           trade.company_name,
@@ -129,6 +129,7 @@ describe("Postgres Gateway Tests", function () {
           trade.note,
           trade.created_at,
           trade.trade_status,
+          trade.trade_action,
           trade.id,
         ]
       );
@@ -180,6 +181,78 @@ describe("Postgres Gateway Tests", function () {
           .mockRejectedValueOnce(new TypeError("Fake Error"));
 
         await db.read(trade.id);
+      } catch (error) {
+        expect(error.message).toBe("Fake Error");
+        expect(logger).toHaveBeenCalledTimes(1);
+        done();
+      }
+    });
+  });
+
+  describe("Read First Five (Descending Order By Created At) Action", function () {
+    beforeAll(function () {
+      pg.Client.prototype.query = jest.fn().mockResolvedValue({
+        rows: [trade],
+      });
+    });
+
+    afterAll(function () {
+      jest.resetAllMocks();
+    });
+
+    it("should return document(s) with a given id", async function (done) {
+      const result = await db.readFive();
+
+      expect(result.rows[0].id).toEqual(trade.id);
+      expect(pg.Client.prototype.query).toHaveBeenCalledWith(
+        "SELECT * FROM trades WHERE created_at > now() - INTERVAL '1 week'"
+      );
+      await done();
+    });
+
+    it("should create a log with Winston's logger if an error occurs", async function (done) {
+      try {
+        pg.Client.prototype.query = jest
+          .fn()
+          .mockRejectedValueOnce(new TypeError("Fake Error"));
+
+        await db.readFive();
+      } catch (error) {
+        expect(error.message).toBe("Fake Error");
+        expect(logger).toHaveBeenCalledTimes(1);
+        done();
+      }
+    });
+  });
+
+  describe("Read All Action", function () {
+    beforeAll(function () {
+      pg.Client.prototype.query = jest.fn().mockResolvedValue({
+        rows: [trade],
+      });
+    });
+
+    afterAll(function () {
+      jest.resetAllMocks();
+    });
+
+    it("should return document(s) with a given id", async function (done) {
+      const result = await db.readAll();
+
+      expect(result.rows[0].id).toEqual(trade.id);
+      expect(pg.Client.prototype.query).toHaveBeenCalledWith(
+        "SELECT * FROM trades"
+      );
+      await done();
+    });
+
+    it("should create a log with Winston's logger if an error occurs", async function (done) {
+      try {
+        pg.Client.prototype.query = jest
+          .fn()
+          .mockRejectedValueOnce(new TypeError("Fake Error"));
+
+        await db.readAll();
       } catch (error) {
         expect(error.message).toBe("Fake Error");
         expect(logger).toHaveBeenCalledTimes(1);
@@ -270,13 +343,13 @@ describe("Postgres Gateway Tests", function () {
     });
 
     it("should return document(s) with a given date", async function (done) {
-      const result = await db.readByDate(trade.created_at);
+      const result = await db.readByDate(date);
 
       expect(result).toEqual(trade);
       expect(
         pg.Client.prototype.query
       ).toHaveBeenCalledWith("SELECT * FROM trades WHERE created_at = $1", [
-        now,
+        date,
       ]);
 
       await done();
@@ -288,7 +361,7 @@ describe("Postgres Gateway Tests", function () {
           .fn()
           .mockRejectedValueOnce(new TypeError("Fake Error"));
 
-        await db.readByDate(trade.created_at);
+        await db.readByDate(date);
       } catch (error) {
         expect(error.message).toBe("Fake Error");
         expect(logger).toHaveBeenCalledTimes(1);
