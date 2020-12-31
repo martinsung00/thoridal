@@ -15,7 +15,6 @@ describe("Menu Option Update Tests", function () {
   it("should open the modal on click & close the modal on clicking the close button", function () {
     const wrapper = shallow(<Delete />);
 
-
     // Simulate opening the modal
     wrapper.find("#menu-delete").simulate("click");
     expect(wrapper).toMatchSnapshot();

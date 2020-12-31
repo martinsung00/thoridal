@@ -154,13 +154,13 @@ app.get("/trade/company/:company/find", async function (req, res) {
 });
 
 app.get("/trade/date/:date/find", async function (req, res) {
-  10-10-2020
+  10 - 10 - 2020;
   const date: string = req.params.date;
   const month = Number(date.substring(0, 2));
   const day = Number(date.substring(3, 5));
   const year = Number(date.substring(6, 10));
 
-  const query = new Date(month, day, year)
+  const query = new Date(month, day, year);
 
   try {
     const result: {

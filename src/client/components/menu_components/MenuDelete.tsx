@@ -30,7 +30,7 @@ export const Delete: React.FunctionComponent<{}> = () => {
         >
           {"\u00d7"}
         </div>
-        <ModalContent toggleShow={toggleShow.bind(this)} show={show}/>
+        <ModalContent toggleShow={toggleShow.bind(this)} show={show} />
       </Modal>
       <div
         className={styles.root}

@@ -5,7 +5,7 @@ import { PostgresGateway } from "./../../../../src/server/gateways";
 describe("Postgres Gateway Tests", function () {
   jest.mock("pg");
 
-  const date = new Date()
+  const date = new Date();
   const db = new PostgresGateway();
   const trade: Trade = {
     id: "abc",

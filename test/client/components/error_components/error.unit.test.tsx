@@ -27,7 +27,7 @@ describe("Error Page", function () {
 
     expect(container).toMatchSnapshot();
 
-    done()
+    done();
   });
 
   describe("return button", function () {
