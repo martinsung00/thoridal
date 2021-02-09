@@ -7,12 +7,17 @@ module.exports = {
   transform: {
     "^.+\\.jsx?$": "babel-jest",
     "^.+\\.tsx?$": "ts-jest",
+    ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$":
+      "jest-transform-stub",
+    "^.+\\.svg$": "jest-svg-transformer",
   },
   roots: ["<rootDir>"],
   moduleNameMapper: {
     "@models": "<rootDir>/server/src/models/index",
+    "^.+.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$":
+      "jest-transform-stub",
   },
-  testEnvironment: "node",
+  testEnvironment: "jsdom",
   collectCoverage: true,
   collectCoverageFrom: [
     "**/*.{js,jsx,ts,tsx}",
@@ -23,13 +28,16 @@ module.exports = {
     "!**/migrations/**",
     "!**/vault/**",
     "!**/*.config.js",
+    "!**/index.tsx",
+    "!**/*.d.ts",
+    "!**/*.css.d.ts",
   ],
   coverageThreshold: {
     global: {
       branches: 80,
       functions: 80,
       lines: 80,
-      statements: -15,
+      statements: -10,
     },
   },
   verbose: true,

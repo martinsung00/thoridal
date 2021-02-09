@@ -1,0 +1,89 @@
+.root {
+  width: 100%;
+  height: 8.5%;
+  margin-bottom: 5%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  background-color: rgb(196, 196, 196);
+  color: black;
+  transition: top 0.3s;
+}
+
+.title {
+  position: relative;
+  float: left;
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  font-size: 27px;
+  margin-left: 43%;
+  margin-top: 1%;
+}
+
+.mainLogo {
+  position: relative;
+  float: left;
+  margin-top: 1.2%;
+  margin-left: 1%;
+  height: 25px;
+  width: 25px;
+}
+
+.searchIcon {
+  position: relative;
+  float: left;
+  margin-top: -0.5%;
+  margin-left: 2%;
+  padding-right: 0%;
+  height: 30px;
+  width: 30px;
+  cursor: pointer;
+}
+
+.searchbar {
+  float: right;
+  position: relative;
+  margin-left: 90%;
+  margin-right: 5%;
+  margin-top: -2.3%;
+  background-color: rgba(255, 255, 255, 0.952);
+  border-radius: 2.5em;
+  width: 16.5em;
+  height: 1.8em;
+}
+
+.search {
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.952);
+  margin-top: 2%;
+  margin-left: 6.8%;
+  border: none;
+  height: 1.3em;
+  width: 5.5em;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  outline: none;
+}
+
+.searchType {
+  position: relative;
+  float: right;
+  background-color: rgba(255, 255, 255, 0.952);
+  margin-top: -8.1%;
+  margin-right: 21%;
+  padding-left: 3%;
+  padding-right: -1%;
+  border-left: 0.7px solid darkgray;
+  width: 2.5em;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  outline: none;
+}
+
+.searchBy {
+  border: none;
+  font-size: 14.5px;
+  font-weight: bold;
+  color: rgb(116, 116, 116);
+  background-color: white;
+}

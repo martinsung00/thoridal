@@ -1,0 +1,84 @@
+.root {
+  position: relative;
+  height: 23em;
+  top: 9em;
+  left: 3.7em;
+  width: 90%;
+  font-family: Helvetica, Arial, sans-serif;
+  position: relative;
+  border-top: 0.7px solid black;
+  border-bottom: 0.7px solid black;
+}
+
+.title {
+  padding-top: 1em;
+  padding-bottom: 1em;
+  text-align: center;
+  font-size: 28px;
+}
+
+.left {
+  position: relative;
+  float: left;
+  width: 25em;
+  margin-left: 1em;
+}
+
+.right {
+  position: relative;
+  float: right;
+  width: 25em;
+  margin-right: 1.5em;
+}
+
+.net {
+  position: relative;
+  font-size: 26px;
+  margin-top: 1em;
+}
+
+.gain {
+  position: relative;
+  float: right;
+  color: rgb(0, 161, 0);
+}
+
+.loss {
+  position: relative;
+  float: right;
+  color: red;
+}
+
+.total {
+  position: relative;
+  float: right;
+  color: black;
+}
+
+.totalSecondary {
+  position: relative;
+  float: right;
+  margin-right: 2em;
+  color: rgb(104, 104, 104);
+}
+
+.secondary {
+  position: relative;
+  color: rgb(104, 104, 104);
+}
+
+.divider {
+  height: 1.5em;
+}
+
+.perDay {
+  position: relative;
+  font-size: 26px;
+  margin-top: 1em;
+}
+
+.perDayTotal {
+  position: relative;
+  float: right;
+  color: black;
+}

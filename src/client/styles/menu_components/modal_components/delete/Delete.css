@@ -1,0 +1,110 @@
+.root {
+  position: relative;
+  font-size: 30px;
+  font-family: Helvetica, Arial, sans-serif;
+  color: black;
+  top: 5em;
+  left: 0;
+  text-align: center;
+}
+
+.mainLogo {
+  position: relative;
+  height: 35px;
+  width: 35px;
+  margin-left: 47.5%;
+}
+
+.searchBar {
+  position: relative;
+  width: 15em;
+  height: 1em;
+  font-size: 22px;
+  font-family: Helvetica, Arial, sans-serif;
+  top: 3em;
+  right: 14%;
+  border: 3px solid gray;
+  border-radius: 3px;
+}
+
+.deleteButton {
+  position: relative;
+  top: 5em;
+  left: 16em;
+  height: 1.85em;
+  width: 6em;
+  background-color: black;
+  color: rgb(255, 255, 255);
+  font-size: 20px;
+  text-align: center;
+  border-radius: 3px;
+  border: 1.3px solid darkgray;
+  cursor: pointer;
+}
+
+.deleteButton:hover {
+  position: relative;
+  top: 5em;
+  left: 16em;
+  height: 1.85em;
+  width: 6em;
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  text-align: center;
+  border-radius: 3px;
+  border: 1.3px solid black;
+  cursor: pointer;
+  transition: ease-out 0.15s;
+}
+
+.deleteButtonTag {
+  position: relative;
+  margin-top: 0.4em;
+}
+
+.deleteBy {
+  position: relative;
+  margin-top: 5%;
+  left: 21%;
+  font-size: 25px;
+  font-family: Helvetica, Arial, sans-serif;
+  border: none;
+  outline: none;
+}
+
+.back {
+  position: relative;
+  top: 5em;
+  left: 16em;
+  height: 1.85em;
+  width: 6em;
+  background-color: black;
+  color: rgb(255, 255, 255);
+  font-size: 20px;
+  text-align: center;
+  border-radius: 3px;
+  border: 1.3px solid darkgray;
+  cursor: pointer;
+}
+
+.back:hover {
+  position: relative;
+  top: 5em;
+  left: 16em;
+  height: 1.85em;
+  width: 6em;
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  text-align: center;
+  border-radius: 3px;
+  border: 1.3px solid black;
+  cursor: pointer;
+  transition: ease-out 0.15s;
+}
+
+.backTag {
+  position: relative;
+  margin-top: 0.4em;
+}

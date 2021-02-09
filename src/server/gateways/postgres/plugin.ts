@@ -22,11 +22,68 @@ export default class PostgresGateway extends Gateway {
     });
   }
 
-  public async read(id: string): Promise<any> {
+  public async readAll(): Promise<{
+    rows: Array<Trade>;
+  }> {
     const client: PoolClient = await this.pool.connect();
 
     try {
-      const queryText: string = `SELECT * FROM trades WHERE id = '${id}'`;
+      const queryText: string = "SELECT * FROM trades";
+
+      const response: QueryResult = await client.query(queryText);
+
+      await client.query(TRANSACTIONS.COMMIT);
+
+      return response;
+    } catch (err) {
+      /*
+      This format will allow Winston to log the error message as "Error: [error message]".
+      Additionally, Winston will also save the error stack so we can trace the error.
+      */
+      this.logger.log("error", "Error:", err);
+
+      await client.query(TRANSACTIONS.ROLLBACK);
+
+      throw err;
+    } finally {
+      client.release();
+    }
+  }
+
+  public async readFive(): Promise<{
+    rows: Array<Trade>;
+  }> {
+    const client: PoolClient = await this.pool.connect();
+
+    try {
+      const queryText: string =
+        "SELECT * FROM trades WHERE created_at > now() - INTERVAL '1 week'";
+
+      const response: QueryResult = await client.query(queryText);
+
+      await client.query(TRANSACTIONS.COMMIT);
+
+      return response;
+    } catch (err) {
+      this.logger.log("error", "Error:", err);
+
+      await client.query(TRANSACTIONS.ROLLBACK);
+
+      throw err;
+    } finally {
+      client.release();
+    }
+  }
+
+  public async read(
+    id: string
+  ): Promise<{
+    rows: Array<Trade>;
+  }> {
+    const client: PoolClient = await this.pool.connect();
+
+    try {
+      const queryText: string = "SELECT * FROM trades WHERE id = $1";
 
       const response: QueryResult = await client.query(queryText, [id]);
 
@@ -34,19 +91,25 @@ export default class PostgresGateway extends Gateway {
 
       return response;
     } catch (err) {
-      // To-do: We should be handling this according to the design.
+      this.logger.log("error", "Error:", err);
+
       await client.query(TRANSACTIONS.ROLLBACK);
+
       throw err;
     } finally {
       client.release();
     }
   }
 
-  public async readByTicker(ticker: string): Promise<any> {
+  public async readByTicker(
+    ticker: string
+  ): Promise<{
+    rows: Array<Trade>;
+  }> {
     const client: PoolClient = await this.pool.connect();
 
     try {
-      const queryText: string = `SELECT * FROM trades WHERE ticker = ${ticker}`;
+      const queryText: string = "SELECT * FROM trades WHERE ticker = $1";
 
       const response: QueryResult = await client.query(queryText, [ticker]);
 
@@ -54,18 +117,25 @@ export default class PostgresGateway extends Gateway {
 
       return response;
     } catch (err) {
+      this.logger.log("error", "Error:", err);
+
       await client.query(TRANSACTIONS.ROLLBACK);
+
       throw err;
     } finally {
       client.release();
     }
   }
 
-  public async readByCompany(company: string): Promise<any> {
+  public async readByCompany(
+    company: string
+  ): Promise<{
+    rows: Array<Trade>;
+  }> {
     const client: PoolClient = await this.pool.connect();
 
     try {
-      const queryText: string = `SELECT * FROM trades WHERE company_name = ${company}`;
+      const queryText: string = "SELECT * FROM trades WHERE company_name = $1";
 
       const response: QueryResult = await client.query(queryText, [company]);
 
@@ -73,26 +143,116 @@ export default class PostgresGateway extends Gateway {
 
       return response;
     } catch (err) {
+      this.logger.log("error", "Error:", err);
+
       await client.query(TRANSACTIONS.ROLLBACK);
+
       throw err;
     } finally {
       client.release();
     }
   }
 
-  public async readByDate(company: string): Promise<any> {
+  public async readByDate(
+    date: Date
+  ): Promise<{
+    rows: Array<Trade>;
+  }> {
     const client: PoolClient = await this.pool.connect();
 
     try {
-      const queryText: string = `SELECT * FROM trades WHERE company_name = ${company}`;
+      const queryText: string = "SELECT * FROM trades WHERE created_at = $1";
 
-      const response: QueryResult = await client.query(queryText, [company]);
+      const response: QueryResult = await client.query(queryText, [date]);
 
       await client.query(TRANSACTIONS.COMMIT);
 
       return response;
     } catch (err) {
+      this.logger.log("error", "Error:", err);
+
       await client.query(TRANSACTIONS.ROLLBACK);
+
+      throw err;
+    } finally {
+      client.release();
+    }
+  }
+
+  public async readByReferenceNumber(
+    refNum: string
+  ): Promise<{
+    rows: Array<Trade>;
+  }> {
+    const client: PoolClient = await this.pool.connect();
+
+    try {
+      const queryText: string =
+        "SELECT * FROM trades WHERE reference_number = $1";
+
+      const response: QueryResult = await client.query(queryText, [refNum]);
+
+      await client.query(TRANSACTIONS.COMMIT);
+
+      return response;
+    } catch (err) {
+      this.logger.log("error", "Error:", err);
+
+      await client.query(TRANSACTIONS.ROLLBACK);
+
+      throw err;
+    } finally {
+      client.release();
+    }
+  }
+
+  public async update(
+    document: Trade
+  ): Promise<{
+    rows: Array<{ id: string }>;
+  }> {
+    const client = await this.pool.connect();
+    const {
+      id,
+      ticker,
+      company_name,
+      reference_number,
+      unit_price,
+      quantity,
+      total_cost,
+      trade_type,
+      note,
+      created_at,
+      trade_status,
+      trade_action,
+    } = document;
+
+    try {
+      const queryText: string =
+        "UPDATE trades SET ticker = $1, company_name = $2, reference_number = $3, unit_price = $4, quantity = $5, total_cost = $6, trade_type = $7, note = $8, created_at = $9, trade_status = $10, trade_action = $11, id = $12 WHERE id = $12 RETURNING id";
+      const response: QueryResult = await client.query(queryText, [
+        ticker,
+        company_name,
+        reference_number,
+        unit_price,
+        quantity,
+        total_cost,
+        trade_type,
+        note,
+        created_at,
+        trade_status,
+        trade_action,
+        id,
+      ]);
+
+      await client.query(TRANSACTIONS.COMMIT);
+
+      return response;
+    } catch (err) {
+      this.logger.log("error", "Error:", err);
+
+      await client.query(TRANSACTIONS.ROLLBACK);
+
       throw err;
     } finally {
       client.release();
@@ -105,24 +265,24 @@ export default class PostgresGateway extends Gateway {
     rows: Array<{ id: string }>;
   }> {
     const client: PoolClient = await this.pool.connect();
+    const {
+      id,
+      ticker,
+      company_name,
+      reference_number,
+      unit_price,
+      quantity,
+      total_cost,
+      trade_type,
+      note,
+      created_at,
+      trade_status,
+      trade_action,
+    } = document;
 
     try {
-      const {
-        id,
-        ticker,
-        company_name,
-        reference_number,
-        unit_price,
-        quantity,
-        total_cost,
-        trade_type,
-        note,
-        created_at,
-        trade_status,
-      } = document;
-
-      const queryText: string = `INSERT INTO trades VALUES(${id}, ${ticker}, ${company_name}, ${reference_number}, ${unit_price}, ${quantity}, ${total_cost}, ${trade_type}, ${note}, ${created_at}, ${trade_status}) RETURNING id`;
-
+      const queryText: string =
+        "INSERT INTO trades (id, ticker, company_name, reference_number, unit_price, quantity, total_cost, trade_type, note, created_at, trade_status, trade_action) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING id";
       const response: QueryResult = await client.query(queryText, [
         id,
         ticker,
@@ -135,27 +295,46 @@ export default class PostgresGateway extends Gateway {
         note,
         created_at,
         trade_status,
+        trade_action,
       ]);
 
       await client.query(TRANSACTIONS.COMMIT);
 
       return response;
     } catch (err) {
-      // To-do: We should be handling this according to the design.
+      this.logger.log("error", "Error:", err);
+
       await client.query(TRANSACTIONS.ROLLBACK);
+
       throw err;
     } finally {
       client.release();
     }
   }
 
-  public generateDate(): string {
-    const today: Date = new Date();
-    const dd: String = String(today.getDate()).padStart(2, "0");
-    const mm: String = String(today.getMonth() + 1).padStart(2, "0");
-    const yyyy: String = String(today.getFullYear());
-    const date: string = `${mm}/${dd}/${yyyy}`;
+  public async delete(
+    id: string
+  ): Promise<{
+    rows: Array<{ id: string }>;
+  }> {
+    const client: PoolClient = await this.pool.connect();
 
-    return date;
+    try {
+      const queryText: string = "DELETE FROM trades WHERE id = $1 RETURNING id";
+
+      const response: QueryResult = await client.query(queryText, [id]);
+
+      await client.query(TRANSACTIONS.COMMIT);
+
+      return response;
+    } catch (err) {
+      this.logger.log("error", "Error:", err);
+
+      await client.query(TRANSACTIONS.ROLLBACK);
+
+      throw err;
+    } finally {
+      client.release();
+    }
   }
 }

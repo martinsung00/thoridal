@@ -1,10 +1,9 @@
-export class C {
-  private x = 10;
-  getX = () => this.x;
-  setX = (newVal: number) => {
-    this.x = newVal;
-  };
-}
+import { app, envPort } from "./routes";
 
-export let x = new C();
-export let y = { ...{ some: "value" } };
+const port: number = envPort == null ? 3000 : parseInt(envPort);
+
+app.listen(port, function () {
+  console.log(`listening on ${port}`);
+});
+
+export { app, port };
