@@ -1,6 +1,6 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import App from "../../../src/client/components/App";
+import App from "../../../src/client/components/app";
 import { shallow, configure, mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import Axios from "axios";
