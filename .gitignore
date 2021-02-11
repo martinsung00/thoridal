@@ -15,6 +15,7 @@ build
 
 # misc
 .DS_Store
+
 npm-debug.log*
 
-./vault/dev.json
+vault/dev.json
