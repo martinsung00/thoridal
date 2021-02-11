@@ -3,7 +3,13 @@ import { Trade } from "../../../../src/server/types";
 import { PostgresGateway } from "./../../../../src/server/gateways";
 
 describe("Postgres Gateway Tests", function () {
-  jest.mock("pg");
+  jest.mock("pg", () => {
+    const mClient = {
+      connect: jest.fn(),
+      end: jest.fn(),
+    };
+    return { Client: jest.fn(() => mClient) };
+  });
 
   const date = new Date();
   const db = new PostgresGateway();
