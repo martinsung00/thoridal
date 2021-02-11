@@ -3,5 +3,5 @@
   "host": "",
   "database": "trades",
   "password": "",
-  "port": null
+  "port": 0
 }
