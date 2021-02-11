@@ -1,0 +1,122 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Metrics Dashboard Tests should render all the elements with the given props (negative net) 1`] = `
+<div>
+  <div>
+    Weekly Statistics
+  </div>
+  <div>
+    <label>
+      NET LOSS: 
+      <div>
+        -1
+      </div>
+    </label>
+    <div />
+    <label>
+      TOTAL TRADES:
+       
+      <div>
+        1
+      </div>
+    </label>
+    <div />
+    <div />
+    <div />
+    <label>
+      Total Completed Trades:
+       
+      <div>
+        1
+      </div>
+    </label>
+    <div />
+    <label>
+      Total Pending Trades:
+       
+      <div>
+        1
+      </div>
+    </label>
+  </div>
+  <div>
+    <label>
+      AVG GAIN PER DAY:
+       
+      <div>
+        $ 
+        -1
+      </div>
+    </label>
+    <div />
+    <label>
+      AVG TRADE PER DAY:
+       
+      <div>
+        1
+      </div>
+    </label>
+  </div>
+</div>
+`;
+
+exports[`Metrics Dashboard Tests should render all the elements with the given props (positive net) 1`] = `
+<div>
+  <div>
+    Weekly Statistics
+  </div>
+  <div>
+    <label>
+      NET GAIN: 
+      <div>
+        +
+        1
+      </div>
+    </label>
+    <div />
+    <label>
+      TOTAL TRADES:
+       
+      <div>
+        1
+      </div>
+    </label>
+    <div />
+    <div />
+    <div />
+    <label>
+      Total Completed Trades:
+       
+      <div>
+        1
+      </div>
+    </label>
+    <div />
+    <label>
+      Total Pending Trades:
+       
+      <div>
+        1
+      </div>
+    </label>
+  </div>
+  <div>
+    <label>
+      AVG GAIN PER DAY:
+       
+      <div>
+        $ 
+        1
+      </div>
+    </label>
+    <div />
+    <label>
+      AVG TRADE PER DAY:
+       
+      <div>
+        1
+      </div>
+    </label>
+  </div>
+</div>
+`;

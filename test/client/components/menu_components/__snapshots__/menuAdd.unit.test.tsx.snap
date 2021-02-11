@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Menu Option Add Tests should open the modal on click & close the modal on clicking the close button 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Add Tests should open the modal on click & close the modal on clicking the close button 2`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Add Tests should render the appropriate react elements 1`] = `
+<div>
+  <div
+    id="menu-add"
+    onClick={[Function]}
+  >
+    <div>
+      Write a Trade
+    </div>
+    <div />
+    <div />
+    <div />
+  </div>
+</div>
+`;

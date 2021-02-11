@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Menu Option Search Tests should open the modal on click & close the modal on clicking the close button 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Search Tests should open the modal on click & close the modal on clicking the close button 2`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Search Tests should render hello world 1`] = `
+<div>
+  <div
+    id="menu-search"
+    onClick={[Function]}
+  >
+    <div>
+      Find a Trade
+    </div>
+    <div />
+    <div />
+  </div>
+</div>
+`;

@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Menu Option Delete: Modal Delete Tests Handle Change Method should set the state according to event 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Delete: Modal Delete Tests Handle Select Method should set the state according to event 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Delete: Modal Delete Tests Handle Select Method should set the state according to event 2`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Delete: Modal Delete Tests Handle Select Method should set the state according to event 3`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Delete: Modal Delete Tests Handle Select Method should set the state according to event 4`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Delete: Modal Delete Tests Handle delete Method should delete the desired trade 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Delete: Modal Delete Tests Handle delete Method should render not found if nothing matches the query 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Delete: Modal Delete Tests Prev State Method should change current page back to delete 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Delete: Modal Delete Tests should render a confirmation page 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Delete: Modal Delete Tests should render a not found page 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Delete: Modal Delete Tests should render an errored page 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Delete: Modal Delete Tests should render the elements as is 1`] = `
+<div>
+  <div>
+    <div>
+      Delete Trade By:
+    </div>
+    <select
+      defaultValue="id"
+      id="update-by"
+      onChange={[Function]}
+      value="id"
+    >
+      <option
+        value="id"
+      >
+        ID
+      </option>
+      <option
+        value="ticker"
+      >
+        Ticker
+      </option>
+      <option
+        value="company"
+      >
+        Company Name
+      </option>
+      <option
+        value="date"
+      >
+        Date
+      </option>
+    </select>
+    <input
+      id="update-input"
+      onChange={[Function]}
+      placeholder=""
+      required={true}
+    />
+    <div
+      id="search-button"
+      onClick={[Function]}
+    >
+      <div>
+        Delete
+      </div>
+    </div>
+  </div>
+</div>
+`;

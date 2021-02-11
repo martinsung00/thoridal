@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Menu Option Update: Modal Update Tests Handle Change Method should set the state according to event 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Update: Modal Update Tests Handle Close Method close the modal and set state to find 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Update: Modal Update Tests Handle Error Method should set the state to errored 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Update: Modal Update Tests Handle Next State Method should proceed to the update form if current page is find 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Update: Modal Update Tests Handle Next State Method should proceed to the update form if current page is find 2`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Update: Modal Update Tests Handle Search Method should not allow an search command without a query 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Update: Modal Update Tests Handle Search Method should set state Trades with the get response 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Update: Modal Update Tests Handle Search Method should set state to not found if api get responds with an empty array 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Update: Modal Update Tests Handle Search Method should set state with the get response 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Update: Modal Update Tests Handle Select Method should set the state according to event 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Update: Modal Update Tests Handle Select Method should set the state according to event 2`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Update: Modal Update Tests Handle Select Method should set the state according to event 3`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Update: Modal Update Tests Handle Select Method should set the state according to event 4`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Update: Modal Update Tests Previous State Method should set state back to find 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Update: Modal Update Tests should render the confirm page 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Update: Modal Update Tests should render the elements as is 1`] = `
+<div>
+  <div>
+    <div>
+      Update Trade By:
+    </div>
+    <select
+      defaultValue="id"
+      id="update-by"
+      onChange={[Function]}
+      value="id"
+    >
+      <option
+        value="id"
+      >
+        ID
+      </option>
+      <option
+        value="ticker"
+      >
+        Ticker
+      </option>
+      <option
+        value="company"
+      >
+        Company Name
+      </option>
+      <option
+        value="date"
+      >
+        Date
+      </option>
+    </select>
+    <input
+      id="update-input"
+      onChange={[Function]}
+      placeholder=""
+      required={true}
+    />
+    <div
+      id="search-button"
+      onClick={[Function]}
+    >
+      <div>
+        Search
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Menu Option Update: Modal Update Tests should render the error page 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Update: Modal Update Tests should render the not found page 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Update: Modal Update Tests should render the update form 1`] = `ShallowWrapper {}`;

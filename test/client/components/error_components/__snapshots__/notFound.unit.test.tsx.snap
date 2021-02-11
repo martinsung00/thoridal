@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Error Page return button should call the prevState method 1`] = `ShallowWrapper {}`;
+
+exports[`Error Page should render the page as is 1`] = `
+<div>
+  <div>
+    Trade Not Found
+  </div>
+  <div
+    id="try-again-button"
+    onClick={[Function]}
+  >
+    <div>
+      Try Again
+    </div>
+  </div>
+</div>
+`;
