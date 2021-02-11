@@ -67,7 +67,7 @@ exports[`Error Page should render the page as is 1`] = `
                 Not Fulfilled
               </div>
               <div>
-                Wed Feb 10
+                Sun Dec 17
               </div>
               <br />
               <div>
@@ -167,7 +167,7 @@ exports[`Error Page should render the trade's elements with 'long' and 'Fulfille
                 Fulfilled
               </div>
               <div>
-                Wed Feb 10
+                Sun Dec 17
               </div>
               <br />
               <div>

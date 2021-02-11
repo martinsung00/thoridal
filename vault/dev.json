@@ -1,6 +1,6 @@
 {
   "user": "",
-  "host": "localhost",
+  "host": "",
   "database": "trades",
   "password": "",
   "port": 5432

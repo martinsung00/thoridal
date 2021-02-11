@@ -27,7 +27,7 @@ describe("Modal Component Trades Tests", function () {
         total_cost: 0.0,
         trade_type: "short",
         note: "TEST",
-        created_at: new Date(),
+        created_at: new Date('1995-12-17T03:24:00'),
         trade_status: false,
         trade_action: "bought",
       },
