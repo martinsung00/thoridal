@@ -1,7 +1,7 @@
 {
-  "user": "runner",
+  "user": "postgres",
   "host": "postgres",
-  "database": "trades",
+  "database": "ci_db_test",
   "password": "",
   "port": 5432
 }
