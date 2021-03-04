@@ -1,7 +1,7 @@
 {
-  "user": "",
-  "host": "",
+  "user": "runner",
+  "host": "postgres",
   "database": "trades",
   "password": "",
-  "port": 0
+  "port": 5432
 }
