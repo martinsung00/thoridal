@@ -1,0 +1,207 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Error Page delete button should call handleDelete method 1`] = `ShallowWrapper {}`;
+
+exports[`Error Page should render no trade history found text 1`] = `ShallowWrapper {}`;
+
+exports[`Error Page should render something has gone wrong text 1`] = `ShallowWrapper {}`;
+
+exports[`Error Page should render the page as is 1`] = `
+<div>
+  <br />
+  <div>
+    <div
+      style={
+        Object {
+          "marginTop": "-4em",
+        }
+      }
+    >
+      <div>
+        <div>
+          <div>
+             
+            <div>
+              Trade ID:
+              <div>
+                TESTING
+              </div>
+            </div>
+            <br />
+            <div>
+              Reference Number:
+              <div>
+                TESTING
+              </div>
+            </div>
+            <br />
+            <div>
+              Ticker:
+              <div>
+                TESTING
+              </div>
+            </div>
+            <br />
+            <div>
+              Company Name:
+              <div>
+                TESTING
+              </div>
+            </div>
+            <br />
+            <br />
+          </div>
+          <div>
+            <div>
+              TESTING
+            </div>
+            <br />
+            <div>
+              <div>
+                Bought
+              </div>
+              <div>
+                Short
+              </div>
+              <div>
+                Not Fulfilled
+              </div>
+              <div>
+                Sun Dec 17
+              </div>
+              <br />
+              <div>
+                <div>
+                  Total Cost: $
+                  1
+                </div>
+                <div>
+                  Unit Price: $
+                  1
+                </div>
+                <div>
+                  Quantity: 
+                  1
+                </div>
+              </div>
+              <div>
+                <div
+                  id="update-button"
+                >
+                  ⇪
+                </div>
+                <div
+                  id="delete-button"
+                  onClick={[Function]}
+                >
+                  ⊗
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Error Page should render the trade's elements with 'long' and 'Fulfilled' 1`] = `
+<div>
+  <br />
+  <div>
+    <div
+      style={
+        Object {
+          "marginTop": "-4em",
+        }
+      }
+    >
+      <div>
+        <div>
+          <div>
+             
+            <div>
+              Trade ID:
+              <div>
+                TESTING
+              </div>
+            </div>
+            <br />
+            <div>
+              Reference Number:
+              <div>
+                TESTING
+              </div>
+            </div>
+            <br />
+            <div>
+              Ticker:
+              <div>
+                TESTING
+              </div>
+            </div>
+            <br />
+            <div>
+              Company Name:
+              <div>
+                TESTING
+              </div>
+            </div>
+            <br />
+            <br />
+          </div>
+          <div>
+            <div>
+              TESTING
+            </div>
+            <br />
+            <div>
+              <div>
+                Sold
+              </div>
+              <div>
+                Long
+              </div>
+              <div>
+                Fulfilled
+              </div>
+              <div>
+                Sun Dec 17
+              </div>
+              <br />
+              <div>
+                <div>
+                  Total Cost: $
+                  1
+                </div>
+                <div>
+                  Unit Price: $
+                  1
+                </div>
+                <div>
+                  Quantity: 
+                  1
+                </div>
+              </div>
+              <div>
+                <div
+                  id="update-button"
+                >
+                  ⇪
+                </div>
+                <div
+                  id="delete-button"
+                  onClick={[Function]}
+                >
+                  ⊗
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

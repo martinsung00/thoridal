@@ -1,0 +1,7 @@
+{
+  "user": "postgres",
+  "host": "postgres",
+  "database": "ci_db_test",
+  "password": "postgres",
+  "port": 5432
+}

@@ -8,7 +8,7 @@ import { Trade } from "../../../../src/client/types/index";
 configure({ adapter: new Adapter() });
 
 describe("Error Page", function () {
-  const date = new Date();
+  const date = new Date("1995-12-17T03:24:00");
   const testTrades: Array<Trade> | [] = [
     {
       id: "TESTING",

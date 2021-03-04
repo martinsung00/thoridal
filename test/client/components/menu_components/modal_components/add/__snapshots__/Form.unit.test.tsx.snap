@@ -1,0 +1,238 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Modal Option Add: Modal Form Tests Handle Change Method should set the state according to event 1`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests Handle Change Method should set the state according to event 2`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests Handle On Submit Method should change call confirm ID and next state on success (alternate trade status and trade type) 1`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests Handle On Submit Method should change call confirm ID and next state on success 1`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests Handle Select Trade Action Method should set the state to the currently selected target value 1`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests Handle Select Trade Action Method should set the state to the currently selected target value 2`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests Handle Select Trade Status Method should set the state to the currently selected target value 1`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests Handle Select Trade Status Method should set the state to the currently selected target value 2`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests Handle Select Trade Type Method should set the state to the currently selected target value 1`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests Handle Select Trade Type Method should set the state to the currently selected target value 2`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests On Cancel should exit the modal 1`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests On Submit Method should set the state according to event 1`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests On Submit Method should set the state according to event 2`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests should change state upon receiving an input in the form 1`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests should change state upon receiving an input in the form 2`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests should change state upon receiving an input in the form 3`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests should change state upon receiving an input in the form 4`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests should change state upon receiving an input in the form 5`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests should change state upon receiving an input in the form 6`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests should change state upon receiving an input in the form 7`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests should change state upon receiving an input in the form 8`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests should change state upon receiving an input in the form 9`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests should change state upon receiving an input in the form 10`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests should change state upon receiving an input in the form 11`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests should change state upon receiving an input in the form 12`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Add: Modal Form Tests should render all appropriate elements as is 1`] = `
+<div>
+  <form
+    className="inputForm"
+    onSubmit={[Function]}
+  >
+    <label>
+      ID:
+      <input
+        id="id"
+        name="id"
+        onChange={[Function]}
+        placeholder="e.g 1234ABC"
+        required={true}
+        type="string"
+        value=""
+      />
+    </label>
+    <div />
+    <label>
+      Company Name:
+      <input
+        id="company_name"
+        name="company_name"
+        onChange={[Function]}
+        placeholder="e.g abc"
+        required={true}
+        type="string"
+        value=""
+      />
+    </label>
+    <div />
+    <label>
+      Ticker:
+      <input
+        id="ticker"
+        name="ticker"
+        onChange={[Function]}
+        placeholder="e.g abc"
+        required={true}
+        type="string"
+        value=""
+      />
+    </label>
+    <div />
+    <label>
+      Reference Number:
+      <input
+        id="reference_number"
+        name="reference_number"
+        onChange={[Function]}
+        placeholder="e.g 1234ABC"
+        required={true}
+        type="string"
+        value=""
+      />
+    </label>
+    <div />
+    <label>
+      Unit Price:
+      <input
+        id="unit_price"
+        name="unit_price"
+        onChange={[Function]}
+        placeholder="e.g 19.99"
+        required={true}
+        type="number"
+        value={0}
+      />
+    </label>
+    <div />
+    <label>
+      Quantity:
+      <input
+        id="quantity"
+        name="quantity"
+        onChange={[Function]}
+        placeholder="e.g 100"
+        required={true}
+        type="number"
+        value={0}
+      />
+    </label>
+    <div />
+    <label>
+      Total Cost:
+      <input
+        id="total_cost"
+        name="total_cost"
+        onChange={[Function]}
+        placeholder="e.g 199.99"
+        required={true}
+        type="number"
+        value={0}
+      />
+    </label>
+    <div />
+    <label>
+      Trade Type:
+      <select
+        id="trade_type"
+        onChange={[Function]}
+        value="short"
+      >
+        <option
+          value="long"
+        >
+          Long
+        </option>
+        <option
+          value="short"
+        >
+          Short
+        </option>
+      </select>
+    </label>
+    <div />
+    <label>
+      Trade Status:
+      <select
+        id="trade_status"
+        onChange={[Function]}
+        value="not-fulfilled"
+      >
+        <option
+          value="fulfilled"
+        >
+          Fulfilled
+        </option>
+        <option
+          value="not-fulfilled"
+        >
+          Not Fulfilled
+        </option>
+      </select>
+    </label>
+    <div />
+    <label>
+      Trade Action:
+      <select
+        id="trade_action"
+        onChange={[Function]}
+        value="bought"
+      >
+        <option
+          value="bought"
+        >
+          Bought
+        </option>
+        <option
+          value="sold"
+        >
+          Sold
+        </option>
+      </select>
+    </label>
+    <div />
+    <label>
+      Note:
+      <input
+        id="note"
+        name="note"
+        onChange={[Function]}
+        placeholder="e.g Hello World"
+        required={true}
+        type="string"
+        value=""
+      />
+    </label>
+    <div />
+    <input
+      id="submit-button"
+      type="submit"
+      value="Submit"
+    />
+  </form>
+  <div
+    id="cancel-button"
+    onClick={[Function]}
+  >
+    <div>
+      Cancel
+    </div>
+  </div>
+</div>
+`;

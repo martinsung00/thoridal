@@ -4,11 +4,10 @@ app.bundle.js
 lib
 
 # dependencies
-node_modules
+/node_modules/
 
 # testing
 coverage
-__snapshots__
 
 # production
 build
@@ -17,5 +16,3 @@ build
 .DS_Store
 
 npm-debug.log*
-
-vault/dev.json

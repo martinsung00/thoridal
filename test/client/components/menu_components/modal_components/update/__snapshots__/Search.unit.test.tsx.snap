@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Modal Option Update: Modal Search Tests should render a placeholder if update by is set to date 1`] = `ShallowWrapper {}`;
+
+exports[`Modal Option Update: Modal Search Tests should render the elements as is 1`] = `
+<div>
+  <div>
+    Update Trade By:
+  </div>
+  <select
+    defaultValue="id"
+    id="update-by"
+    onChange={[Function]}
+    value="id"
+  >
+    <option
+      value="id"
+    >
+      ID
+    </option>
+    <option
+      value="ticker"
+    >
+      Ticker
+    </option>
+    <option
+      value="company"
+    >
+      Company Name
+    </option>
+    <option
+      value="date"
+    >
+      Date
+    </option>
+  </select>
+  <input
+    id="update-input"
+    onChange={[Function]}
+    placeholder=""
+    required={true}
+  />
+  <div
+    id="search-button"
+    onClick={[Function]}
+  >
+    <div>
+      Search
+    </div>
+  </div>
+</div>
+`;

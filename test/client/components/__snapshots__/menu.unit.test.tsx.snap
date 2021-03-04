@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Menu Tests should render as is 1`] = `
+<div>
+  <div>
+    <div
+      id="menu-add"
+      onClick={[Function]}
+    >
+      <div>
+        Write a Trade
+      </div>
+      <div />
+      <div />
+      <div />
+    </div>
+  </div>
+  <div>
+    <div
+      id="menu-search"
+      onClick={[Function]}
+    >
+      <div>
+        Find a Trade
+      </div>
+      <div />
+      <div />
+    </div>
+  </div>
+  <div>
+    <div
+      id="menu-delete"
+      onClick={[Function]}
+    >
+      <div>
+        Delete a Trade
+      </div>
+      <div />
+      <div>
+        ×
+      </div>
+    </div>
+  </div>
+  <div>
+    <div
+      id="menu-update"
+      onClick={[Function]}
+    >
+      <div>
+        Update a Trade
+      </div>
+      <div>
+        <div />
+        <div />
+      </div>
+      <div>
+        <div />
+        <div />
+      </div>
+      <div>
+        <div />
+        <div />
+      </div>
+    </div>
+  </div>
+</div>
+`;

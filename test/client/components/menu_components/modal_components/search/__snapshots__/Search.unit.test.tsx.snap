@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Menu Option Search: Modal Search Tests Component Did Mount should make an api call to retrieve all trades 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Search: Modal Search Tests Component Did Mount should render No Previous Trade History if component did mount retrieves an empty array 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Search: Modal Search Tests Handle Change Method should set the state according to event 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Search: Modal Search Tests Handle Delete Method should delete the trade from the database and the current state 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Search: Modal Search Tests Handle Search Method should render not found if nothing matches the query 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Search: Modal Search Tests Handle Search Method should set state Trades with the get response 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Search: Modal Search Tests Handle Select Method should set the state according to event 1`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Search: Modal Search Tests Handle Select Method should set the state according to event 2`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Search: Modal Search Tests Handle Select Method should set the state according to event 3`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Search: Modal Search Tests Handle Select Method should set the state according to event 4`] = `ShallowWrapper {}`;
+
+exports[`Menu Option Search: Modal Search Tests should render the elements as is 1`] = `
+<div>
+  <div>
+    <input
+      id="search-by"
+      onChange={[Function]}
+      placeholder="Search Here!"
+      required={true}
+      value=""
+    />
+    <div>
+      <select
+        defaultValue="id"
+        onChange={[Function]}
+        value="id"
+      >
+        <option
+          value="id"
+        >
+          ID
+        </option>
+        <option
+          value="ticker"
+        >
+          Ticker
+        </option>
+        <option
+          value="company"
+        >
+          Company
+        </option>
+        <option
+          value="date"
+        >
+          Date
+        </option>
+      </select>
+    </div>
+    <div>
+      Search
+    </div>
+  </div>
+  <div />
+  <div>
+    No Previous Trade History
+  </div>
+</div>
+`;
