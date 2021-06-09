@@ -38,7 +38,7 @@
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgements">Acknowledgements</a></li>
+    <li><a href="#credits">Credits</a></li>
   </ol>
 </details>
 
@@ -86,6 +86,28 @@ This is an example of how to list things you need to use the software and how to
    - Create a dev.json file.
    - Insert PostgreSQL credentials in the dev.json file.
 
+<!-- USAGE -->
+## Usage
+
+### Create an Entry
+- Click on the Add Trade button inidcated by a plus sign
+- Enter in relevant information
+- And click submit!
+
+### Update a Trade
+- Click on the Update Trade button indicated by three upward arrows
+- Search for the correct trade
+- Enter in relevant information
+- And click submit to update!
+
+### Delete a Trade
+- Click on the Delete Trade button indicated by a X encapsulated by a circle
+- Search for the correct trade
+- Click delete!
+
+### Search up a Trade
+- Click on the Search Trade button indicated by a magnifying glass
+- Search for the trade by inputting parameters!
 
 <!-- ROADMAP -->
 ## Roadmap
